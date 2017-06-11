@@ -7,7 +7,7 @@ there are definitely some properties you should add!*/
       background-color: #0cbfe8;
     }
     body {
-      font: Verdana, Arial, Sans-serif;
+      font-family: Verdana, Arial, Sans-serif;
        width: 600px;
        height: 100%;
        margin: 50;
