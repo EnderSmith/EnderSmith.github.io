@@ -1,0 +1,90 @@
+/* Note to students: Some properties are given to you to fill out,
+others you can modify as they stand, and if you have time,
+there are definitely some properties you should add!*/
+
+    html {
+      height: 100%;
+      background-color: #0cbfe8;
+    }
+    body {
+       width: 600px;
+       height: 100%;
+       margin: 50;
+    }
+    p {
+      font-family: verdana;
+    }
+    h1 {
+      font-family: verdana;
+      color: #000000;
+    }
+    h2 {
+      font-family: verdana;
+
+    }
+    h3 {
+      font-family: verdana;
+    }
+
+    header {
+        width: 800;
+        background-color: #0cbfe8;
+        padding: 5px;
+        border: 0px solid #000000;
+        margin-bottom: 20px;
+        font-size: 28px;
+        display: block;
+    }
+
+
+
+    nav {
+        float: left;
+    }
+    nav ul {
+        padding: ;
+        float: left;
+        border-bottom: ;
+        list-style-type: none;
+    }
+    nav li {
+        float: left;
+    }
+    nav li a {
+        display: block;
+        height: 25px;
+        padding: 12px 18px 8px 18px;
+        vertical-align: middle;
+        color: ;
+    }
+    a {
+        color: ;
+    }
+    section {
+        width: 73%;
+        display: inline-block;
+        float: left;
+    }
+    .grey-background {
+      background-color: #aaaaaa;
+
+
+    }
+
+    aside {
+        width: 17%;
+        display: inline-block;
+        background-color:;
+        padding:;
+        min-height: 100%;
+    }
+    aside ul {
+        list-style-type: none;
+    }
+    footer {
+        width: 790px;
+        background-color:;
+        color:;
+        clear: both;
+        display: block;
+    }
