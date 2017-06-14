@@ -1,3 +1,4 @@
+//builds clock
 function startTime() {
   var today = new Date();
   var h = today.getHours();
@@ -14,13 +15,18 @@ function checkTime(i) {
   return i;
 }
 
+//set clock in/out vars
 var clockIn_press = false;
 var clockOut_press = false;
 var clockOut_vis = false;
+//checks whether clockin has been pressed,
+//writes the current time to the clock in div,
+//sets clockout to visible
 function clockIn() {
   if (clockIn_press == false) {
     var inTime = document.getElementById('clock').innerHTML;
-    document.getElementById('clockIn_btn').innerHTML = "In:" + inTime;
+    document.getElementById('clockIn_btn').innerHTML = "In: " + inTime;
+    document.getElementById('clockIn_btn').className = "pressed";
     clockIn_press = true;
     clockOut_vis = true;
   }

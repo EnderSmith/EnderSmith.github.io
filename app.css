@@ -4,3 +4,9 @@ body {
   text-align: center;
   font-size: 10vw;
 }
+.button {
+  background-color: #41d871;
+}
+.pressed {
+  background-color: #b6edc7;
+}
