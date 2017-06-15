@@ -2,10 +2,15 @@ body {
   font-family: Verdana, Arial, sans-serif;
   font-variant: ;
   text-align: center;
-  font-size: 12vw;
+  font-size: 12vmin;
   margin: 0px;
 
   /*background-color: #9cadac;*/
+}
+#clock {
+}
+#payWindow {
+
 }
 .clock {
   /*background-color: #ffffff;*/
@@ -13,6 +18,8 @@ body {
 }
 .btn {
   /*border-radius: 5vw;*/
+  float:right;
+  width: 100vw;
 }
 .btnIn {
   background-color: #41d871;

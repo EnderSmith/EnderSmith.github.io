@@ -8,16 +8,27 @@ function startTime() {
   s = checkTime(s);
   document.getElementById('clock').innerHTML =
     h + ":" + m + ":" + s;
-  var t = setTimeout(startTime, 00);
+  var t = setTimeout(startTime, 500);
 }
 function checkTime(i) {
   if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
   return i;
 }
 
-function startMoney(perHour) {
-  var perSecond = perHour * 60 * 60;
-  var t = setTimeout(startMoney, 1000);
+var perHour = 11;
+var cumPay;
+function startMoney() {
+  var t = setTimeout(addMoney, 1000)
+  cumPay = parseFloat(document.getElementById('pay').innerHTML);
+}
+function addMoney() {
+  if (clockOut_press == false) {
+    var perSecond = perHour / 60 / 60;
+    cumPay += perSecond;
+    var dispPay = parseFloat(cumPay).toFixed(2);
+    document.getElementById('pay').innerHTML = dispPay;
+    var t = setTimeout(addMoney, 1000);
+  }
 }
 
 //set clock in/out vars
@@ -34,7 +45,7 @@ function clockIn() {
     document.getElementById('clockIn_btn').className = "btn pressedIn";
     clockIn_press = true;
     clockOutStart();
-//    payStart();
+    startMoney();
   }
   else {return};
 }
