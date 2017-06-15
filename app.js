@@ -8,11 +8,12 @@ function startTime() {
   s = checkTime(s);
   document.getElementById('clock').innerHTML =
     h + ":" + m + ":" + s;
-  var t = setTimeout(startTime, 500);
+  var t = setTimeout(startTime, 00);
 }
 function checkTime(i) {
   if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
   return i;
+}
 
 function startMoney(perHour) {
   var perSecond = perHour * 60 * 60;
