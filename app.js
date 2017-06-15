@@ -21,7 +21,7 @@ var clockOut_press = false;
 var clockOut_vis = false;
 //checks whether clockin has been pressed,
 //writes the current time to the clock in div,
-//sets clockout to visible
+//sets clockout to visible 
 function clockIn() {
   if (clockIn_press == false) {
     var inTime = document.getElementById('clock').innerHTML;
