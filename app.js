@@ -26,13 +26,24 @@ function clockIn() {
   if (clockIn_press == false) {
     var inTime = document.getElementById('clock').innerHTML;
     document.getElementById('clockIn_btn').innerHTML = "In: " + inTime;
-    document.getElementById('clockIn_btn').className = "pressed";
+    document.getElementById('clockIn_btn').className = "btn pressedIn";
     clockIn_press = true;
-    clockOut_vis = true;
+    clockOutStart();
+//    startMoney();
   }
   else {return};
 }
 
+function clockOutStart() {
+  document.getElementById('clockOut_btn').className = "btn buttonOut";
+  document.getElementById('clockOut_btn').innerHTML = "Clock Out";
+}
 function clockOut() {
-
+  if (clockOut_press == false && clockIn_press == true) {
+    var outTime = document.getElementById('clock').innerHTML;
+    document.getElementById('clockOut_btn').innerHTML = "Out: " + outTime;
+    document.getElementById('clockOut_btn').className = "btn pressedOut";
+    clockOut_press = true;
+  }
+  else {return};
 }
