@@ -29,13 +29,13 @@ function clockIn() {
     document.getElementById('clockIn_btn').className = "btn pressedIn";
     clockIn_press = true;
     clockOutStart();
-//    startMoney();
+//    payStart();
   }
   else {return};
 }
 
 function clockOutStart() {
-  document.getElementById('clockOut_btn').className = "btn buttonOut";
+  document.getElementById('clockOut_btn').className = "btn btnOut";
   document.getElementById('clockOut_btn').innerHTML = "Clock Out";
 }
 function clockOut() {
