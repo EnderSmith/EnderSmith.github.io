@@ -13,6 +13,10 @@ function startTime() {
 function checkTime(i) {
   if (i < 10) {i = "0" + i};  // add zero in front of numbers < 10
   return i;
+
+function startMoney(perHour) {
+  var perSecond = perHour * 60 * 60;
+  var t = setTimeout(startMoney, 1000);
 }
 
 //set clock in/out vars
@@ -21,7 +25,7 @@ var clockOut_press = false;
 var clockOut_vis = false;
 //checks whether clockin has been pressed,
 //writes the current time to the clock in div,
-//sets clockout to visible 
+//sets clockout to visible
 function clockIn() {
   if (clockIn_press == false) {
     var inTime = document.getElementById('clock').innerHTML;
