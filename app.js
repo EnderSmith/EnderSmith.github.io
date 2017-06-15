@@ -17,6 +17,9 @@ function checkTime(i) {
 
 var perHour = 11;
 var cumPay;
+var cumTax;
+var dispPay;
+var dispTax;
 function startMoney() {
   var t = setTimeout(addMoney, 1000)
   cumPay = parseFloat(document.getElementById('pay').innerHTML);
@@ -25,10 +28,22 @@ function addMoney() {
   if (clockOut_press == false) {
     var perSecond = perHour / 60 / 60;
     cumPay += perSecond;
-    var dispPay = parseFloat(cumPay).toFixed(2);
+    dispPay = parseFloat(cumPay).toFixed(2);
     document.getElementById('pay').innerHTML = dispPay;
+    addFedTax();
+    addTakeHome();
     var t = setTimeout(addMoney, 1000);
   }
+}
+
+function addFedTax() {
+  cumTax = cumPay * .18;
+  dispTax = parseFloat(cumTax).toFixed(2);
+  document.getElementById('taxFedCount').innerHTML = dispTax;
+}
+function addTakeHome() {
+  var dispTake = parseFloat(dispPay - dispTax).toFixed(2);
+  document.getElementById('takeHomeCount').innerHTML = dispTake;
 }
 
 //set clock in/out vars

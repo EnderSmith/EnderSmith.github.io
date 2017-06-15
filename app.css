@@ -10,7 +10,24 @@ body {
 #clock {
 }
 #payWindow {
+}
+div {
+  clear:both;
+  /*width:100vw;*/
+}
+.right {
+  float:right;
+  clear:right;
+  text-align: right;
+}
+.left {
+  float:left;
+  clear:left;
+  text-align:right;
+}
 
+.txty {
+  font-size: 8vmin;
 }
 .clock {
   /*background-color: #ffffff;*/
@@ -32,4 +49,11 @@ body {
 }
 .pressedOut {
   background-color: #ffbeb2;
+}
+.pre {
+  color: grey;
+}
+.tax {
+  /*background-color: #d8d8d8;*/
+  color: red;
 }
