@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html>
   <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
     <title>Ledgend</title>
     <link rel="stylesheet" href="app.css">
@@ -12,7 +13,7 @@
     <div id="payWindow" class="texty">
       <span class="left pre">Pay:</span>
       <span class="right pre">
-        $<span id="pay" class="right">0.00</span>
+        $<span id="pay" class="pre">0.00</span>
       </span>
     </div>
     <!-- <div id="taxState" class="txty">
@@ -34,5 +35,9 @@
       </span>
     </div>
     <div id="clockOut_btn" onclick="clockOut()" class=""></div>
+    <div id="end" class="end">
+      <span id="restart_btn" onclick="restart()" class=""></div>
+      <span id="clipboard_btn" onclick="clipboard()" class=""></div>
+    </div>
   </body>
 </html>
