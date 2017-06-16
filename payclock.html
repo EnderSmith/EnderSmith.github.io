@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta charset="utf-8">
+    <title>Ledgend</title>
+    <link rel="stylesheet" href="app.css">
+    <script src="app.js"></script>
+  </head>
+  <body onload="startTime()">
+    <div class="clock" id="clock"></div>
+    <div id="clockIn_btn" onclick="clockIn()" class="btn btnIn">Clock In</div>
+    <div id="payWindow" class="texty">
+      <span class="left pre">Pay:</span>
+      <span class="right pre">
+        $<span id="pay" class="pre">0.00</span>
+      </span>
+    </div>
+    <!-- <div id="taxState" class="txty">
+      <span class="left">State Withheld:</span>
+      <span class="right">
+        $<span id="taxStateCount">0.00</span>
+      </span>
+    </div> -->
+    <div id="taxFed" class="texty">
+      <span class="left tax">Avg Fed Tax:</span>
+      <span class="right tax">
+        $<span id="taxFedCount">0.00</span>
+      </span>
+    </div>
+    <div id="takeHome" class="texty">
+      <span class="left">Take Home:</span>
+      <span class="right">
+        $<span id="takeHomeCount">0.00</span>
+      </span>
+    </div>
+    <div id="clockOut_btn" onclick="clockOut()" class=""></div>
+    <div id="end" class="end">
+      <span id="restart_btn" onclick="restart()" class=""></div>
+      <span id="clipboard_btn" onclick="clipboard()" class=""></div>
+    </div>
+  </body>
+</html>
