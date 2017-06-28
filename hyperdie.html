@@ -3,21 +3,34 @@
   <head>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta charset="utf-8">
+    <script type="text/javascript" src="hyperdie.js"></script>
     <title>HyperDie</title>
   </head>
-  <body>
+  <body onload="btnListen()">
     <div class="container">
-      <div class="disp" id="disp"></div>
-      <div class="btn" id="dim0" onmouseover="">Point (0 dim)</div>
-      <div class="btn" id="dim1">
-        Line (1dim : D1)</div>
-      <div class="btn" id="dim2">
-        Square (2dim : D1)</div>
-      <div class="btn" id="dim3">
-        Cube<br>
-        (3dim : D6)
+      <div class="disp" id="dispDie">
+        Select a Die
       </div>
-      <div class="btn" id="dim4">Tesseract (4 dim)</div>
+      <div class="btn" id="dim0">
+        0-dimensional Point
+      </div>
+      <div class="btn" id="dim1">
+        1-dimensional Line
+      </div>
+      <div class="btn" id="dim2">
+        2-dimensional Square
+      </div>
+      <div class="btn" id="dim3">
+        3-dimensional Cube
+      </div>
+      <div class="btn" id="dim4">
+        4-dimenstional Tesseract
+      </div>
+      <div class="btn" id="roll">
+        Roll!
+      </div>
+      <div class="disp" id="dispRoll">
+      </div>
     </div>
   </body>
 </html>
