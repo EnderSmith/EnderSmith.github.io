@@ -28,7 +28,7 @@ var probChord = {
   },
   dm: {
     key: {
-      c: "dm",
+      c: "Dm",
       db: "Ebm",
       d: "Em",
       eb: "Fm",
