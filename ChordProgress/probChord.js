@@ -1,6 +1,19 @@
 var probChord = {
   c: {
-    name: "C",
+    key: {
+      c: "C",
+      db: "Db",
+      d: "D",
+      eb: "Eb",
+      e: "E",
+      f: "F",
+      fs: "F#",
+      g: "G",
+      ab: "Ab",
+      a: "A",
+      bb: "Bb",
+      b: "B"
+    },
     first: .17,
     next: {
       dm: .11,
@@ -14,7 +27,20 @@ var probChord = {
     }
   },
   dm: {
-    name: "Dm",
+    key: {
+      c: "dm",
+      db: "Ebm",
+      d: "Em",
+      eb: "Fm",
+      e: "F#m",
+      f: "Gm",
+      fs: "G#m",
+      g: "Am",
+      ab: "Bbm",
+      a: "Bm",
+      bb: "Cm",
+      b: "C#m"
+    },
     first: .27,
     next: {
       c: .18,
@@ -27,7 +53,20 @@ var probChord = {
     }
   },
   d: {
-    name: "D",
+    key: {
+      c: "D",
+      db: "Eb",
+      d: "E",
+      eb: "F",
+      e: "F#",
+      f: "G",
+      fs: "G#",
+      g: "A",
+      ab: "Bb",
+      a: "B",
+      bb: "C",
+      b: "C#"
+    },
     first: 0,
     next: {
       c: .11,
@@ -43,7 +82,20 @@ var probChord = {
     }
   },
   em: {
-    name: "Em",
+    key: {
+      c: "Em",
+      db: "Fm",
+      d: "F#m",
+      eb: "Gm",
+      e: "G#m",
+      f: "Am",
+      fs: "A#m",
+      g: "Bm",
+      ab: "Cm",
+      a: "C#m",
+      bb: "Dm",
+      b: "D#m"
+    },
     first: .34,
     next: {
       c: .07,
@@ -56,7 +108,20 @@ var probChord = {
     }
   },
   e: {
-    name: "E",
+    key: {
+      c: "E",
+      db: "F",
+      d: "F#",
+      eb: "G",
+      e: "G#",
+      f: "A",
+      fs: "A#",
+      g: "B",
+      ab: "C",
+      a: "C#",
+      bb: "D",
+      b: "D#"
+    },
     first: .38,
     next: {
       c: .07,
@@ -68,7 +133,20 @@ var probChord = {
     }
   },
   fm: {
-    name: "Fm",
+    key: {
+      c: "Fm",
+      db: "Gbm",
+      d: "Gm",
+      eb: "Abm",
+      e: "Am",
+      f: "Bbm",
+      fs: "Bm",
+      g: "Cm",
+      ab: "Dbm",
+      a: "Dm",
+      bb: "Ebm",
+      b: "Em"
+    },
     first: 0,
     next: {
       c: .53,
@@ -81,7 +159,20 @@ var probChord = {
     }
   },
   f: {
-    name: "F",
+    key: {
+      c: "F",
+      db: "Gb",
+      d: "G",
+      eb: "Ab",
+      e: "A",
+      f: "Bb",
+      fs: "B",
+      g: "C",
+      ab: "Db",
+      a: "D",
+      bb: "Eb",
+      b: "E"
+    },
     first: .58,
     next: {
       c: .35,
@@ -95,7 +186,20 @@ var probChord = {
     }
   },
   g: {
-    name: "G",
+    key: {
+      c: "G",
+      db: "Ab",
+      d: "A",
+      eb: "Bb",
+      e: "B",
+      f: "C",
+      fs: "C#",
+      g: "D",
+      ab: "Eb",
+      a: "E",
+      bb: "F",
+      b: "F#"
+    },
     first: .78,
     next: {
       c: .24,
@@ -107,7 +211,20 @@ var probChord = {
     }
   },
   am: {
-    name: "Am",
+    key: {
+      c: "Am",
+      db: "Bbm",
+      d: "Bm",
+      eb: "Cm",
+      e: "C#m",
+      f: "Dm",
+      fs: "D#m",
+      g: "Em",
+      ab: "Fm",
+      a: "F#m",
+      bb: "Gm",
+      b: "G#m"
+    },
     first: .96,
     next: {
       c: .15,
@@ -121,7 +238,20 @@ var probChord = {
     }
   },
   a: {
-    name: "A",
+    key: {
+      c: "A",
+      db: "Bb",
+      d: "B",
+      eb: "C",
+      e: "C#",
+      f: "D",
+      fs: "D#",
+      g: "E",
+      ab: "F",
+      a: "F#",
+      bb: "G",
+      b: "G#"
+    },
     first: 0,
     next: {
       c: .11,
@@ -134,7 +264,20 @@ var probChord = {
     }
   },
   bb: {
-    name: "Bb",
+    key: {
+      c: "Bb",
+      db: "B",
+      d: "C",
+      eb: "Db",
+      e: "D",
+      f: "Eb",
+      fs: "E",
+      g: "F",
+      ab: "Gb",
+      a: "G",
+      bb: "Ab",
+      b: "A"
+    },
     first: 1,
     next: {
       c: .26,

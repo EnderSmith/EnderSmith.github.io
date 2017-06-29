@@ -1,5 +1,9 @@
-function generate() {
-
+function generate(key) {
+  var out = progress(key);
+  print(out, 'output', true);
+}
+function clearChord() {
+  print("", "output", false);
 }
 
 function getRandomInt(min, max) {
@@ -43,16 +47,23 @@ function print(input, getId, addOn) {
   }
 }
 
-function progress() {
+function fixKey(key, array, length) {
+  var progString = "";
+  for (i = 0; i < length; i++) {
+    progString += probChord[array[i]].key[key] + " ";
+  }
+  progString += "<br>"
+  return progString;
+}
+
+function progress(key) {
   var startChord = fChord();
   var prog = [startChord];
-  var progString = probChord[prog[0]].name.toString() + " ";
   var progLength = getRandomInt(2, 7);
   for (i = 1; i < progLength; i++) {
     j = i-1;
     prog[i] = mChord(prog[j]);
-    // console.log(prog[j]);
-    progString += probChord[prog[i]].name + " ";
   }
-  print(progString, 'output');
+  var out = fixKey(key, prog, progLength);
+  return out;
 }

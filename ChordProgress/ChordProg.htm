@@ -5,12 +5,54 @@
     <meta charset="utf-8">
     <script type="text/javascript" src="ChordProg.js"></script>
     <script type="text/javascript" src="probChord.js"></script>
+    <script type="text/javascript" src="ChordProg_UnitTest.js"></script>
     <title>Chord Progress</title>
   </head>
-  <body onload="progress()" style="font-family:verdana;text-align:center;font-size:6vmin">
+  <body style="font-family:verdana;text-align:center">
     <div class="container">
-      <div class="btn" id="generate">
-        Refresh to Generate Random Chord Progression
+      <!-- <div class="btn" id="generate" style="background-color:#18b0f2;height:10vmin;"  onclick="generate()">
+        New
+      </div> -->
+      <button style="background-color:#e2bc56;border:none;font-size:6vmax" onclick="generate('c')">
+        C
+      </button>
+      <button style="background-color:#d3893f;border:none;font-size:6vmax" onclick="generate('db')">
+        Db
+      </button>
+      <button style="background-color:#bfb199;border:none;font-size:6vmax" onclick="generate('d')">
+        D
+      </button>
+      <button style="background-color:#dd757c;border:none;font-size:6vmax" onclick="generate('eb')">
+        Eb
+      </button>
+      <button style="background-color:#e8514a;border:none;font-size:6vmax" onclick="generate('e')">
+        E
+      </button>
+      <button style="background-color:#895d39;border:none;font-size:6vmax" onclick="generate('f')">
+        F
+      </button>
+      <button style="background-color:#a3693a;border:none;font-size:6vmax" onclick="generate('fs')">
+        F#
+      </button>
+      <button style="background-color:#2eb0d1;border:none;font-size:6vmax" onclick="generate('g')">
+        G
+      </button>
+      <button style="background-color:#ccd14f;border:none;font-size:6vmax" onclick="generate('ab')">
+        Ab
+      </button>
+      <button style="background-color:#f2e124;border:none;font-size:6vmax" onclick="generate('a')">
+        A
+      </button>
+      <button style="background-color:#51ba71;border:none;font-size:6vmax" onclick="generate('bb')">
+        Bb
+      </button>
+      <button style="background-color:#2c8747;border:none;font-size:6vmax" onclick="generate('b')">
+        B
+      </button>
+      <div>
+        <button class="btn" id="clear" style="background-color:#db5851;height:10vmax;border:none;font-size:4vmax" onclick="clearChord()">
+          Clear
+        </button>
       </div>
       <div class="text" id="output" style="font-size:7vmin;font-weight:bold">
 
