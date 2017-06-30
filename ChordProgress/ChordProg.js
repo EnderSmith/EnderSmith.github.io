@@ -6,8 +6,16 @@ function clearChord() {
   print("", "output", false);
 }
 
-function getRandomInt(min, max) {
-    return Math.floor(Math.random() * (max - min + 1)) + min;
+function progress(key) {
+  var startChord = fChord();
+  var prog = [startChord];
+  var progLength = getRandomInt(2, 7);
+  for (i = 1; i < progLength; i++) {
+    j = i-1;
+    prog[i] = mChord(prog[j]);
+  }
+  var out = fixKey(key, prog, progLength);
+  return out;
 }
 
 function fChord() {
@@ -39,14 +47,6 @@ function mChord(prevChord) {
   }
 }
 
-function print(input, getId, addOn) {
-  if (addOn != true) {
-    document.getElementById(getId).innerHTML = input;
-  } else {
-    document.getElementById(getId).innerHTML += input;
-  }
-}
-
 function fixKey(key, array, length) {
   var progString = "";
   for (i = 0; i < length; i++) {
@@ -56,14 +56,14 @@ function fixKey(key, array, length) {
   return progString;
 }
 
-function progress(key) {
-  var startChord = fChord();
-  var prog = [startChord];
-  var progLength = getRandomInt(2, 7);
-  for (i = 1; i < progLength; i++) {
-    j = i-1;
-    prog[i] = mChord(prog[j]);
+function getRandomInt(min, max) {
+    return Math.floor(Math.random() * (max - min + 1)) + min;
+}
+
+function print(input, getId, addOn) {
+  if (addOn != true) {
+    document.getElementById(getId).innerHTML = input;
+  } else {
+    document.getElementById(getId).innerHTML += input;
   }
-  var out = fixKey(key, prog, progLength);
-  return out;
 }

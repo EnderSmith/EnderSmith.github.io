@@ -8,11 +8,8 @@
     <script type="text/javascript" src="ChordProg_UnitTest.js"></script>
     <title>Chord Progress</title>
   </head>
-  <body style="font-family:verdana;text-align:center">
-    <div class="container">
-      <!-- <div class="btn" id="generate" style="background-color:#18b0f2;height:10vmin;"  onclick="generate()">
-        New
-      </div> -->
+  <body style="font-family:verdana;text-align:center" onload="testing(true);">
+    <div class="container" id="main">
       <button style="background-color:#e2bc56;border:none;font-size:6vmax" onclick="generate('c')">
         C
       </button>
@@ -58,5 +55,6 @@
 
       </div>
     </div>
-  </body>
+    <div class="test" id="test" style="visibility:hidden"></div>
+    </body>
 </html>
