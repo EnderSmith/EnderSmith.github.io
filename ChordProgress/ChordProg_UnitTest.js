@@ -4,6 +4,11 @@ function testing(testOn) {
   printTest_trueAddOn();
   getRandomIntTest(1);
   fixKeyTest();
+  mChordTest();
+  fChordTest();
+  progressTest();
+  clearChordTest();
+  generateTest();
 }
 
 function printTest_nullAddOn() {
@@ -51,4 +56,62 @@ function fixKeyTest() {
   } else {
     console.log("fixKeyTest failed.\n\treturned: " + output + "\n\tinstead of: " + answerStr);
   }
+}
+
+function mChordTest() {
+  var answerStr = "c d e f g am";
+  var nextChord = mChord("em");
+  if (answerStr.includes(nextChord) == true || nextChord == "dm") {
+    console.log("mChordTest passed.\n\tem -> "+nextChord);
+  } else {
+    console.log("mChordTest failed.\n\treturned: " +
+      nextChord+"\n\tinstead of: c dm d e f g or am.");
+  }
+}
+
+function fChordTest() {
+  var answerMjr = "c d e f g a bb";
+  var answerMnr = "dm em fm am";
+  var firstChord = fChord();
+  if (answerMjr.includes(firstChord) == true || answerMnr.includes(firstChord) == true) {
+    console.log("fChordTest passed.\n\t"+firstChord);
+  } else {
+    console.log("fChordTest failed.\n\treturned: " +
+      firstChord+"\n\tinstead of: "+answerMjr+" "+answerMnr);
+  }
+}
+
+function progressTest() {
+  var override = {};
+  override.fChord = "c";
+  override.int = 3;
+  var output = progress("c", override);
+  if (output.includes("C C C") == true) {
+    console.log("progressTest passed. \n\t" + output);
+  } else {
+    console.log("progressTest failed.")
+  }
+}
+
+function clearChordTest() {
+  var input = "test";
+  document.getElementById('output').innerHTML = input;
+  clearChord();
+  var content = document.getElementById('output').innerHTML;
+  if (content == "") {
+    console.log("clearChordTest passed.")
+  } else {
+    console.log("clearChordTest failed.\n\t"+content);
+  }
+}
+
+function generateTest() {
+  var output = generate("c");
+  var content = document.getElementById('output').innerHTML;
+  if (content == output) {
+    console.log("generateTest passed.");
+  } else {
+    console.log("generateTest failed.\n\t'"+content+"' != '"+output+"'.");
+  }
+  document.getElementById("output").innerHTML = "";
 }

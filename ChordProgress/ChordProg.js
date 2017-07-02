@@ -1,18 +1,30 @@
 function generate(key) {
   var out = progress(key);
   print(out, 'output', true);
+  return out;
 }
+
 function clearChord() {
   print("", "output", false);
 }
 
-function progress(key) {
-  var startChord = fChord();
-  var prog = [startChord];
-  var progLength = getRandomInt(2, 7);
+function progress(key, overrideObj) {
+  var startChord, prog, progLength, out;
+  if (overrideObj == null) {
+    startChord = fChord();
+    progLength = getRandomInt(2, 7);
+  } else {
+    startChord = overrideObj.fChord;
+    progLength = overrideObj.int;
+  }
+  prog = [startChord];
   for (i = 1; i < progLength; i++) {
     j = i-1;
-    prog[i] = mChord(prog[j]);
+    if (overrideObj == null) {
+      prog[i] = mChord(prog[j]);
+    } else {
+      prog[i] = prog[j];
+    }
   }
   var out = fixKey(key, prog, progLength);
   return out;
