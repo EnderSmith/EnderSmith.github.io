@@ -1,8 +1,11 @@
 * {
   box-sizing: border-box;
   text-align: center;
+  font-family: arial, sans-serif;
+  color: white;
+  background-color: #252B39;
 }
-@media only screen and (max-width: 600px) {
+@media only screen and (max-width: 500px) {
   /* for mobile: */
   .col-m-1 {width: 8.33%;}
   .col-m-2 {width: 16.66%;}
@@ -17,7 +20,7 @@
   .col-m-11 {width: 91.66%;}
   .col-m-12 {width: 100%;}
 }
-@media only screen and (min-width: 600px) {
+@media only screen and (min-width: 500px) {
   /* for tablet: */
   .col-t-1 {width: 8.33%;}
   .col-t-2 {width: 16.66%;}
@@ -50,7 +53,7 @@
 [class*="col-"] {
     float: left;
     padding: 10px;
-    border: 1px solid red;
+    /*border: 1px solid red;*/
     /*min-width: 65px;*/
     overflow: hidden;
     white-space: nowrap;
@@ -71,10 +74,28 @@
 }
 .btn {
   cursor: pointer;
+  background-color: #226666;
+  border: 2px solid #2E4272;
 }
 .num {
-  cursor: pointer;
+  background-color: #254BA2;
+}
+.oper {
+  background-color: #1351DE;
 }
 .disp {
   text-align: right;
+  background-color: #AA6C39;
+  border: 2px solid #F17F21;
+}
+@media only screen and (min-width: 500px) {
+  .disp {
+    height: 252px;
+  }
+}
+#rollBtn {
+  background-color: #FF7400;
+}
+#clrBtn {
+  background-color: #F1AC21;
 }
