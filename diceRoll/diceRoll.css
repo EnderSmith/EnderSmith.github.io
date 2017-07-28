@@ -5,6 +5,10 @@
   color: white;
   background-color: #252B39;
 }
+div {
+  background-color: inherit;
+  text-align: inherit;
+}
 @media only screen and (max-width: 500px) {
   /* for mobile: */
   .col-m-1 {width: 8.33%;}
@@ -19,6 +23,7 @@
   .col-m-10 {width: 83.33%;}
   .col-m-11 {width: 91.66%;}
   .col-m-12 {width: 100%;}
+  .disp {height: 20vh;}
 }
 @media only screen and (min-width: 500px) {
   /* for tablet: */
@@ -34,6 +39,8 @@
   .col-t-10 {width: 83.33%;}
   .col-t-11 {width: 91.66%;}
   .col-t-12 {width: 100%;}
+  .disp {height: 252px;}
+
 }
 @media only screen and (min-width: 768px) {
   /* for desktop: */
@@ -87,15 +94,17 @@
   text-align: right;
   background-color: #AA6C39;
   border: 2px solid #F17F21;
+  /**/
 }
 @media only screen and (min-width: 500px) {
-  .disp {
-    height: 252px;
-  }
+
 }
 #rollBtn {
   background-color: #FF7400;
 }
 #clrBtn {
   background-color: #F1AC21;
+}
+#dispOut {
+  color: #FFC194;
 }
