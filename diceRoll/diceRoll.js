@@ -92,5 +92,9 @@ function roll() {
   document.getElementById('dispOut').innerHTML = output;
 }
 function clear() {
-  document.getElementById('dispIn').innerHTML = '';
+  if (document.getElementById('dispIn').innerHTML == '') {
+    document.getElementById('dispOut').innerHTML = ''
+  } else {
+    document.getElementById('dispIn').innerHTML = '';
+  }
 }
