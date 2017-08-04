@@ -1,0 +1,103 @@
+
+body {
+  font-family: Verdana, Arial, sans-serif;
+  font-variant: ;
+  text-align: center;
+  font-size: 12vmin;
+  margin: 0px;
+
+  /*background-color: #9cadac;*/
+}
+#clock {
+}
+#payWindow {
+}
+div {
+  clear:both;
+  /*width:100vw;*/
+}
+
+.right {
+  float:right;
+  clear:right;
+  text-align: right;
+}
+.left {
+  float:left;
+  clear:left;
+  text-align:left;
+}
+.texty {
+  font-size: 8vmin;
+}
+.clock {
+  /*background-color: #ffffff;*/
+  /*border-radius: 5vw;*/
+}
+.btn {
+  /*border-radius: 5vw;*/
+  width: 100vw;
+  vertical-align: middle;
+}
+.btnIn {
+  background-color: #41d871;
+}
+.btnOut {
+  background-color: #f75133;
+}
+.btnRe {
+  background-color: #6ca3fc;
+  width: 50vw;
+  float: left;
+  margin:0;
+  height: 20vmin;
+  padding-top:3vmin;
+  /*height:15vmin;
+  padding-top: 5vmin;*/
+}
+
+
+.btnCopy {
+  background-color: #ffe791;
+  width: 50vw;
+  float:right;
+  margin:0;
+  height:20vmin;
+  padding-top: 3vmin;
+}
+/*@media (min-width: 823px) {
+    .btnCopy {
+      height:15vmin;
+      padding-top: 5vmin;
+    }
+    .pressedCopy {
+        height:15vmin;
+        padding-top: 5vmin;
+    }
+    .btnRe {
+      font-size: 12vmin;
+      padding-top: 2vmin;
+      height: 18vmin;
+    }
+}*/
+.pressedIn {
+  background-color: #b6edc7;
+}
+.pressedOut {
+  background-color: #ffbeb2;
+}
+.pressedCopy {
+  background-color: #fff6d6;
+  width: 50vw;
+  float:right;
+  margin:0;
+  height:20vmin;
+  padding-top: 3vmin;
+}
+.pre {
+  color: grey;
+}
+.tax {
+  /*background-color: #d8d8d8;*/
+  color: red;
+}
