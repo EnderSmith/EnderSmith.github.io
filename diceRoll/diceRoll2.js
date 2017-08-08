@@ -3,11 +3,12 @@ document.addEventListener('DOMContentLoaded', function() {
   addDiceKeyListeners();
   addOperatorKeyListeners();
   addRollBarListeners();
+  runTests(true);
 });
 
 // global variables
 var g = {
-  diceNameArray: ['d100', 'd20', 'd12', 'd10', 'd8', 'd6', 'd4', 'd2'],
+  diceNameArray: ['d100', 'd20', 'd12', 'd10', 'd8', 'd6', 'd4', 'd2', 'd1'],
   inputArray: [],
   currentIndex: 0
 }
@@ -58,6 +59,8 @@ function addRollBarListeners() {
   });
 }
 
+// -- testable functions --
+
 // functions for manipulating data i/o
 function randomIntByDice(dn) {
   var numberOfSides = dn.replace('d', '');
@@ -65,7 +68,7 @@ function randomIntByDice(dn) {
   return randomInt;
 }
 function subRandomIntForDice(str) {
-  for (var i = 0; i < 8; i++) {
+  for (var i = 0; i < g.diceNameArray.length; i++) {
     var currentDice = g.diceNameArray[i];
     for (var t = true; t !=false; t = str.includes(currentDice) ) {
       str = str.replace(currentDice, '(' + randomIntByDice(currentDice) + ')');
@@ -74,8 +77,7 @@ function subRandomIntForDice(str) {
   return str;
 }
 function arrayToEquation(inputArray) {
-  var string = inputArray.toString();
-  var equation = string.replace(/,/g, '');
+  var equation = inputArray.join('');
   return equation;
 }
 
@@ -86,18 +88,29 @@ function printToInnerHTML(id, str, replaceTF) {
   } else {
     document.getElementById(id).innerHTML = str;
   }
+  var testOutput = document.getElementById(id).innerHTML;
+  return testOutput;
 }
-function clearScreen() {
-  if (document.getElementById('dispIn').innerHTML == '') {
+function clearScreen(override) {
+  if (document.getElementById('dispIn').innerHTML == '' || override == 'dispOut') {
     printToInnerHTML('dispOut', '', true);
-    g.currentIndex = 0;
-    g.inputArray.length = 0;
-  } else {
+    clearInputArray();
+    var testOutput = document.getElementById('dispOut').innerHTML;
+    return testOutput;
+  } else if (document.getElementById('dispIn').innerHTML != '' || override == 'dispIn') {
     printToInnerHTML('dispIn', '', true);
-    g.currentIndex = 0;
-    g.inputArray.length = 0;
+    clearInputArray();
+    var testOutput = document.getElementById('dispIn').innerHTML;
+    return testOutput;
   }
 }
+function clearInputArray() {
+  g.currentIndex = 0;
+  g.inputArray.length = 0;
+  var testOutput = [g.inputArray.length, g.currentIndex];
+  return testOutput;
+}
+
 
 // functions for taking input
 function key_first(input) {
@@ -124,13 +137,13 @@ function key_diceAfterNumber(input) {
   }
   g.currentIndex--;
   g.inputArray.length--; // this might go wrong
-  var testOutput = [g.inputArray, g.currentIndex];
+  var testOutput = [multiplier, g.currentIndex];
   return testOutput;
 }
 function key_operator(input) {
   g.inputArray[g.currentIndex] = input;
   g.currentIndex++;
-  var testOutput = [g.inputArray, g.currentIndex];
+  var testOutput = [g.inputArray[g.currentIndex-1], g.currentIndex];
   return testOutput;
 }
 
