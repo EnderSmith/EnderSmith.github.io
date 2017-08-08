@@ -6,6 +6,10 @@
   color: white;
   background-color: #252B39;
 }
+body {
+  height: 100vh;
+  margin: 0;
+}
 div {
   background-color: inherit;
   text-align: inherit;
@@ -108,4 +112,7 @@ div {
 }
 #dispOut {
   color: #FFC194;
+}
+#wholepage {
+  padding: 3vmax
 }
