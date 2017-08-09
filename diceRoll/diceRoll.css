@@ -44,8 +44,8 @@ div {
   .col-t-10 {width: 83.33%;}
   .col-t-11 {width: 91.66%;}
   .col-t-12 {width: 100%;}
-  .disp {height: 252px;}
-  #calcHolder {height: 252px;}
+  .disp {height: 255px;}
+  #calcHolder {height: 255px;}
 }
 @media only screen and (min-width: 768px) {
   /* for desktop: */
