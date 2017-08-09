@@ -116,3 +116,6 @@ div {
 #wholepage {
   padding: 1.5vmax;
 }
+#savedMenu {
+  height: 255px;
+}
