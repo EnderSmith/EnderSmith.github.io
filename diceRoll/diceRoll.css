@@ -18,6 +18,9 @@ button {
   background-color: inherit;
   text-align: inherit;
 }
+.banner {
+  height: 10vh;
+}
 @media only screen and (max-width: 500px) {
   /* for mobile: */
   .col-m-1 {width: 8.33%;}
@@ -33,6 +36,13 @@ button {
   .col-m-11 {width: 91.66%;}
   .col-m-12 {width: 100%;}
   .disp {height: 20vh;}
+  button {height: 8vh;}
+  #savedMenu {height: 48vh;}
+  @media only screen and (max-height: 700px) {
+    .disp {height: 30vh;}
+    button {height: 8.57vh;}
+    #savedMenu {height: 51.43vh;}
+  }
 }
 @media only screen and (min-width: 500px) {
   /* for tablet: */
@@ -48,8 +58,20 @@ button {
   .col-t-10 {width: 83.33%;}
   .col-t-11 {width: 91.66%;}
   .col-t-12 {width: 100%;}
-  .disp {height: 255px;}
-  #calcHolder {height: 255px;}
+  .disp {height: 47.9vh;}
+  button {height: 8vh;}
+  #savedMenu {height: 48vh;}
+  @media only screen and (max-height: 500px) {
+    .disp {height: 77vh;}
+    button {height: 12.85vh;}
+    #savedMenu {height: 77.14vh;}
+  }
+  @media only screen and (min-height: 800px) {
+    .banner {height: 6.25vh;}
+    button {height: 6.25vh;}
+    #savedMenu {height: 37.5vh;}
+    .disp {height: 37.5vh;}
+  }
 }
 @media only screen and (min-width: 768px) {
   /* for desktop: */
@@ -76,10 +98,8 @@ button {
     /*text-overflow: ellipsis;*/
 }
 
-.buff {
-  float: left;
-  border: none;
-}
+
+
 .holder {
   padding: 0px;
 }
@@ -119,7 +139,5 @@ button {
 }
 #wholepage {
   padding: 1.5vmax;
-}
-#savedMenu {
-  height: 255px;
+  padding-top: 0;
 }
