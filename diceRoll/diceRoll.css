@@ -14,6 +14,10 @@ div {
   background-color: inherit;
   text-align: inherit;
 }
+button {
+  background-color: inherit;
+  text-align: inherit;
+}
 @media only screen and (max-width: 500px) {
   /* for mobile: */
   .col-m-1 {width: 8.33%;}
