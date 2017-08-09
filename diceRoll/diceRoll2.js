@@ -1,8 +1,7 @@
 document.addEventListener('DOMContentLoaded', function() {
-  addNumberKeyListeners();
-  addDiceKeyListeners();
-  addOperatorKeyListeners();
   addRollBarListeners();
+  printToInnerHTML('calcHolder', content.calculator, true);
+  addCalculatorListeners();
   runTests(true);
 });
 
@@ -10,7 +9,8 @@ document.addEventListener('DOMContentLoaded', function() {
 var g = {
   diceNameArray: ['d100', 'd20', 'd12', 'd10', 'd8', 'd6', 'd4', 'd2', 'd1'],
   inputArray: [],
-  currentIndex: 0
+  currentIndex: 0,
+  contentStatus: content.calculator
 }
 
 // prototype listeners
@@ -28,6 +28,11 @@ function DiceKeyListener(id) {
 }
 
 // functions for adding listeners
+function addCalculatorListeners() {
+  addNumberKeyListeners();
+  addDiceKeyListeners();
+  addOperatorKeyListeners();
+}
 function addNumberKeyListeners() {
   for (var i = 0; i < 10; i++) {
     var id = "num" + i;
@@ -57,6 +62,9 @@ function addRollBarListeners() {
   document.getElementById('rollBtn').addEventListener('click', function() {
     roll(g.inputArray);
   });
+  document.getElementById('savedBtn').addEventListener('click', function() {
+    toggleSaved();
+  })
 }
 
 // -- testable functions --
@@ -82,6 +90,18 @@ function arrayToEquation(inputArray) {
 }
 
 // functions for displaying data
+function toggleSaved() {
+  if (g.contentStatus == content.calculator) {
+    printToInnerHTML('calcHolder', content.saved, true);
+    printToInnerHTML('savedBtn', 'calc', true);
+    g.contentStatus = content.saved;
+  } else if (g.contentStatus == content.saved) {
+    printToInnerHTML('calcHolder', content.calculator, true);
+    printToInnerHTML('savedBtn', 'saved', true);
+    addCalculatorListeners();
+    g.contentStatus = content.calculator;
+  }
+}
 function printToInnerHTML(id, str, replaceTF) {
   if (replaceTF != true) {
     document.getElementById(id).innerHTML += str;
