@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
   printToInnerHTML('calcHolder', content.calculator, true);
   addCalculatorListeners();
   runTests(true);
-  simulateFirstVisit(true);
+  simulateFirstVisit(false);
   checkMemory();
 });
 
@@ -219,8 +219,10 @@ function loadMemory() {
   var savedList = (Object.getOwnPropertyNames(sav));
   var savedMenu = "<div id='savedMenu'>";
     for (var i = 0; i < savedList.length; i++) {
-      savedMenu += "<div class='saveItem' id='" + sav[savedList[i]].id + "'>" +
-                    sav[savedList[i]].name + ": " + sav[savedList[i]].roll + "</div>"
+      savedMenu += "<button class='btn saveItem col-m-8 col-t-8 col-8' id='" +
+                    sav[savedList[i]].id + "'>" +
+                    sav[savedList[i]].name + ": " + sav[savedList[i]].roll +
+                    "</button>"
     }
     savedMenu += "</div>";
     content.savedMenu = savedMenu;
