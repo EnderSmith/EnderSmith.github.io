@@ -212,7 +212,6 @@ function checkMemory() {
     localStorage.visited = true;
     demoSave();
     loadMemory();
-    console.log(localStorage.saved + '\n' + localStorage.visited);
     return;
   }
 }
@@ -244,23 +243,22 @@ function addSaveItemListeners() {
   var saved = JSON.parse(localStorage.saved);
   var saved_props = (Object.getOwnPropertyNames(saved));
     for (var i = 0; i < saved_props.length; i++) {
-      new SaveItemListeners(saved[saved_props[i]].id);
+      new SaveItemListeners(saved[saved_props[i]].id, saved[saved_props[i]].roll);
     }
 }
-function SaveItemListeners(id) {
-  document.getElementById(id).addEventListener('click', function() {return});
+function SaveItemListeners(id, roll) {
+  document.getElementById(id).addEventListener('click', function() {
+    keypadPress(roll);
+  });
   document.getElementById('mod_' + id).addEventListener('click', function() {return});
   document.getElementById('delete_' + id).addEventListener('click', function() {
     deleteRoll(id);
   });
 }
+
 function demoSave() {
   var saved = preloaded;
   localStorage.saved = JSON.stringify(saved);
-}
-
-function userSave() {
-
 }
 
 function SaveRoll(id, name, roll, mod) {
