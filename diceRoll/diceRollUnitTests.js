@@ -21,7 +21,7 @@ function runTests(runTF) {
       new UnitTest('keypadPress-diceAfterDice', keypadPress('d2'), 'd2,'),
       new UnitTest('keypadPress-numberAfterDice', keypadPress('2'), '2,'),
       new UnitTest('lazinessTest', clearScreen(clearScreen()), ''),
-      new UnitTest('roll', roll(['d1','+','d1']), '2 [(1)+(1)] <br>'),
+      new UnitTest('roll', roll(['d1','+','d1']), '2 [(1)+(1)] <br><br>'),
       new UnitTest('lazinessTest_redux', clearScreen(clearScreen()), '')
     ];
     return passFail;

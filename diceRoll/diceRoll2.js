@@ -3,6 +3,8 @@ document.addEventListener('DOMContentLoaded', function() {
   printToInnerHTML('calcHolder', content.calculator, true);
   addCalculatorListeners();
   runTests(true);
+  simulateFirstVisit(true);
+  checkMemory();
 });
 
 // global variables
@@ -92,7 +94,8 @@ function arrayToEquation(inputArray) {
 // functions for displaying data
 function toggleSaved() {
   if (g.contentStatus == content.calculator) {
-    printToInnerHTML('calcHolder', content.saved, true);
+    printToInnerHTML('calcHolder', content.savedMenu, true);
+    content.savedMenu = document.getElementById('calcHolder').innerHTML;
     printToInnerHTML('savedBtn', 'calc', true);
     g.contentStatus = content.saved;
   } else if (g.contentStatus == content.saved) {
@@ -196,4 +199,62 @@ function roll(inputArray) {
   var output = evaluation + ' [' + equation + '] ' + '<br><br>' + document.getElementById('dispOut').innerHTML;
   printToInnerHTML('dispOut', output, true);
   return output;
+}
+
+ // save
+function checkMemory() {
+  if (localStorage.visited) {
+    loadMemory();
+    return;
+  } else {
+    localStorage.visited = true;
+    demoSave();
+    loadMemory();
+    console.log(localStorage.saved + '\n' + localStorage.visited);
+    return;
+  }
+}
+function loadMemory() {
+  var sav = JSON.parse(localStorage.saved);
+  var savedList = (Object.getOwnPropertyNames(sav));
+  var savedMenu = "<div id='savedMenu'>";
+    for (var i = 0; i < savedList.length; i++) {
+      savedMenu += "<div class='saveItem' id='" + sav[savedList[i]].id + "'>" +
+                    sav[savedList[i]].name + ": " + sav[savedList[i]].roll + "</div>"
+    }
+    savedMenu += "</div>";
+    content.savedMenu = savedMenu;
+    console.log(savedMenu + savedList);
+}
+
+function demoSave() {
+  var saved = {
+    'longsword': {
+      'id': 'longsword',
+      'name': 'longsword',
+      'roll': '1d8',
+      'mod': ''
+    },
+    'longsword_versa': {
+      'id': 'longsword_versa',
+      'name': 'longsword (versatile)',
+      'roll': '1d10',
+      'mod': ''
+    },
+    'greataxe': {
+      'id': 'greataxe',
+      'name': 'greataxe',
+      'roll': '1d12',
+      'mod': ''
+    }
+  }
+  localStorage.saved = JSON.stringify(saved);
+}
+
+function simulateFirstVisit(runTrue) {
+  if (runTrue) {
+    localStorage.removeItem('visited');
+    localStorage.removeItem('saved');
+    localStorage.removeItem('savedMenu');
+  } else {return;}
 }
