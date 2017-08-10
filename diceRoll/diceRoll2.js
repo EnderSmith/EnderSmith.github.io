@@ -219,10 +219,20 @@ function loadMemory() {
   var savedList = (Object.getOwnPropertyNames(sav));
   var savedMenu = "<div id='savedMenu'>";
     for (var i = 0; i < savedList.length; i++) {
-      savedMenu += "<button class='btn saveItem col-m-8 col-t-8 col-8' id='" +
-                    sav[savedList[i]].id + "'>" +
-                    sav[savedList[i]].name + ": " + sav[savedList[i]].roll +
-                    "</button>"
+      savedMenu += "<div class='row'>" +
+                      "<button class='btn saveItem col-m-8 col-t-8 col-8' id='" +
+                        sav[savedList[i]].id + "'>" +
+                          sav[savedList[i]].name + ": " + sav[savedList[i]].roll +
+                      "</button>" +
+                      "<button class='btn modify saveItem col-m-2 col-t-2 col-2' id='" +
+                        "mod_" + sav[savedList[i]].id + "'>" +
+                        "mod" +
+                      "</button>" +
+                      "<button class='btn delete saveItem col-m-2 col-t-2 col-2' id='" +
+                        "delete_" + sav[savedList[i]].id + "'>" +
+                        "delete" +
+                      "</button>" +
+                    "</div>"
     }
     savedMenu += "</div>";
     content.savedMenu = savedMenu;
