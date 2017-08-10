@@ -136,9 +136,10 @@ button {
 
 .saveItem {
   background-color: #1351DE;
-  margin: 1vh;
+  margin: 1vmin 0;
   height: 8vh;
   min-height: 3em;
+  overflow-wrap: break-word;
 }
 
 #rollBtn {
@@ -179,4 +180,5 @@ button {
   background-color: #2E4272;
   overflow-y: auto;
   white-space: normal;
+  padding: 0 1vmin;
 }

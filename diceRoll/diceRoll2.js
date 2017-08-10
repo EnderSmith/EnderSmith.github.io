@@ -5,6 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
   runTests(true);
   simulateFirstVisit(false);
   checkMemory();
+  console.log(new SaveRoll('maul', 'maul', '2d6', ''));
 });
 
 // global variables
@@ -219,10 +220,21 @@ function loadMemory() {
   var savedList = (Object.getOwnPropertyNames(sav));
   var savedMenu = "<div id='savedMenu'>";
     for (var i = 0; i < savedList.length; i++) {
-      savedMenu += "<button class='btn saveItem col-m-8 col-t-8 col-8' id='" +
-                    sav[savedList[i]].id + "'>" +
-                    sav[savedList[i]].name + ": " + sav[savedList[i]].roll +
-                    "</button>"
+      savedMenu += "<div class='row'>" +
+                      "<button class='btn saveItem col-m-8 col-t-8 col-8' id='" +
+                        sav[savedList[i]].id + "'>" +
+                          sav[savedList[i]].name + ": " + sav[savedList[i]].roll +
+                      "</button>" +
+                      "<button class='btn modify saveItem col-m-2 col-t-2 col-2' id='" +
+                        "mod_" + sav[savedList[i]].id + "'>" +
+                        "mod" +
+                      "</button>" +
+                      "<button class='btn delete saveItem col-m-2 col-t-2 col-2' id='" +
+                        "delete_" + sav[savedList[i]].id + "'>" +
+                        "X" +
+                      "</button>" +
+                    "</div>";
+
     }
     savedMenu += "</div>";
     content.savedMenu = savedMenu;
@@ -230,27 +242,33 @@ function loadMemory() {
 }
 
 function demoSave() {
-  var saved = {
-    'longsword': {
-      'id': 'longsword',
-      'name': 'longsword',
-      'roll': '1d8',
-      'mod': ''
-    },
-    'longsword_versa': {
-      'id': 'longsword_versa',
-      'name': 'longsword (versatile)',
-      'roll': '1d10',
-      'mod': ''
-    },
-    'greataxe': {
-      'id': 'greataxe',
-      'name': 'greataxe',
-      'roll': '1d12',
-      'mod': ''
-    }
-  }
+  var saved = preloaded;
   localStorage.saved = JSON.stringify(saved);
+}
+
+function userSave() {
+
+}
+
+function SaveRoll(id, name, roll, mod) {
+  var copyOfSaved = JSON.parse(localStorage.saved);
+  copyOfSaved[id] = {
+    "id": id,
+    "name": name,
+    "roll": roll,
+    "mod": mod
+  }
+  localStorage.saved = JSON.stringify(copyOfSaved);
+  loadMemory();
+  return copyOfSaved[id];
+}
+
+function deleteRoll(deleteId) {
+  var copyOfSaved = JSON.parse(localStorage.saved);
+  delete copyOfSaved[deleteId];
+  localStorage.saved = JSON.stringify(copyOfSaved);
+  loadMemory();
+  return copyOfSaved;
 }
 
 function simulateFirstVisit(runTrue) {
