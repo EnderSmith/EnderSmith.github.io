@@ -193,7 +193,7 @@ function roll(inputArray) {
   var equation = arrayToEquation(inputArray);
   equation = subRandomIntForDice(equation);
   var evaluation = eval(equation);
-  var output = evaluation + ' [' + equation + '] ' + '<br>' + document.getElementById('dispOut').innerHTML;
+  var output = evaluation + ' [' + equation + '] ' + '<br><br>' + document.getElementById('dispOut').innerHTML;
   printToInnerHTML('dispOut', output, true);
   return output;
 }

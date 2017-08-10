@@ -138,7 +138,8 @@ button {
 #dispOut {
   color: #FFC194;
   height: 70%;
-  overflow: auto;
+  overflow-y: auto;
+  white-space: normal;
   margin-top: 5px;
   margin-bottom: 5px;
 }
