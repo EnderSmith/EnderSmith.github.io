@@ -143,6 +143,14 @@ button {
   margin-top: 5px;
   margin-bottom: 5px;
 }
+#dispOut::-webkit-scrollbar {
+  width: 3px;
+  background-color: #AA6C39;
+}
+#dispOut::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background-color: #FFC194;
+}
 #dispEng {
   height: 10%;
   min-height: 1em;
@@ -150,14 +158,4 @@ button {
 #wholepage {
   padding: 1.5vmax;
   padding-top: 0;
-}
-
-div::-webkit-scrollbar {
-  width: 3px;
-  background-color: #AA6C39;
-}
-div::-webkit-scrollbar-thumb {
-  border-radius: 3px;
-  background-color: #FFC194;
-
 }
