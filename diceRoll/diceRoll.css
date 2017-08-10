@@ -123,7 +123,6 @@ button {
   text-align: right;
   background-color: #AA6C39;
   border: 2px solid #F17F21;
-  /**/
 }
 @media only screen and (min-width: 500px) {
 
@@ -134,10 +133,28 @@ button {
 #clrBtn {
   background-color: #F1AC21;
 }
+#dispIn {
+  height: 10%;
+}
 #dispOut {
   color: #FFC194;
+  height: 80%;
+  overflow: auto;
+}
+#dispEng {
+  height: 10%;
 }
 #wholepage {
   padding: 1.5vmax;
   padding-top: 0;
+}
+
+div::-webkit-scrollbar {
+  width: 3px;
+  background-color: #AA6C39;
+}
+div::-webkit-scrollbar-thumb {
+  border-radius: 3px;
+  background-color: #FFC194;
+
 }
