@@ -2,3 +2,23 @@ content = {
   "calculator": "<div class='row'><div id='calcBtnPad' class='holder'><div class='row'><button id='d100' class='btn col-m-3 col-t-3 col-3'>d100</button><button id='d20' class='btn col-m-3 col-t-3 col-3'>d20</button><button id='d12' class='btn col-m-3 col-t-3 col-3'>d12</button><button id='d10' class='btn col-m-3 col-t-3 col-3'>d10</button></div><div class='row'><button id='d8' class='btn col-m-3 col-t-3 col-3'>d8</button><button id='d6' class='btn col-m-3 col-t-3 col-3'>d6</button><button id='d4' class='btn col-m-3 col-t-3 col-3'>d4</button><button id='d2' class='btn col-m-3 col-t-3 col-3'>d2</button></div></div></div><div class='row'><div id='calcNumPad' class='holder'><div class='row'><button id='num7' class='btn num col-m-4 col-t-4 col-4'>7</button><button id='num8' class='btn num col-m-4 col-t-4 col-4'>8</button><button id='num9' class='btn num col-m-4 col-t-4 col-4'>9</button></div><div class='row'><button id='num4' class='btn num col-m-4 col-t-4 col-4'>4</button><button id='num5' class='btn num col-m-4 col-t-4 col-4'>5</button><button id='num6' class='btn num col-m-4 col-t-4 col-4'>6</button></div><div class='row'><button id='num1' class='btn num col-m-4 col-t-4 col-4'>1</button><button id='num2' class='btn num col-m-4 col-t-4 col-4'>2</button><button id='num3' class='btn num col-m-4 col-t-4 col-4'>3</button></div><div class='row'><button id='num-' class='btn oper col-m-4 col-t-4 col-4'>-</button><button id='num0' class='btn num col-m-4 col-t-4 col-4'>0</button><button id='num+' class='btn oper col-m-4 col-t-4 col-4'>+</button></div></div></div>",
   "savedMenu": ""
 }
+preloaded = {
+  "longsword": {
+    "id": "longsword",
+    "name": "longsword",
+    "roll": "1d8",
+    "mod": ""
+  },
+  "longsword_versa": {
+    "id": "longsword_versa",
+    "name": "longsword (versatile)",
+    "roll": "1d10",
+    "mod": ""
+  },
+  "greataxe": {
+    "id": "greataxe",
+    "name": "greataxe",
+    "roll": "1d12",
+    "mod": ""
+  }
+}
