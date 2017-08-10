@@ -3,7 +3,7 @@ document.addEventListener('DOMContentLoaded', function() {
   printToInnerHTML('calcHolder', content.calculator, true);
   addCalculatorListeners();
   runTests(true);
-  simulateFirstVisit(false);
+  simulateFirstVisit(true);
   checkMemory();
   console.log(new SaveRoll('maul', 'maul', '2d6', ''));
 });
@@ -96,8 +96,9 @@ function arrayToEquation(inputArray) {
 function toggleSaved() {
   if (g.contentStatus == content.calculator) {
     printToInnerHTML('calcHolder', content.savedMenu, true);
-    content.savedMenu = document.getElementById('calcHolder').innerHTML;
     printToInnerHTML('savedBtn', 'calc', true);
+    addSaveItemListeners();
+    content.savedMenu = document.getElementById('calcHolder').innerHTML;
     g.contentStatus = content.saved;
   } else if (g.contentStatus == content.saved) {
     printToInnerHTML('calcHolder', content.calculator, true);
@@ -211,43 +212,53 @@ function checkMemory() {
     localStorage.visited = true;
     demoSave();
     loadMemory();
-    console.log(localStorage.saved + '\n' + localStorage.visited);
     return;
   }
 }
 function loadMemory() {
-  var sav = JSON.parse(localStorage.saved);
-  var savedList = (Object.getOwnPropertyNames(sav));
   var savedMenu = "<div id='savedMenu'>";
-    for (var i = 0; i < savedList.length; i++) {
-      savedMenu += "<div class='row'>" +
+  var saved = JSON.parse(localStorage.saved);
+  var saved_props = (Object.getOwnPropertyNames(saved));
+    for (var i = 0; i < saved_props.length; i++) {
+      savedMenu += "<div class='row' id='row_" + saved[saved_props[i]].id + "'>" +
                       "<button class='btn saveItem col-m-8 col-t-8 col-8' id='" +
-                        sav[savedList[i]].id + "'>" +
-                          sav[savedList[i]].name + ": " + sav[savedList[i]].roll +
+                        saved[saved_props[i]].id + "'>" +
+                          saved[saved_props[i]].name + ": " + saved[saved_props[i]].roll +
                       "</button>" +
                       "<button class='btn modify saveItem col-m-2 col-t-2 col-2' id='" +
-                        "mod_" + sav[savedList[i]].id + "'>" +
+                        "mod_" + saved[saved_props[i]].id + "'>" +
                         "mod" +
                       "</button>" +
                       "<button class='btn delete saveItem col-m-2 col-t-2 col-2' id='" +
-                        "delete_" + sav[savedList[i]].id + "'>" +
+                        "delete_" + saved[saved_props[i]].id + "'>" +
                         "X" +
                       "</button>" +
                     "</div>";
-
     }
     savedMenu += "</div>";
     content.savedMenu = savedMenu;
-    console.log(savedMenu + savedList);
+}
+
+function addSaveItemListeners() {
+  var saved = JSON.parse(localStorage.saved);
+  var saved_props = (Object.getOwnPropertyNames(saved));
+    for (var i = 0; i < saved_props.length; i++) {
+      new SaveItemListeners(saved[saved_props[i]].id, saved[saved_props[i]].roll);
+    }
+}
+function SaveItemListeners(id, roll) {
+  document.getElementById(id).addEventListener('click', function() {
+    keypadPress(roll);
+  });
+  document.getElementById('mod_' + id).addEventListener('click', function() {return});
+  document.getElementById('delete_' + id).addEventListener('click', function() {
+    deleteRoll(id);
+  });
 }
 
 function demoSave() {
   var saved = preloaded;
   localStorage.saved = JSON.stringify(saved);
-}
-
-function userSave() {
-
 }
 
 function SaveRoll(id, name, roll, mod) {
@@ -263,10 +274,11 @@ function SaveRoll(id, name, roll, mod) {
   return copyOfSaved[id];
 }
 
-function deleteRoll(deleteId) {
+function deleteRoll(id) {
   var copyOfSaved = JSON.parse(localStorage.saved);
-  delete copyOfSaved[deleteId];
+  delete copyOfSaved[id];
   localStorage.saved = JSON.stringify(copyOfSaved);
+  document.getElementById('row_' + id).style.display = "none";
   loadMemory();
   return copyOfSaved;
 }
