@@ -5,7 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
   runTests(true);
   simulateFirstVisit(true);
   checkMemory();
-  console.log(new SaveRoll('maul', 'maul', '2d6', ''));
+  // new SaveRoll('maul', 'maul', '2d6', '');
 });
 
 // global variables
