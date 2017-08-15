@@ -6,7 +6,7 @@ document.addEventListener('DOMContentLoaded', function() {
   simulateFirstVisit(true);
   checkMemory();
 
-  // new SaveRoll('maul', 'maul', '2d6', '');
+  // new SaveItem('maul', 'maul', '2d6', '');
 });
 
 // global variables
@@ -21,13 +21,13 @@ var g = {
 function NumberKeyListener(id) {
   document.getElementById(id).addEventListener('click', function() {
     var output = id.replace('num', '');
-    keypadPresse(output);
+    keypadPress(output);
   });
 }
 function DiceKeyListener(id) {
   document.getElementById(id).addEventListener('click', function() {
     var output = id;
-    keypadPresse(output);
+    keypadPress(output);
   });
 }
 
@@ -52,11 +52,11 @@ function addDiceKeyListeners() {
 function addOperatorKeyListeners() {
   document.getElementById('num+').addEventListener('click', function() {
     var output = '+';
-    keypadPresse(output);
+    keypadPress(output);
   });
   document.getElementById('num-').addEventListener('click', function() {
     var output = '-';
-    keypadPresse(output);
+    keypadPress(output);
   });
 }
 function addRollBarListeners() {
@@ -95,7 +95,7 @@ function toggleSaved() {
   if (g.contentStatus == content.calculator) {
     printToInnerHTML('calcHolder', content.savedMenu, true);
     printToInnerHTML('savedBtn', 'calc', true);
-    addSaveRollListeners();
+    addSaveItemListeners();
     content.savedMenu = document.getElementById('calcHolder').innerHTML;
     g.contentStatus = content.saved;
   } else if (g.contentStatus == content.saved) {
@@ -136,7 +136,7 @@ function clearInputArray() {
 
 // main
 function roll(sumArray) {
-  var equation = sumArrayToDisplay(sumArray);
+  var equation = sumArrayExpand(sumArray);
   equation = subRandomIntForDice(equation);
   var evaluation = eval(equation);
   var output = evaluation + ' [' + equation + '] ' + '<br><br>' + document.getElementById('dispOut').innerHTML;
@@ -152,9 +152,7 @@ function Addend() {
 }
 function addendToDisplay(addend) {
   var display;
-  if (isNaN(addend.count)) {
-    return display = '';
-  } else if (g.diceNameArray.indexOf(addend.dn) == -1) {
+  if (addend.dn == '') {
     display = addend.count;
   } else {
     display = addend.count + addend.dn;
@@ -176,6 +174,29 @@ function sumArrayToDisplay(sumArray) {
   return display;
 }
 
+function addendExpand(addend) {
+  var expanded = '';
+  if (addend.dn != '') {
+    for (var i = 0; i < addend.count; i++) {
+      if (addend.negative == false) { expanded += '+' + addend.dn; }
+      else { expanded += '-' + addend.dn; }
+    }
+  } else {
+    expanded = addend.count;
+    if (addend.negative == false) { expanded = '+' + expanded; }
+    else { expanded += '-' + expanded; }
+  }
+  return expanded;
+}
+function sumArrayExpand(sumArray) {
+  var expanded = '';
+  for (var i = 0; i < sumArray.length; i++) {
+    expanded += addendExpand(sumArray[i]);
+  }
+  if (expanded.indexOf('+') == 0) { expanded = expanded.slice(1); }
+  return expanded;
+}
+
 function addendChange(input, addendTarget, newTF) {
   if (newTF) { addendTarget = new Addend; }
   var output = addendTarget;
@@ -192,7 +213,7 @@ function addendChange(input, addendTarget, newTF) {
   return output;
 }
 
-function keypadPresse(input, testTF) {
+function keypadPress(input, testTF) {
   // if sumArray is empty
   if (g.sumArray.length == 0) {
     g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], true);
@@ -259,7 +280,7 @@ function loadMemory() {
       savedMenu += "<div class='row' id='row_" + saved[saved_props[i]].id + "'>" +
                       "<button class='btn saveItem col-m-8 col-t-8 col-8' id='" +
                         saved[saved_props[i]].id + "'>" +
-                          saved[saved_props[i]].name + ": " + saved[saved_props[i]].roll +
+                          saved[saved_props[i]].name + ": " + sumArrayToDisplay(saved[saved_props[i]].rollArray) +
                       "</button>" +
                       "<button class='btn modify saveItem col-m-2 col-t-2 col-2' id='" +
                         "mod_" + saved[saved_props[i]].id + "'>" +
@@ -275,20 +296,27 @@ function loadMemory() {
     content.savedMenu = savedMenu;
 }
 
-function addSaveRollListeners() {
+function addSaveItemListeners() {
   var saved = JSON.parse(localStorage.saved);
   var saved_props = (Object.getOwnPropertyNames(saved));
     for (var i = 0; i < saved_props.length; i++) {
-      new SaveRollListeners(saved[saved_props[i]].id, saved[saved_props[i]].roll);
+      new SaveItemListeners(saved[saved_props[i]].id, saved[saved_props[i]].rollArray);
     }
 }
-function SaveRollListeners(id, roll) {
+function SaveItemListeners(id, rollArray) {
   document.getElementById(id).addEventListener('click', function() {
-    keypadPress(roll);
+    var saved = JSON.parse(localStorage.saved);
+    g.sumArray = saved[id].rollArray;
+    var output = sumArrayToDisplay(rollArray);
+    printToInnerHTML('dispIn', output, true);
   });
-  document.getElementById('mod_' + id).addEventListener('click', function() {return});
+  document.getElementById('mod_' + id).addEventListener('click', function() {
+    comingSoon();
+    return;
+  });
   document.getElementById('delete_' + id).addEventListener('click', function() {
     deleteRoll(id);
+    return;
   });
 }
 
@@ -297,12 +325,12 @@ function demoSave() {
   localStorage.saved = JSON.stringify(saved);
 }
 
-function SaveRoll(id, name, roll, mod) {
+function SaveItem(id, name, rollArray, mod) {
   var copyOfSaved = JSON.parse(localStorage.saved);
   copyOfSaved[id] = {
     "id": id,
     "name": name,
-    "roll": roll,
+    "rollArray": rollArray,
     "mod": mod
   }
   localStorage.saved = JSON.stringify(copyOfSaved);
@@ -312,11 +340,16 @@ function SaveRoll(id, name, roll, mod) {
 
 function deleteRoll(id) {
   var copyOfSaved = JSON.parse(localStorage.saved);
-  delete copyOfSaved[id];
-  localStorage.saved = JSON.stringify(copyOfSaved);
-  document.getElementById('row_' + id).style.display = "none";
-  loadMemory();
-  return copyOfSaved;
+  if (confirm('Are you sure you want to delete "' + copyOfSaved[id].name + '"?')) {
+    delete copyOfSaved[id];
+    localStorage.saved = JSON.stringify(copyOfSaved);
+    document.getElementById('row_' + id).style.display = "none";
+    loadMemory();
+    return copyOfSaved;
+  } else {
+    return;
+  }
+
 }
 
 function simulateFirstVisit(runTrue) {
@@ -325,4 +358,8 @@ function simulateFirstVisit(runTrue) {
     localStorage.removeItem('saved');
     localStorage.removeItem('savedMenu');
   } else {return;}
+}
+
+function comingSoon() {
+  alert('this feature is coming soon!');
 }

@@ -36,17 +36,17 @@ function runTests(runTF) {
       new UnitTest('positive', addendChange('+', testAddend).count + testAddend.dn + testAddend.negative, '4d4false'),
       new UnitTest('positive to display', addendToDisplay(testAddend), '4d4'),
 
-      new UnitTest('keypadPresse first num', keypadPresse(4, true), '4'),
-      new UnitTest('keypadPresse dicenext', keypadPresse('d8', true), '4d8'),
-      new UnitTest('keypadPresse dice twice', keypadPresse('d8', true), '5d8'),
-      new UnitTest('keypadPresse dice different', keypadPresse('d10', true), '1d10'),
-      new UnitTest('keypadPresse minus', keypadPresse('-', true), '-0'),
-      new UnitTest('keypadPresse number after sign', keypadPresse(10, true), '-10'),
-      new UnitTest('keypadPresse minus before plus', keypadPresse('-', true), '-0'),
-      new UnitTest('keypadPresse plus after minus', keypadPresse('+', true), '0'),
-      new UnitTest('keypadPresse dice before number', keypadPresse('d20', true), '1d20'),
-      new UnitTest('keypadPresse number after dice', keypadPresse(3, true), '3'),
-      new UnitTest('keypadPresse number after number', keypadPresse(3, true), '33'),
+      new UnitTest('keypadPress first num', keypadPress(4, true), '4'),
+      new UnitTest('keypadPress dicenext', keypadPress('d8', true), '4d8'),
+      new UnitTest('keypadPress dice twice', keypadPress('d8', true), '5d8'),
+      new UnitTest('keypadPress dice different', keypadPress('d10', true), '1d10'),
+      new UnitTest('keypadPress minus', keypadPress('-', true), '-0'),
+      new UnitTest('keypadPress number after sign', keypadPress(10, true), '-10'),
+      new UnitTest('keypadPress minus before plus', keypadPress('-', true), '-0'),
+      new UnitTest('keypadPress plus after minus', keypadPress('+', true), '0'),
+      new UnitTest('keypadPress dice before number', keypadPress('d20', true), '1d20'),
+      new UnitTest('keypadPress number after dice', keypadPress(3, true), '3'),
+      new UnitTest('keypadPress number after number', keypadPress(3, true), '33'),
 
     ];
     clearScreen();
