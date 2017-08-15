@@ -5,8 +5,7 @@ document.addEventListener('DOMContentLoaded', function() {
   runTests(true);
   simulateFirstVisit(true);
   checkMemory();
-
-  // new SaveItem('maul', 'maul', '2d6', '');
+  // new SaveItem('maul', 'maul', '2d6');
 });
 
 // global variables
@@ -28,6 +27,22 @@ function DiceKeyListener(id) {
   document.getElementById(id).addEventListener('click', function() {
     var output = id;
     keypadPress(output);
+  });
+}
+function SaveItemListeners(id, rollArray) {
+  document.getElementById(id).addEventListener('click', function() {
+    var saved = JSON.parse(localStorage.saved);
+    g.sumArray = saved[id].rollArray;
+    var output = sumArrayToDisplay(rollArray);
+    printToInnerHTML('dispIn', output, true);
+  });
+  document.getElementById('mod_' + id).addEventListener('click', function() {
+    comingSoon();
+    return;
+  });
+  document.getElementById('delete_' + id).addEventListener('click', function() {
+    deleteSaveItem(id);
+    return;
   });
 }
 
@@ -70,10 +85,154 @@ function addRollBarListeners() {
     toggleSaved();
   })
 }
+function addSaveItemListeners() {
+  var saved = JSON.parse(localStorage.saved);
+  var saved_props = (Object.getOwnPropertyNames(saved));
+    for (var i = 0; i < saved_props.length; i++) {
+      new SaveItemListeners(saved[saved_props[i]].id, saved[saved_props[i]].rollArray);
+    }
+}
 
 // -- testable functions --
 
-// functions for manipulating data i/o
+// save
+function SaveItem(id, name, rollArray) {
+ var copyOfSaved = JSON.parse(localStorage.saved);
+ copyOfSaved[id] = {
+   "id": id,
+   "name": name,
+   "rollArray": rollArray
+ }
+ localStorage.saved = JSON.stringify(copyOfSaved);
+ loadMemory();
+ return copyOfSaved[id];
+}
+
+function checkMemory() {
+ if (localStorage.visited) {
+   loadMemory();
+   return;
+ } else {
+   localStorage.visited = true;
+   savePreloaded();
+   loadMemory();
+   return;
+ }
+}
+function loadMemory() {
+ var savedMenu = "<div id='savedMenu'>";
+ var saved = JSON.parse(localStorage.saved);
+ var saved_props = (Object.getOwnPropertyNames(saved));
+   for (var i = 0; i < saved_props.length; i++) {
+     savedMenu += "<div class='row' id='row_" + saved[saved_props[i]].id + "'>" +
+                     "<button class='btn saveItem col-m-8 col-t-8 col-8' id='" +
+                       saved[saved_props[i]].id + "'>" +
+                         saved[saved_props[i]].name + ": " + sumArrayToDisplay(saved[saved_props[i]].rollArray) +
+                     "</button>" +
+                     "<button class='btn modify saveItem col-m-2 col-t-2 col-2' id='" +
+                       "mod_" + saved[saved_props[i]].id + "'>" +
+                       "mod" +
+                     "</button>" +
+                     "<button class='btn delete saveItem col-m-2 col-t-2 col-2' id='" +
+                       "delete_" + saved[saved_props[i]].id + "'>" +
+                       "X" +
+                     "</button>" +
+                   "</div>";
+   }
+   savedMenu += "<button class='btn new saveItem col-m-12 col-t-12 col-12' id='newSave'>+</button></div>";
+   content.savedMenu = savedMenu;
+}
+function savePreloaded() {
+ var saved = preloaded;
+ localStorage.saved = JSON.stringify(saved);
+}
+function deleteSaveItem(id) {
+ var copyOfSaved = JSON.parse(localStorage.saved);
+ if (confirm('Are you sure you want to delete "' + copyOfSaved[id].name + '"?')) {
+   delete copyOfSaved[id];
+   localStorage.saved = JSON.stringify(copyOfSaved);
+   document.getElementById('row_' + id).style.display = "none";
+   loadMemory();
+   return copyOfSaved;
+ } else {
+   return;
+ }
+}
+function simulateFirstVisit(runTF) {
+ if (runTF) {
+   localStorage.removeItem('visited');
+   localStorage.removeItem('saved');
+   localStorage.removeItem('savedMenu');
+ } else {return;}
+}
+
+// data manipulation
+function Addend() {
+  this.count = 0;
+  this.dn = '';
+  this.negative = false;
+}
+
+function addendChange(input, targetAddend, newTF) {
+  if (newTF) { targetAddend = new Addend; }
+  var output = targetAddend;
+  if (g.diceNameArray.indexOf(input) > -1) {
+    output.dn = input;
+  } else if (!isNaN(input)) {
+    output.count = input;
+  } else if (input == '-') {
+    output.negative = true;
+  } else if (input == '+') {
+    output.negative = false;
+  }
+  // console.log(output);
+  return output;
+}
+function addendToDisplay(addend) {
+  var display;
+  if (addend.dn == '') {
+    display = addend.count;
+  } else {
+    display = addend.count + addend.dn;
+  }
+  if (addend.negative == true) {
+      display = "-" + display;
+  }
+  // console.log(display);
+  return display;
+}
+function sumArrayToDisplay(sumArray) {
+  var display = addendToDisplay(sumArray[0]);
+  for (var i = 1; i < sumArray.length; i++) {
+    if (sumArray[i].negative == false) {
+      display += '+'
+    }
+    display += addendToDisplay(sumArray[i]);
+  }
+  return display;
+}
+function addendExpand(addend) {
+  var expanded = '';
+  if (addend.dn != '') {
+    for (var i = 0; i < addend.count; i++) {
+      if (addend.negative == false) { expanded += '+' + addend.dn; }
+      else { expanded += '-' + addend.dn; }
+    }
+  } else {
+    expanded = addend.count;
+    if (addend.negative == false) { expanded = '+' + expanded; }
+    else { expanded = '-' + expanded; }
+  }
+  return expanded;
+}
+function sumArrayExpand(sumArray) {
+  var expanded = '';
+  for (var i = 0; i < sumArray.length; i++) {
+    expanded += addendExpand(sumArray[i]);
+  }
+  if (expanded.indexOf('+') == 0) { expanded = expanded.slice(1); }
+  return expanded;
+}
 function randomIntByDice(dn) {
   var numberOfSides = dn.replace('d', '');
   var randomInt = Math.floor((Math.random() * numberOfSides) + 1);
@@ -88,7 +247,6 @@ function subRandomIntForDice(str) {
   }
   return str;
 }
-
 
 // functions for displaying data
 function toggleSaved() {
@@ -117,17 +275,17 @@ function printToInnerHTML(id, str, replaceTF) {
 function clearScreen(override) {
   if (document.getElementById('dispIn').innerHTML == '' || override == 'dispOut') {
     printToInnerHTML('dispOut', '', true);
-    clearInputArray();
+    clearSumArray();
     var testOutput = document.getElementById('dispOut').innerHTML;
     return testOutput;
   } else if (document.getElementById('dispIn').innerHTML != '' || override == 'dispIn') {
     printToInnerHTML('dispIn', '', true);
-    clearInputArray();
+    clearSumArray();
     var testOutput = document.getElementById('dispIn').innerHTML;
     return testOutput;
   }
 }
-function clearInputArray() {
+function clearSumArray() {
   g.sumIndex = 0;
   g.sumArray.length = 0;
   var testOutput = [g.sumArray.length, g.sumIndex];
@@ -135,84 +293,6 @@ function clearInputArray() {
 }
 
 // main
-function roll(sumArray) {
-  var equation = sumArrayExpand(sumArray);
-  equation = subRandomIntForDice(equation);
-  var evaluation = eval(equation);
-  var output = evaluation + ' [' + equation + '] ' + '<br><br>' + document.getElementById('dispOut').innerHTML;
-  printToInnerHTML('dispOut', output, true);
-  return output;
-}
-
-// keyPress Refactor
-function Addend() {
-  this.count = 0;
-  this.dn = '';
-  this.negative = false;
-}
-function addendToDisplay(addend) {
-  var display;
-  if (addend.dn == '') {
-    display = addend.count;
-  } else {
-    display = addend.count + addend.dn;
-  }
-  if (addend.negative == true) {
-      display = "-" + display;
-  }
-  // console.log(display);
-  return display;
-}
-function sumArrayToDisplay(sumArray) {
-  var display = addendToDisplay(sumArray[0]);
-  for (var i = 1; i < sumArray.length; i++) {
-    if (sumArray[i].negative == false) {
-      display += '+'
-    }
-    display += addendToDisplay(sumArray[i]);
-  }
-  return display;
-}
-
-function addendExpand(addend) {
-  var expanded = '';
-  if (addend.dn != '') {
-    for (var i = 0; i < addend.count; i++) {
-      if (addend.negative == false) { expanded += '+' + addend.dn; }
-      else { expanded += '-' + addend.dn; }
-    }
-  } else {
-    expanded = addend.count;
-    if (addend.negative == false) { expanded = '+' + expanded; }
-    else { expanded = '-' + expanded; }
-  }
-  return expanded;
-}
-function sumArrayExpand(sumArray) {
-  var expanded = '';
-  for (var i = 0; i < sumArray.length; i++) {
-    expanded += addendExpand(sumArray[i]);
-  }
-  if (expanded.indexOf('+') == 0) { expanded = expanded.slice(1); }
-  return expanded;
-}
-
-function addendChange(input, addendTarget, newTF) {
-  if (newTF) { addendTarget = new Addend; }
-  var output = addendTarget;
-  if (g.diceNameArray.indexOf(input) > -1) {
-    output.dn = input;
-  } else if (!isNaN(input)) {
-    output.count = input;
-  } else if (input == '-') {
-    output.negative = true;
-  } else if (input == '+') {
-    output.negative = false;
-  }
-  // console.log(output);
-  return output;
-}
-
 function keypadPress(input, testTF) {
   // if sumArray is empty
   if (g.sumArray.length == 0) {
@@ -259,105 +339,13 @@ function keypadPress(input, testTF) {
   else { var testOut = addendToDisplay(g.sumArray[g.sumIndex]); return testOut; }
 
 }
-
- // save
-function checkMemory() {
-  if (localStorage.visited) {
-    loadMemory();
-    return;
-  } else {
-    localStorage.visited = true;
-    demoSave();
-    loadMemory();
-    return;
-  }
-}
-function loadMemory() {
-  var savedMenu = "<div id='savedMenu'>";
-  var saved = JSON.parse(localStorage.saved);
-  var saved_props = (Object.getOwnPropertyNames(saved));
-    for (var i = 0; i < saved_props.length; i++) {
-      savedMenu += "<div class='row' id='row_" + saved[saved_props[i]].id + "'>" +
-                      "<button class='btn saveItem col-m-8 col-t-8 col-8' id='" +
-                        saved[saved_props[i]].id + "'>" +
-                          saved[saved_props[i]].name + ": " + sumArrayToDisplay(saved[saved_props[i]].rollArray) +
-                      "</button>" +
-                      "<button class='btn modify saveItem col-m-2 col-t-2 col-2' id='" +
-                        "mod_" + saved[saved_props[i]].id + "'>" +
-                        "mod" +
-                      "</button>" +
-                      "<button class='btn delete saveItem col-m-2 col-t-2 col-2' id='" +
-                        "delete_" + saved[saved_props[i]].id + "'>" +
-                        "X" +
-                      "</button>" +
-                    "</div>";
-    }
-    savedMenu += "</div>";
-    content.savedMenu = savedMenu;
-}
-
-function addSaveItemListeners() {
-  var saved = JSON.parse(localStorage.saved);
-  var saved_props = (Object.getOwnPropertyNames(saved));
-    for (var i = 0; i < saved_props.length; i++) {
-      new SaveItemListeners(saved[saved_props[i]].id, saved[saved_props[i]].rollArray);
-    }
-}
-function SaveItemListeners(id, rollArray) {
-  document.getElementById(id).addEventListener('click', function() {
-    var saved = JSON.parse(localStorage.saved);
-    g.sumArray = saved[id].rollArray;
-    var output = sumArrayToDisplay(rollArray);
-    printToInnerHTML('dispIn', output, true);
-  });
-  document.getElementById('mod_' + id).addEventListener('click', function() {
-    comingSoon();
-    return;
-  });
-  document.getElementById('delete_' + id).addEventListener('click', function() {
-    deleteRoll(id);
-    return;
-  });
-}
-
-function demoSave() {
-  var saved = preloaded;
-  localStorage.saved = JSON.stringify(saved);
-}
-
-function SaveItem(id, name, rollArray, mod) {
-  var copyOfSaved = JSON.parse(localStorage.saved);
-  copyOfSaved[id] = {
-    "id": id,
-    "name": name,
-    "rollArray": rollArray,
-    "mod": mod
-  }
-  localStorage.saved = JSON.stringify(copyOfSaved);
-  loadMemory();
-  return copyOfSaved[id];
-}
-
-function deleteRoll(id) {
-  var copyOfSaved = JSON.parse(localStorage.saved);
-  if (confirm('Are you sure you want to delete "' + copyOfSaved[id].name + '"?')) {
-    delete copyOfSaved[id];
-    localStorage.saved = JSON.stringify(copyOfSaved);
-    document.getElementById('row_' + id).style.display = "none";
-    loadMemory();
-    return copyOfSaved;
-  } else {
-    return;
-  }
-
-}
-
-function simulateFirstVisit(runTrue) {
-  if (runTrue) {
-    localStorage.removeItem('visited');
-    localStorage.removeItem('saved');
-    localStorage.removeItem('savedMenu');
-  } else {return;}
+function roll(sumArray) {
+  var equation = sumArrayExpand(sumArray);
+  equation = subRandomIntForDice(equation);
+  var evaluation = eval(equation);
+  var output = evaluation + ' [' + equation + '] ' + '<br><br>' + document.getElementById('dispOut').innerHTML;
+  printToInnerHTML('dispOut', output, true);
+  return output;
 }
 
 function comingSoon() {
