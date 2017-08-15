@@ -88,10 +88,7 @@ function subRandomIntForDice(str) {
   }
   return str;
 }
-function arrayToEquation(sumArray) {
-  var equation = sumArray.join('');
-  return equation;
-}
+
 
 // functions for displaying data
 function toggleSaved() {
@@ -139,7 +136,7 @@ function clearInputArray() {
 
 // main
 function roll(sumArray) {
-  var equation = arrayToEquation(sumArray);
+  var equation = sumArrayToDisplay(sumArray);
   equation = subRandomIntForDice(equation);
   var evaluation = eval(equation);
   var output = evaluation + ' [' + equation + '] ' + '<br><br>' + document.getElementById('dispOut').innerHTML;
@@ -226,7 +223,7 @@ function keypadPresse(input, testTF) {
       g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], true);
       // ...and current addend has no dice
     } else if ('' == g.sumArray[g.sumIndex].dn) {
-      g.sumArray[g.sumIndex].count = (10 * g.sumArray[g.sumIndex].count) + input;
+      g.sumArray[g.sumIndex].count = (10 * parseInt(g.sumArray[g.sumIndex].count)) + parseInt(input);
     }
     // else if input is + or - sign...
   } else if (input == '+' || input == '-' ) {
