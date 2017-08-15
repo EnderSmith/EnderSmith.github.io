@@ -243,31 +243,41 @@ function addendChange(input, addendTarget, newTF) {
 }
 
 function keypadPresse(input) {
-  // if first keypress since clear
+  // if sumArray is empty
   if (g.sumArray.length == 0) {
     g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], true);
-  // else if input is a different dice than current addend
-  } else if (g.diceNameArray.indexOf(input) > -1 && g.sumArray[g.sumIndex].dn != input && g.sumArray[g.sumIndex].dn != '') {
-    g.sumIndex++
-    g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], true);
-    g.sumArray[g.sumIndex].count++;
-  // else if input is a number and the current addend has a dice value
-  } else if (!isNaN(input) && g.sumArray[g.sumIndex].dn != '') {
-    g.sumIndex++
-    g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], true);
-  // else if input is a plus or minus sign, and the current addend has a dice or count value
-  } else if ((input == '+' || input == '-') && (g.diceNameArray.indexOf(g.sumArray[g.sumIndex]) > -1 || !isNaN(g.sumArray[g.sumIndex]))) {
-    g.sumIndex++;
-    g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], true);
-  // else if input is dice, and current addend has a count value, but no dice value
-  } else if (g.diceNameArray.indexOf(input) > -1 && g.diceNameArray.indexOf(g.sumArray[g.sumIndex].dn)) {
-    g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], false);
-  // else if input is same dice as current addend
-  } else if (g.diceNameArray.indexOf(input) > -1 && g.sumArray[g.sumIndex].dn == input) {
-    g.sumArray[g.sumIndex].count++;
-  // else if input is a number and the current addend has no dice value
-  } else if ((!isNaN(input)) && g.sumArray[g.sumIndex].dn == '') {
-    g.sumArray[g.sumIndex].count = (10 * g.sumArray[g.sumIndex].count) + input;
+    // else if input is a dice...
+  } else if (g.diceNameArray.indexOf(input) > -1) {
+    // ...and input is not the same dice as current addend dice
+    if (input != g.sumArray[g.sumIndex].dn && '' != g.sumArray[g.sumIndex].dn) {
+      g.sumIndex++
+      g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], true);
+      g.sumArray[g.sumIndex].count++;
+      // ...and input is the same as current addend dice
+    } else if (input == g.sumArray[g.sumIndex].dn) {
+      g.sumArray[g.sumIndex].count++;
+      // ...and current addend has a count, but no dice
+    } else if (0 != g.sumArray[g.sumIndex].count) {
+      g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], false);
+      // ...and current addend has no count, and no dice
+    } else if (0 == g.sumArray[g.sumIndex].count) {
+      g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], false);
+      g.sumArray[g.sumIndex].count++;
+    }
+    // else if input is a number...
+  } else if (!isNaN(input)) {
+    // ...and current addend has dice
+    if ('' != g.sumArray[g.sumIndex].dn) {
+      g.sumIndex++;
+      g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], true);
+      // ...and current addend has no dice
+    } else if ('' == g.sumArray[g.sumIndex].dn) {
+      g.sumArray[g.sumIndex].count = (10 * g.sumArray[g.sumIndex].count) + input;
+    }
+    // else if input is + or - sign...
+  } else if (input == '+' || input == '-' ) {
+      g.sumIndex++;
+      g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], true);
   }
   console.log(g.sumArray);
   var testOut = addendToDisplay(g.sumArray[g.sumIndex]);
