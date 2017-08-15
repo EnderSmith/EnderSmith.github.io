@@ -5,14 +5,15 @@ document.addEventListener('DOMContentLoaded', function() {
   runTests(true);
   simulateFirstVisit(true);
   checkMemory();
+
   // new SaveRoll('maul', 'maul', '2d6', '');
 });
 
 // global variables
 var g = {
   diceNameArray: ['d100', 'd20', 'd12', 'd10', 'd8', 'd6', 'd4', 'd2', 'd1'],
-  inputArray: [],
-  currentIndex: 0,
+  sumArray: [],
+  sumIndex: 0,
   contentStatus: content.calculator
 }
 
@@ -63,7 +64,7 @@ function addRollBarListeners() {
     clearScreen();
   });
   document.getElementById('rollBtn').addEventListener('click', function() {
-    roll(g.inputArray);
+    roll(g.sumArray);
   });
   document.getElementById('savedBtn').addEventListener('click', function() {
     toggleSaved();
@@ -87,8 +88,8 @@ function subRandomIntForDice(str) {
   }
   return str;
 }
-function arrayToEquation(inputArray) {
-  var equation = inputArray.join('');
+function arrayToEquation(sumArray) {
+  var equation = sumArray.join('');
   return equation;
 }
 
@@ -97,7 +98,7 @@ function toggleSaved() {
   if (g.contentStatus == content.calculator) {
     printToInnerHTML('calcHolder', content.savedMenu, true);
     printToInnerHTML('savedBtn', 'calc', true);
-    addSaveItemListeners();
+    addSaveRollListeners();
     content.savedMenu = document.getElementById('calcHolder').innerHTML;
     g.contentStatus = content.saved;
   } else if (g.contentStatus == content.saved) {
@@ -130,45 +131,45 @@ function clearScreen(override) {
   }
 }
 function clearInputArray() {
-  g.currentIndex = 0;
-  g.inputArray.length = 0;
-  var testOutput = [g.inputArray.length, g.currentIndex];
+  g.sumIndex = 0;
+  g.sumArray.length = 0;
+  var testOutput = [g.sumArray.length, g.sumIndex];
   return testOutput;
 }
 
 
 // functions for taking input
 function key_first(input) {
-  g.inputArray[g.currentIndex] = input;
-  g.currentIndex ++;
-  var testOutput = [g.inputArray, g.currentIndex];
+  g.sumArray[g.sumIndex] = input;
+  g.sumIndex ++;
+  var testOutput = [g.sumArray, g.sumIndex];
   return testOutput;
 }
 function key_numberAfterNumber(input) {
-  g.currentIndex --;
-  g.inputArray[g.currentIndex] = (g.inputArray[g.currentIndex] * 10) + parseInt(input);
-  g.currentIndex ++;
-  var testOutput = [g.inputArray, g.currentIndex];
+  g.sumIndex --;
+  g.sumArray[g.sumIndex] = (g.sumArray[g.sumIndex] * 10) + parseInt(input);
+  g.sumIndex ++;
+  var testOutput = [g.sumArray, g.sumIndex];
   return testOutput;
 }
 function key_diceAfterNumber(input) {
-  g.currentIndex--;
-  var multiplier = g.inputArray[g.currentIndex];
+  g.sumIndex--;
+  var multiplier = g.sumArray[g.sumIndex];
   for (var i = 0; i < multiplier; i++) {
-    g.inputArray[g.currentIndex] = input;
-    g.currentIndex++;
-    g.inputArray[g.currentIndex] = '+';
-    g.currentIndex++;
+    g.sumArray[g.sumIndex] = input;
+    g.sumIndex++;
+    g.sumArray[g.sumIndex] = '+';
+    g.sumIndex++;
   }
-  g.currentIndex--;
-  g.inputArray.length--; // this might go wrong
-  var testOutput = [multiplier, g.currentIndex];
+  g.sumIndex--;
+  g.sumArray.length--; // this might go wrong
+  var testOutput = [multiplier, g.sumIndex];
   return testOutput;
 }
 function key_operator(input) {
-  g.inputArray[g.currentIndex] = input;
-  g.currentIndex++;
-  var testOutput = [g.inputArray[g.currentIndex-1], g.currentIndex];
+  g.sumArray[g.sumIndex] = input;
+  g.sumIndex++;
+  var testOutput = [g.sumArray[g.sumIndex-1], g.sumIndex];
   return testOutput;
 }
 
@@ -177,11 +178,11 @@ function keypadPress(input) {
   var output = input;
   if (document.getElementById('dispIn').innerHTML == '') {
     key_first(input);
-  } else if (isNaN(g.inputArray[g.currentIndex - 1]) == false && isNaN(input) == false) {
+  } else if (isNaN(g.sumArray[g.sumIndex - 1]) == false && isNaN(input) == false) {
     key_numberAfterNumber(input);
-  } else if (isNaN(g.inputArray[g.currentIndex - 1]) == false && g.diceNameArray.indexOf(input) > -1) {
+  } else if (isNaN(g.sumArray[g.sumIndex - 1]) == false && g.diceNameArray.indexOf(input) > -1) {
     key_diceAfterNumber(input);
-  } else if (g.diceNameArray.indexOf(g.inputArray[g.currentIndex - 1]) > -1 &&
+  } else if (g.diceNameArray.indexOf(g.sumArray[g.sumIndex - 1]) > -1 &&
               (isNaN(input) == false || g.diceNameArray.indexOf(input) > -1)) {
     // key_diceAfterDice or key_numberAfterDice
     output = '';
@@ -194,13 +195,83 @@ function keypadPress(input) {
 }
 
 // main
-function roll(inputArray) {
-  var equation = arrayToEquation(inputArray);
+function roll(sumArray) {
+  var equation = arrayToEquation(sumArray);
   equation = subRandomIntForDice(equation);
   var evaluation = eval(equation);
   var output = evaluation + ' [' + equation + '] ' + '<br><br>' + document.getElementById('dispOut').innerHTML;
   printToInnerHTML('dispOut', output, true);
   return output;
+}
+
+// keyPress Refactor
+function Addend() {
+  this.count = 0;
+  this.dn = '';
+  this.negative = false;
+}
+function addendToDisplay(addend) {
+  var display;
+  if (isNaN(addend.count)) {
+    return display = '';
+  } else if (g.diceNameArray.indexOf(addend.dn) == -1) {
+    display = addend.count;
+  } else {
+    display = addend.count + addend.dn;
+  }
+  if (addend.negative == true) {
+      display = "-" + display;
+  }
+  // console.log(display);
+  return display;
+}
+
+function addendChange(input, addendTarget, newTF) {
+  if (newTF) { addendTarget = new Addend; }
+  var output = addendTarget;
+  if (g.diceNameArray.indexOf(input) > -1) {
+    output.dn = input;
+  } else if (!isNaN(input)) {
+    output.count = input;
+  } else if (input == '-') {
+    output.negative = true;
+  } else if (input == '+') {
+    output.negative = false;
+  }
+  // console.log(output);
+  return output;
+}
+
+function keypadPresse(input) {
+  // if first keypress since clear
+  if (g.sumArray.length == 0) {
+    g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], true);
+  // else if input is a different dice than current addend
+  } else if (g.diceNameArray.indexOf(input) > -1 && g.sumArray[g.sumIndex].dn != input && g.sumArray[g.sumIndex].dn != '') {
+    g.sumIndex++
+    g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], true);
+    g.sumArray[g.sumIndex].count++;
+  // else if input is a number and the current addend has a dice value
+  } else if (!isNaN(input) && g.sumArray[g.sumIndex].dn != '') {
+    g.sumIndex++
+    g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], true);
+  // else if input is a plus or minus sign, and the current addend has a dice or count value
+  } else if ((input == '+' || input == '-') && (g.diceNameArray.indexOf(g.sumArray[g.sumIndex]) > -1 || !isNaN(g.sumArray[g.sumIndex]))) {
+    g.sumIndex++;
+    g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], true);
+  // else if input is dice, and current addend has a count value, but no dice value
+  } else if (g.diceNameArray.indexOf(input) > -1 && g.diceNameArray.indexOf(g.sumArray[g.sumIndex].dn)) {
+    g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], false);
+  // else if input is same dice as current addend
+  } else if (g.diceNameArray.indexOf(input) > -1 && g.sumArray[g.sumIndex].dn == input) {
+    g.sumArray[g.sumIndex].count++;
+  // else if input is a number and the current addend has no dice value
+  } else if ((!isNaN(input)) && g.sumArray[g.sumIndex].dn == '') {
+    g.sumArray[g.sumIndex].count = (10 * g.sumArray[g.sumIndex].count) + input;
+  }
+  console.log(g.sumArray);
+  var testOut = addendToDisplay(g.sumArray[g.sumIndex]);
+  return testOut;
 }
 
  // save
@@ -239,14 +310,14 @@ function loadMemory() {
     content.savedMenu = savedMenu;
 }
 
-function addSaveItemListeners() {
+function addSaveRollListeners() {
   var saved = JSON.parse(localStorage.saved);
   var saved_props = (Object.getOwnPropertyNames(saved));
     for (var i = 0; i < saved_props.length; i++) {
-      new SaveItemListeners(saved[saved_props[i]].id, saved[saved_props[i]].roll);
+      new SaveRollListeners(saved[saved_props[i]].id, saved[saved_props[i]].roll);
     }
 }
-function SaveItemListeners(id, roll) {
+function SaveRollListeners(id, roll) {
   document.getElementById(id).addEventListener('click', function() {
     keypadPress(roll);
   });
