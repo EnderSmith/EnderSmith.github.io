@@ -34,17 +34,17 @@ function runTests(runTF) {
       // new UnitTest('positive', addendChange('+', testAddend).count + testAddend.dn + testAddend.negative, '4d4false'),
       // new UnitTest('positive to display', addendToDisplay(testAddend), '4d4'),
 
-      new UnitTest('keypadPresse first num', keypadPresse(4), '4'),
-      new UnitTest('keypadPresse dicenext', keypadPresse('d8'), '4d8'),
-      new UnitTest('keypadPresse dice twice', keypadPresse('d8'), '5d8'),
-      new UnitTest('keypadPresse dice different', keypadPresse('d10'), '1d10'),
-      new UnitTest('keypadPresse minus', keypadPresse('-'), '-0'),
-      new UnitTest('keypadPresse number after sign', keypadPresse(10), '-10'),
-      new UnitTest('keypadPresse minus before plus', keypadPresse('-'), '-0'),
-      new UnitTest('keypadPresse plus after minus', keypadPresse('+'), '0'),
-      new UnitTest('keypadPresse dice before number', keypadPresse('d20'), '1d20'),
-      new UnitTest('keypadPresse number after dice', keypadPresse(3), '3'),
-      new UnitTest('keypadPresse number after number', keypadPresse(3), '33'),
+      new UnitTest('keypadPresse first num', keypadPresse(4, true), '4'),
+      new UnitTest('keypadPresse dicenext', keypadPresse('d8', true), '4d8'),
+      new UnitTest('keypadPresse dice twice', keypadPresse('d8', true), '5d8'),
+      new UnitTest('keypadPresse dice different', keypadPresse('d10', true), '1d10'),
+      new UnitTest('keypadPresse minus', keypadPresse('-', true), '-0'),
+      new UnitTest('keypadPresse number after sign', keypadPresse(10, true), '-10'),
+      new UnitTest('keypadPresse minus before plus', keypadPresse('-', true), '-0'),
+      new UnitTest('keypadPresse plus after minus', keypadPresse('+', true), '0'),
+      new UnitTest('keypadPresse dice before number', keypadPresse('d20', true), '1d20'),
+      new UnitTest('keypadPresse number after dice', keypadPresse(3, true), '3'),
+      new UnitTest('keypadPresse number after number', keypadPresse(3, true), '33'),
     ];
     return passFail;
   } else {

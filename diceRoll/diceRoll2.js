@@ -225,6 +225,16 @@ function addendToDisplay(addend) {
   // console.log(display);
   return display;
 }
+function sumArrayToDisplay(sumArray) {
+  var display = addendToDisplay(sumArray[0]);
+  for (var i = 1; i < g.sumArray.length; i++) {
+    if (g.sumArray[i].negative == false) {
+      display += '+'
+    }
+    display += addendToDisplay(g.sumArray[i]);
+  }
+  return display;
+}
 
 function addendChange(input, addendTarget, newTF) {
   if (newTF) { addendTarget = new Addend; }
@@ -242,7 +252,7 @@ function addendChange(input, addendTarget, newTF) {
   return output;
 }
 
-function keypadPresse(input) {
+function keypadPresse(input, testTF) {
   // if sumArray is empty
   if (g.sumArray.length == 0) {
     g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], true);
@@ -279,9 +289,12 @@ function keypadPresse(input) {
       g.sumIndex++;
       g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], true);
   }
-  console.log(g.sumArray);
+  // console.log(g.sumArray);
+  var output = sumArrayToDisplay(g.sumArray);
+  console.log(output);
   var testOut = addendToDisplay(g.sumArray[g.sumIndex]);
-  return testOut;
+  if (testTF) { return testOut; }
+  return output;
 }
 
  // save
