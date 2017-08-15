@@ -7,19 +7,37 @@ preloaded = {
   "longsword": {
     "id": "longsword",
     "name": "longsword",
-    "roll": "1d8",
+    "rollArray": [
+      {
+        "count": 1,
+        "dn": "d8",
+        "negative": false
+      }
+    ],
     "mod": ""
   },
   "longsword_versa": {
     "id": "longsword_versa",
     "name": "longsword (versatile)",
-    "roll": "1d10",
+    "rollArray": [
+      {
+        "count": 1,
+        "dn": "d10",
+        "negative": false
+      }
+    ],
     "mod": ""
   },
   "greataxe": {
     "id": "greataxe",
     "name": "greataxe",
-    "roll": "1d12",
+    "rollArray": [
+      {
+        "count": 1,
+        "dn": "d12",
+        "negative": false
+      }
+    ],
     "mod": ""
   }
 }

@@ -5,14 +5,15 @@ document.addEventListener('DOMContentLoaded', function() {
   runTests(true);
   simulateFirstVisit(true);
   checkMemory();
-  console.log(new SaveRoll('maul', 'maul', '2d6', ''));
+
+  // new SaveItem('maul', 'maul', '2d6', '');
 });
 
 // global variables
 var g = {
   diceNameArray: ['d100', 'd20', 'd12', 'd10', 'd8', 'd6', 'd4', 'd2', 'd1'],
-  inputArray: [],
-  currentIndex: 0,
+  sumArray: [],
+  sumIndex: 0,
   contentStatus: content.calculator
 }
 
@@ -63,7 +64,7 @@ function addRollBarListeners() {
     clearScreen();
   });
   document.getElementById('rollBtn').addEventListener('click', function() {
-    roll(g.inputArray);
+    roll(g.sumArray);
   });
   document.getElementById('savedBtn').addEventListener('click', function() {
     toggleSaved();
@@ -87,10 +88,7 @@ function subRandomIntForDice(str) {
   }
   return str;
 }
-function arrayToEquation(inputArray) {
-  var equation = inputArray.join('');
-  return equation;
-}
+
 
 // functions for displaying data
 function toggleSaved() {
@@ -130,77 +128,136 @@ function clearScreen(override) {
   }
 }
 function clearInputArray() {
-  g.currentIndex = 0;
-  g.inputArray.length = 0;
-  var testOutput = [g.inputArray.length, g.currentIndex];
-  return testOutput;
-}
-
-
-// functions for taking input
-function key_first(input) {
-  g.inputArray[g.currentIndex] = input;
-  g.currentIndex ++;
-  var testOutput = [g.inputArray, g.currentIndex];
-  return testOutput;
-}
-function key_numberAfterNumber(input) {
-  g.currentIndex --;
-  g.inputArray[g.currentIndex] = (g.inputArray[g.currentIndex] * 10) + parseInt(input);
-  g.currentIndex ++;
-  var testOutput = [g.inputArray, g.currentIndex];
-  return testOutput;
-}
-function key_diceAfterNumber(input) {
-  g.currentIndex--;
-  var multiplier = g.inputArray[g.currentIndex];
-  for (var i = 0; i < multiplier; i++) {
-    g.inputArray[g.currentIndex] = input;
-    g.currentIndex++;
-    g.inputArray[g.currentIndex] = '+';
-    g.currentIndex++;
-  }
-  g.currentIndex--;
-  g.inputArray.length--; // this might go wrong
-  var testOutput = [multiplier, g.currentIndex];
-  return testOutput;
-}
-function key_operator(input) {
-  g.inputArray[g.currentIndex] = input;
-  g.currentIndex++;
-  var testOutput = [g.inputArray[g.currentIndex-1], g.currentIndex];
-  return testOutput;
-}
-
-// functions for evaluating logic
-function keypadPress(input) {
-  var output = input;
-  if (document.getElementById('dispIn').innerHTML == '') {
-    key_first(input);
-  } else if (isNaN(g.inputArray[g.currentIndex - 1]) == false && isNaN(input) == false) {
-    key_numberAfterNumber(input);
-  } else if (isNaN(g.inputArray[g.currentIndex - 1]) == false && g.diceNameArray.indexOf(input) > -1) {
-    key_diceAfterNumber(input);
-  } else if (g.diceNameArray.indexOf(g.inputArray[g.currentIndex - 1]) > -1 &&
-              (isNaN(input) == false || g.diceNameArray.indexOf(input) > -1)) {
-    // key_diceAfterDice or key_numberAfterDice
-    output = '';
-  } else {
-    key_operator(input);
-  }
-  printToInnerHTML('dispIn', output);
-  var testOutput = [input, output];
+  g.sumIndex = 0;
+  g.sumArray.length = 0;
+  var testOutput = [g.sumArray.length, g.sumIndex];
   return testOutput;
 }
 
 // main
-function roll(inputArray) {
-  var equation = arrayToEquation(inputArray);
+function roll(sumArray) {
+  var equation = sumArrayExpand(sumArray);
   equation = subRandomIntForDice(equation);
   var evaluation = eval(equation);
   var output = evaluation + ' [' + equation + '] ' + '<br><br>' + document.getElementById('dispOut').innerHTML;
   printToInnerHTML('dispOut', output, true);
   return output;
+}
+
+// keyPress Refactor
+function Addend() {
+  this.count = 0;
+  this.dn = '';
+  this.negative = false;
+}
+function addendToDisplay(addend) {
+  var display;
+  if (addend.dn == '') {
+    display = addend.count;
+  } else {
+    display = addend.count + addend.dn;
+  }
+  if (addend.negative == true) {
+      display = "-" + display;
+  }
+  // console.log(display);
+  return display;
+}
+function sumArrayToDisplay(sumArray) {
+  var display = addendToDisplay(sumArray[0]);
+  for (var i = 1; i < sumArray.length; i++) {
+    if (sumArray[i].negative == false) {
+      display += '+'
+    }
+    display += addendToDisplay(sumArray[i]);
+  }
+  return display;
+}
+
+function addendExpand(addend) {
+  var expanded = '';
+  if (addend.dn != '') {
+    for (var i = 0; i < addend.count; i++) {
+      if (addend.negative == false) { expanded += '+' + addend.dn; }
+      else { expanded += '-' + addend.dn; }
+    }
+  } else {
+    expanded = addend.count;
+    if (addend.negative == false) { expanded = '+' + expanded; }
+    else { expanded += '-' + expanded; }
+  }
+  return expanded;
+}
+function sumArrayExpand(sumArray) {
+  var expanded = '';
+  for (var i = 0; i < sumArray.length; i++) {
+    expanded += addendExpand(sumArray[i]);
+  }
+  if (expanded.indexOf('+') == 0) { expanded = expanded.slice(1); }
+  return expanded;
+}
+
+function addendChange(input, addendTarget, newTF) {
+  if (newTF) { addendTarget = new Addend; }
+  var output = addendTarget;
+  if (g.diceNameArray.indexOf(input) > -1) {
+    output.dn = input;
+  } else if (!isNaN(input)) {
+    output.count = input;
+  } else if (input == '-') {
+    output.negative = true;
+  } else if (input == '+') {
+    output.negative = false;
+  }
+  // console.log(output);
+  return output;
+}
+
+function keypadPress(input, testTF) {
+  // if sumArray is empty
+  if (g.sumArray.length == 0) {
+    g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], true);
+    if (g.diceNameArray.indexOf(input) > -1) { g.sumArray[0].count++; }
+    // else if input is a dice...
+  } else if (g.diceNameArray.indexOf(input) > -1) {
+    // ...and input is not the same dice as current addend dice
+    if (input != g.sumArray[g.sumIndex].dn && '' != g.sumArray[g.sumIndex].dn) {
+      g.sumIndex++
+      g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], true);
+      g.sumArray[g.sumIndex].count++;
+      // ...and input is the same as current addend dice
+    } else if (input == g.sumArray[g.sumIndex].dn) {
+      g.sumArray[g.sumIndex].count++;
+      // ...and current addend has a count, but no dice
+    } else if (0 != g.sumArray[g.sumIndex].count) {
+      g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], false);
+      // ...and current addend has no count, and no dice
+    } else if (0 == g.sumArray[g.sumIndex].count) {
+      g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], false);
+      g.sumArray[g.sumIndex].count++;
+    }
+    // else if input is a number...
+  } else if (!isNaN(input)) {
+    // ...and current addend has dice
+    if ('' != g.sumArray[g.sumIndex].dn) {
+      g.sumIndex++;
+      g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], true);
+      // ...and current addend has no dice
+    } else if ('' == g.sumArray[g.sumIndex].dn) {
+      g.sumArray[g.sumIndex].count = (10 * parseInt(g.sumArray[g.sumIndex].count)) + parseInt(input);
+    }
+    // else if input is + or - sign...
+  } else if (input == '+' || input == '-' ) {
+      g.sumIndex++;
+      g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], true);
+  }
+  // console.log(g.sumArray);
+  var output = sumArrayToDisplay(g.sumArray);
+  printToInnerHTML('dispIn', output, true);
+
+  if (!testTF) { return output; }
+  else { var testOut = addendToDisplay(g.sumArray[g.sumIndex]); return testOut; }
+
 }
 
  // save
@@ -223,7 +280,7 @@ function loadMemory() {
       savedMenu += "<div class='row' id='row_" + saved[saved_props[i]].id + "'>" +
                       "<button class='btn saveItem col-m-8 col-t-8 col-8' id='" +
                         saved[saved_props[i]].id + "'>" +
-                          saved[saved_props[i]].name + ": " + saved[saved_props[i]].roll +
+                          saved[saved_props[i]].name + ": " + sumArrayToDisplay(saved[saved_props[i]].rollArray) +
                       "</button>" +
                       "<button class='btn modify saveItem col-m-2 col-t-2 col-2' id='" +
                         "mod_" + saved[saved_props[i]].id + "'>" +
@@ -243,16 +300,23 @@ function addSaveItemListeners() {
   var saved = JSON.parse(localStorage.saved);
   var saved_props = (Object.getOwnPropertyNames(saved));
     for (var i = 0; i < saved_props.length; i++) {
-      new SaveItemListeners(saved[saved_props[i]].id, saved[saved_props[i]].roll);
+      new SaveItemListeners(saved[saved_props[i]].id, saved[saved_props[i]].rollArray);
     }
 }
-function SaveItemListeners(id, roll) {
+function SaveItemListeners(id, rollArray) {
   document.getElementById(id).addEventListener('click', function() {
-    keypadPress(roll);
+    var saved = JSON.parse(localStorage.saved);
+    g.sumArray = saved[id].rollArray;
+    var output = sumArrayToDisplay(rollArray);
+    printToInnerHTML('dispIn', output, true);
   });
-  document.getElementById('mod_' + id).addEventListener('click', function() {return});
+  document.getElementById('mod_' + id).addEventListener('click', function() {
+    comingSoon();
+    return;
+  });
   document.getElementById('delete_' + id).addEventListener('click', function() {
     deleteRoll(id);
+    return;
   });
 }
 
@@ -261,12 +325,12 @@ function demoSave() {
   localStorage.saved = JSON.stringify(saved);
 }
 
-function SaveRoll(id, name, roll, mod) {
+function SaveItem(id, name, rollArray, mod) {
   var copyOfSaved = JSON.parse(localStorage.saved);
   copyOfSaved[id] = {
     "id": id,
     "name": name,
-    "roll": roll,
+    "rollArray": rollArray,
     "mod": mod
   }
   localStorage.saved = JSON.stringify(copyOfSaved);
@@ -276,11 +340,16 @@ function SaveRoll(id, name, roll, mod) {
 
 function deleteRoll(id) {
   var copyOfSaved = JSON.parse(localStorage.saved);
-  delete copyOfSaved[id];
-  localStorage.saved = JSON.stringify(copyOfSaved);
-  document.getElementById('row_' + id).style.display = "none";
-  loadMemory();
-  return copyOfSaved;
+  if (confirm('Are you sure you want to delete "' + copyOfSaved[id].name + '"?')) {
+    delete copyOfSaved[id];
+    localStorage.saved = JSON.stringify(copyOfSaved);
+    document.getElementById('row_' + id).style.display = "none";
+    loadMemory();
+    return copyOfSaved;
+  } else {
+    return;
+  }
+
 }
 
 function simulateFirstVisit(runTrue) {
@@ -289,4 +358,8 @@ function simulateFirstVisit(runTrue) {
     localStorage.removeItem('saved');
     localStorage.removeItem('savedMenu');
   } else {return;}
+}
+
+function comingSoon() {
+  alert('this feature is coming soon!');
 }
