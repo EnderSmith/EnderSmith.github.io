@@ -184,7 +184,7 @@ function addendExpand(addend) {
   } else {
     expanded = addend.count;
     if (addend.negative == false) { expanded = '+' + expanded; }
-    else { expanded += '-' + expanded; }
+    else { expanded = '-' + expanded; }
   }
   return expanded;
 }
