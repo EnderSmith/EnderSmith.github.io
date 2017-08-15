@@ -21,13 +21,13 @@ var g = {
 function NumberKeyListener(id) {
   document.getElementById(id).addEventListener('click', function() {
     var output = id.replace('num', '');
-    keypadPress(output);
+    keypadPresse(output);
   });
 }
 function DiceKeyListener(id) {
   document.getElementById(id).addEventListener('click', function() {
     var output = id;
-    keypadPress(output);
+    keypadPresse(output);
   });
 }
 
@@ -52,11 +52,11 @@ function addDiceKeyListeners() {
 function addOperatorKeyListeners() {
   document.getElementById('num+').addEventListener('click', function() {
     var output = '+';
-    keypadPress(output);
+    keypadPresse(output);
   });
   document.getElementById('num-').addEventListener('click', function() {
     var output = '-';
-    keypadPress(output);
+    keypadPresse(output);
   });
 }
 function addRollBarListeners() {
@@ -137,63 +137,6 @@ function clearInputArray() {
   return testOutput;
 }
 
-
-// functions for taking input
-function key_first(input) {
-  g.sumArray[g.sumIndex] = input;
-  g.sumIndex ++;
-  var testOutput = [g.sumArray, g.sumIndex];
-  return testOutput;
-}
-function key_numberAfterNumber(input) {
-  g.sumIndex --;
-  g.sumArray[g.sumIndex] = (g.sumArray[g.sumIndex] * 10) + parseInt(input);
-  g.sumIndex ++;
-  var testOutput = [g.sumArray, g.sumIndex];
-  return testOutput;
-}
-function key_diceAfterNumber(input) {
-  g.sumIndex--;
-  var multiplier = g.sumArray[g.sumIndex];
-  for (var i = 0; i < multiplier; i++) {
-    g.sumArray[g.sumIndex] = input;
-    g.sumIndex++;
-    g.sumArray[g.sumIndex] = '+';
-    g.sumIndex++;
-  }
-  g.sumIndex--;
-  g.sumArray.length--; // this might go wrong
-  var testOutput = [multiplier, g.sumIndex];
-  return testOutput;
-}
-function key_operator(input) {
-  g.sumArray[g.sumIndex] = input;
-  g.sumIndex++;
-  var testOutput = [g.sumArray[g.sumIndex-1], g.sumIndex];
-  return testOutput;
-}
-
-// functions for evaluating logic
-function keypadPress(input) {
-  var output = input;
-  if (document.getElementById('dispIn').innerHTML == '') {
-    key_first(input);
-  } else if (isNaN(g.sumArray[g.sumIndex - 1]) == false && isNaN(input) == false) {
-    key_numberAfterNumber(input);
-  } else if (isNaN(g.sumArray[g.sumIndex - 1]) == false && g.diceNameArray.indexOf(input) > -1) {
-    key_diceAfterNumber(input);
-  } else if (g.diceNameArray.indexOf(g.sumArray[g.sumIndex - 1]) > -1 &&
-              (isNaN(input) == false || g.diceNameArray.indexOf(input) > -1)) {
-    // key_diceAfterDice or key_numberAfterDice
-    output = '';
-  } else {
-    key_operator(input);
-  }
-  printToInnerHTML('dispIn', output);
-  var testOutput = [input, output];
-  return testOutput;
-}
-
 // main
 function roll(sumArray) {
   var equation = arrayToEquation(sumArray);
@@ -227,11 +170,11 @@ function addendToDisplay(addend) {
 }
 function sumArrayToDisplay(sumArray) {
   var display = addendToDisplay(sumArray[0]);
-  for (var i = 1; i < g.sumArray.length; i++) {
-    if (g.sumArray[i].negative == false) {
+  for (var i = 1; i < sumArray.length; i++) {
+    if (sumArray[i].negative == false) {
       display += '+'
     }
-    display += addendToDisplay(g.sumArray[i]);
+    display += addendToDisplay(sumArray[i]);
   }
   return display;
 }
@@ -256,6 +199,7 @@ function keypadPresse(input, testTF) {
   // if sumArray is empty
   if (g.sumArray.length == 0) {
     g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], true);
+    if (g.diceNameArray.indexOf(input) > -1) { g.sumArray[0].count++; }
     // else if input is a dice...
   } else if (g.diceNameArray.indexOf(input) > -1) {
     // ...and input is not the same dice as current addend dice
@@ -291,10 +235,11 @@ function keypadPresse(input, testTF) {
   }
   // console.log(g.sumArray);
   var output = sumArrayToDisplay(g.sumArray);
-  console.log(output);
-  var testOut = addendToDisplay(g.sumArray[g.sumIndex]);
-  if (testTF) { return testOut; }
-  return output;
+  printToInnerHTML('dispIn', output, true);
+
+  if (!testTF) { return output; }
+  else { var testOut = addendToDisplay(g.sumArray[g.sumIndex]); return testOut; }
+
 }
 
  // save

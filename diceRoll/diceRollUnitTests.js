@@ -25,14 +25,16 @@ function runTests(runTF) {
       // new UnitTest('roll', roll(['d1','+','d1']), '2 [(1)+(1)] <br><br>'),
       // new UnitTest('lazinessTest_redux', clearScreen(clearScreen()), '')
 
-      // new UnitTest('number', addendChange(4, testAddend).count + testAddend.dn, 4),
-      // new UnitTest('number to display', addendToDisplay(testAddend), '4'),
-      // new UnitTest('dice', addendChange('d4', testAddend).count + testAddend.dn, '4d4'),
-      // new UnitTest('dice to display', addendToDisplay(testAddend), '4d4'),
-      // new UnitTest('negative', addendChange('-', testAddend).count + testAddend.dn + testAddend.negative, '4d4true'),
-      // new UnitTest('negative to display', addendToDisplay(testAddend), '-4d4'),
-      // new UnitTest('positive', addendChange('+', testAddend).count + testAddend.dn + testAddend.negative, '4d4false'),
-      // new UnitTest('positive to display', addendToDisplay(testAddend), '4d4'),
+      new UnitTest('sumArrayToDisplay', sumArrayToDisplay([{count: 12, dn: 'd6', negative: false}, {count: 1, dn: 'd4', negative: true}, {count: 3, dn: '', negative: false}]), '12d6-1d4+3'),
+
+      new UnitTest('number', addendChange(4, testAddend).count + testAddend.dn, 4),
+      new UnitTest('number to display', addendToDisplay(testAddend), '4'),
+      new UnitTest('dice', addendChange('d4', testAddend).count + testAddend.dn, '4d4'),
+      new UnitTest('dice to display', addendToDisplay(testAddend), '4d4'),
+      new UnitTest('negative', addendChange('-', testAddend).count + testAddend.dn + testAddend.negative, '4d4true'),
+      new UnitTest('negative to display', addendToDisplay(testAddend), '-4d4'),
+      new UnitTest('positive', addendChange('+', testAddend).count + testAddend.dn + testAddend.negative, '4d4false'),
+      new UnitTest('positive to display', addendToDisplay(testAddend), '4d4'),
 
       new UnitTest('keypadPresse first num', keypadPresse(4, true), '4'),
       new UnitTest('keypadPresse dicenext', keypadPresse('d8', true), '4d8'),
@@ -45,7 +47,10 @@ function runTests(runTF) {
       new UnitTest('keypadPresse dice before number', keypadPresse('d20', true), '1d20'),
       new UnitTest('keypadPresse number after dice', keypadPresse(3, true), '3'),
       new UnitTest('keypadPresse number after number', keypadPresse(3, true), '33'),
+
     ];
+    clearScreen();
+    clearScreen();
     return passFail;
   } else {
     return;
