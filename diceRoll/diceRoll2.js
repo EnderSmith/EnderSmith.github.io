@@ -33,6 +33,7 @@ function SaveItemListeners(id, rollArray) {
   document.getElementById(id).addEventListener('click', function() {
     var saved = JSON.parse(localStorage.saved);
     g.sumArray = saved[id].rollArray;
+    g.sumIndex = g.sumArray.length - 1;
     var output = sumArrayToDisplay(rollArray);
     printToInnerHTML('dispIn', output, true);
   });
