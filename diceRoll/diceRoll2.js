@@ -2,7 +2,6 @@ document.addEventListener('DOMContentLoaded', function() {
   addRollBarListeners();
   printToInnerHTML('calcHolder', content.calculator, true);
   addCalculatorListeners();
-  runTests(true);
   simulateFirstVisit(true);
   checkMemory();
   // new SaveItem('maul', 'maul', '2d6');
@@ -90,13 +89,14 @@ function addSaveItemListeners() {
   var saved = JSON.parse(localStorage.saved);
   var saved_props = (Object.getOwnPropertyNames(saved));
     for (var i = 0; i < saved_props.length; i++) {
+
       new SaveItemListeners(saved[saved_props[i]].id, saved[saved_props[i]].rollArray);
     }
 }
 
 // -- testable functions --
 
-// save
+// memory
 function SaveItem(id, name, rollArray) {
  var copyOfSaved = JSON.parse(localStorage.saved);
  copyOfSaved[id] = {
@@ -106,19 +106,19 @@ function SaveItem(id, name, rollArray) {
  }
  localStorage.saved = JSON.stringify(copyOfSaved);
  loadMemory();
+ // SaveItemListeners(copyOfSaved[id].id, copyOfSaved[id].rollArray);
  return copyOfSaved[id];
 }
 
 function checkMemory() {
  if (localStorage.visited) {
    loadMemory();
-   return;
  } else {
    localStorage.visited = true;
-   savePreloaded();
+   restoreDefaultSaveItems();
    loadMemory();
-   return;
  }
+ return localStorage.visited;
 }
 function loadMemory() {
  var savedMenu = "<div id='savedMenu'>";
@@ -141,22 +141,27 @@ function loadMemory() {
                    "</div>";
    }
    savedMenu += "<button class='btn new saveItem col-m-12 col-t-12 col-12' id='newSave'>+</button></div>";
+
    content.savedMenu = savedMenu;
+   return savedMenu;
 }
-function savePreloaded() {
+function restoreDefaultSaveItems() {
  var saved = preloaded;
  localStorage.saved = JSON.stringify(saved);
+ return saved;
 }
-function deleteSaveItem(id) {
+function deleteSaveItem(id, testTF) {
  var copyOfSaved = JSON.parse(localStorage.saved);
- if (confirm('Are you sure you want to delete "' + copyOfSaved[id].name + '"?')) {
+ if (testTF || confirm('Are you sure you want to delete "' + copyOfSaved[id].name + '"?')) {
    delete copyOfSaved[id];
    localStorage.saved = JSON.stringify(copyOfSaved);
-   document.getElementById('row_' + id).style.display = "none";
+   if (g.contentStatus == content.saved) {
+        document.getElementById('row_' + id).style.display = "none";
+   }
    loadMemory();
    return copyOfSaved;
  } else {
-   return;
+   return copyOfSaved;
  }
 }
 function simulateFirstVisit(runTF) {
@@ -164,7 +169,8 @@ function simulateFirstVisit(runTF) {
    localStorage.removeItem('visited');
    localStorage.removeItem('saved');
    localStorage.removeItem('savedMenu');
- } else {return;}
+   return JSON.stringify(localStorage);
+ } else {return runTF;}
 }
 
 // data manipulation
