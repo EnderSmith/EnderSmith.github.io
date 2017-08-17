@@ -13,7 +13,7 @@ function runTests(runTF) {
       new UnitTest('deleteSaveItem()', function() { return !('test_id' in deleteSaveItem('test_id', true)); }, true),
       new UnitTest('restoreDefaultSaveItems()', function() { return restoreDefaultSaveItems()['longsword'].id; }, function() {return JSON.parse(localStorage.saved)['longsword'].id; }),
       // data manipulation tests
-      
+
     ];
     clearScreen();
     clearScreen();
@@ -27,10 +27,10 @@ function UnitTest(testName, functionToBeTested, expectedOutput) {
   this.report;
   this.testName = testName;
   this.functionToBeTested = functionToBeTested;
-  this.functionReturned = this.functionToBeTested();
   this.expectedOutput = expectedOutput;
-  if (typeof this.expectedOutput === 'function') this.expectedOutput = this.expectedOutput();
   try {
+    this.functionReturned = this.functionToBeTested();
+    if (typeof this.expectedOutput === 'function') { this.expectedOutput = this.expectedOutput(); }
     if (this.functionReturned != this.expectedOutput) {
       this.report = '\n\tFailed.\n\tReturned: ' + this.functionReturned + '\n\tExpected: ' + this.expectedOutput;
       throw this.report;
