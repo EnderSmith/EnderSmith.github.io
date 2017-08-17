@@ -6,12 +6,30 @@ function runTests(runTF) {
   if (runTF == true) {
     var passFail = [
     // memory function unit tests
-      new UnitTest('simulateFirstVisit()', function() { return simulateFirstVisit(true); }, '{}'),
-      new UnitTest('checkMemory()', function() { return checkMemory(); }, 'true'),
-      new UnitTest('new SaveItem()', function() { return new SaveItem('test_id', 'test_name', ['test', 'array']).id; }, function() { return JSON.parse(localStorage.saved)['test_id'].id; }),
-      new UnitTest('loadMemory()', function() { return loadMemory().includes("id='delete_test_id'>"); }, true),
-      new UnitTest('deleteSaveItem()', function() { return !('test_id' in deleteSaveItem('test_id', true)); }, true),
-      new UnitTest('restoreDefaultSaveItems()', function() { return restoreDefaultSaveItems()['longsword'].id; }, function() {return JSON.parse(localStorage.saved)['longsword'].id; }),
+      new UnitTest('simulateFirstVisit()', function() {
+          return (simulateFirstVisit(true) === '{}');
+      }),
+      new UnitTest('checkMemory()', function() {
+        return (checkMemory() === "true");
+      }),
+      new UnitTest('new SaveItem()', function() {
+        var saveItem = new SaveItem('test_id', 'test_name', ['test', 'array']);
+        saveItem = JSON.stringify(saveItem);
+        var localSaveItem = localStorage.saved;
+        return (localSaveItem.includes(saveItem));
+      }),
+      new UnitTest('loadMemory()', function() {
+        var savedMenu = loadMemory();
+        return (content.savedMenu.includes(savedMenu));
+      }),
+      new UnitTest('deleteSaveItem()', function() {
+        return !('test_id' in deleteSaveItem('test_id', true));
+      }),
+      new UnitTest('restoreDefaultSaveItems()', function() {
+        var saved = restoreDefaultSaveItems();
+        saved = JSON.stringify(saved);
+        return (saved === localStorage.saved);
+      }),
       // data manipulation tests
 
     ];
@@ -32,11 +50,11 @@ function UnitTest(testName, functionToBeTested) {
       throw 'unexpected result';
     }
     else{
-      this.report = ' passed.'
+      this.report = ' PASS'
     }
   }
   catch(err) {
-    this.report = ' failed:\n' + err;
+    this.report = ' FAIL:\n' + err;
   }
   console.log(this.testName + this.report);
   return this.testName + this.report;
