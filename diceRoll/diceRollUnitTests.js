@@ -46,12 +46,10 @@ function UnitTest(testName, functionToBeTested) {
   this.functionToBeTested = functionToBeTested;
   this.report;
   try {
-    if (functionToBeTested() !== true) {
+    if (!functionToBeTested()) {
       throw 'unexpected result';
     }
-    else{
-      this.report = ' PASS'
-    }
+    this.report = ' PASS';
   }
   catch(err) {
     this.report = ' FAIL:\n' + err;
