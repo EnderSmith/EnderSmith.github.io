@@ -23,24 +23,21 @@ function runTests(runTF) {
   }
 }
 
-function UnitTest(testName, functionToBeTested, expectedOutput) {
-  this.report;
+function UnitTest(testName, functionToBeTested) {
   this.testName = testName;
   this.functionToBeTested = functionToBeTested;
-  this.expectedOutput = expectedOutput;
+  this.report;
   try {
-    this.functionReturned = this.functionToBeTested();
-    if (typeof this.expectedOutput === 'function') { this.expectedOutput = this.expectedOutput(); }
-    if (this.functionReturned != this.expectedOutput) {
-      this.report = '\n\tFailed.\n\tReturned: ' + this.functionReturned + '\n\tExpected: ' + this.expectedOutput;
-      throw this.report;
+    if (functionToBeTested() !== true) {
+      throw 'unexpected result';
+    }
+    else{
+      this.report = ' passed.'
     }
   }
   catch(err) {
-    console.log(this.testName + err);
-    return this.testName + this.report;
+    this.report = ' failed:\n' + err;
   }
-  this.report = '\n\tPassed.\n\tReturned: ' + this.functionReturned;
-  console.log( this.testName + this.report);
+  console.log(this.testName + this.report);
   return this.testName + this.report;
 }
