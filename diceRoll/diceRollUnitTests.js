@@ -7,21 +7,31 @@ var testGlobals = {
       count: 4,
       dn: 'd6',
       negative: false,
-      display: '4d6'
+      display: '4d6',
+      expanded: '+d6+d6+d6+d6'
+    },
+    {
+      count: 2,
+      dn: 'd12',
+      negative: true,
+      display: '-2d12',
+      expanded: '-d12-d12'
     },
     {
       count: 2,
       dn: '',
       negative: true,
-      display: '-2'
+      display: '-2',
+      expanded: '-2'
     }
   ],
-  sumArray_display: '4d6-2'
+  sumArray_display: '4d6-2d12-2',
+  sumArray_expanded: 'd6+d6+d6+d6-d12-d12-2',
 }
 
 function runTests(runTF) {
   if (runTF == true) {
-    console.log('MEMORY FUNCTION UNIT TESTS:')
+    console.log('MEMORY FUNCTION TESTS:')
     var passFail = [
       new UnitTest('simulateFirstVisit()', function() {
           return (simulateFirstVisit(true) === '{}');
@@ -48,7 +58,7 @@ function runTests(runTF) {
         return (saved === localStorage.saved);
       })
     ];
-    console.log('DATA MANIPULATION TESTS:')
+    console.log('DATA FUNCTION TESTS:')
     passFail += [
       new UnitTest('new Addend()', function() {
         var blankAddend = new Addend();
@@ -92,7 +102,42 @@ function runTests(runTF) {
         if (addendToDisplay(testGlobals.sumArray[1]) !== testGlobals.sumArray[1].display) {
           pass = false;
         }
+        if (addendToDisplay(testGlobals.sumArray[2]) !== testGlobals.sumArray[2].display) {
+          pass = false;
+        }
         return pass;
+      }),
+      new UnitTest('sumArrayToDisplay()', function() {
+        return (sumArrayToDisplay(testGlobals.sumArray) === testGlobals.sumArray_display);
+      }),
+      new UnitTest('addendExpand()', function() {
+        var pass = true;
+        if (addendExpand(testGlobals.sumArray[0]) !== testGlobals.sumArray[0].expanded) {
+          pass = false;
+        }
+        if (addendExpand(testGlobals.sumArray[1]) !== testGlobals.sumArray[1].expanded) {
+          pass = false;
+        }
+        if (addendExpand(testGlobals.sumArray[2]) !== testGlobals.sumArray[2].expanded) {
+          pass = false;
+        }
+        return pass;
+      }),
+      new UnitTest('sumArrayExpand()', function() {
+        return (sumArrayExpand(testGlobals.sumArray) === testGlobals.sumArray_expanded);
+      }),
+      new UnitTest('randomIntByDice()', function() {
+        var pass = true;
+        for (var i = 1; i <= 20; i++) {
+          var randomInt = randomIntByDice('d' + i);
+          if ( 0 < randomInt && randomInt > i) {
+            pass = false;
+          }
+        }
+        return pass;
+      }),
+      new UnitTest('subRandomIntForDice()', function() {
+        return !(subRandomIntForDice(testGlobals.sumArray_expanded).includes('d'));
       }),
     ];
     clearScreen();
@@ -108,8 +153,9 @@ function UnitTest(testName, functionToBeTested) {
   this.functionToBeTested = functionToBeTested;
   this.report;
   try {
-    if (!functionToBeTested()) {
-      throw '\t\tunexpected result';
+    this.functionReturned = functionToBeTested()
+    if (this.functionReturned !== true) {
+      throw '\t\tunexpected result: ' + this.functionReturned;
     }
     this.report = ' PASS';
   }
