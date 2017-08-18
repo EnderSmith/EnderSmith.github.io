@@ -262,13 +262,14 @@ function toggleSaved() {
     printToInnerHTML('savedBtn', 'calc', true);
     addSaveItemListeners();
     content.savedMenu = document.getElementById('calcHolder').innerHTML;
-    g.contentStatus = content.saved;
-  } else if (g.contentStatus == content.saved) {
+    g.contentStatus = content.savedMenu;
+  } else if (g.contentStatus == content.savedMenu) {
     printToInnerHTML('calcHolder', content.calculator, true);
     printToInnerHTML('savedBtn', 'saved', true);
     addCalculatorListeners();
     g.contentStatus = content.calculator;
   }
+  return g.contentStatus;
 }
 function printToInnerHTML(id, str, replaceTF) {
   if (replaceTF != true) {

@@ -31,7 +31,7 @@ var testGlobals = {
 
 function runTests(runTF) {
   if (runTF == true) {
-    console.log('MEMORY FUNCTION TESTS:')
+    console.log('MEMORY FUNCTION TESTS:');
     var passFail = [
       new UnitTest('simulateFirstVisit()', function() {
           return (simulateFirstVisit(true) === '{}');
@@ -58,7 +58,7 @@ function runTests(runTF) {
         return (saved === localStorage.saved);
       })
     ];
-    console.log('DATA FUNCTION TESTS:')
+    console.log('DATA FUNCTION TESTS:');
     passFail += [
       new UnitTest('new Addend()', function() {
         var blankAddend = new Addend();
@@ -138,6 +138,12 @@ function runTests(runTF) {
       }),
       new UnitTest('subRandomIntForDice()', function() {
         return !(subRandomIntForDice(testGlobals.sumArray_expanded).includes('d'));
+      }),
+    ];
+    console.log('DISPLAY FUNCTION TESTS:');
+    passFail += [
+      new UnitTest('toggleSaved()', function() {
+
       }),
     ];
     clearScreen();
