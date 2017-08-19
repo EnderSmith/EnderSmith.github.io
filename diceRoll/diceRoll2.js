@@ -197,12 +197,12 @@ function addendChange(input, targetAddend, newTF) {
 }
 function addendToDisplay(addend) {
   var display;
-  if (addend.dn == '') {
+  if (addend.dn === '') {
     display = addend.count;
   } else {
     display = addend.count + addend.dn;
   }
-  if (addend.negative == true) {
+  if (addend.negative === true) {
       display = "-" + display;
   }
   // console.log(display);
@@ -211,7 +211,7 @@ function addendToDisplay(addend) {
 function sumArrayToDisplay(sumArray) {
   var display = addendToDisplay(sumArray[0]);
   for (var i = 1; i < sumArray.length; i++) {
-    if (sumArray[i].negative == false) {
+    if (sumArray[i].negative === false) {
       display += '+'
     }
     display += addendToDisplay(sumArray[i]);

@@ -1,11 +1,38 @@
 document.addEventListener('DOMContentLoaded', function() {
   runTests(true);
 });
+var testGlobals = {
+  sumArray: [
+    {
+      count: 4,
+      dn: 'd6',
+      negative: false,
+      display: '4d6',
+      expanded: '+d6+d6+d6+d6'
+    },
+    {
+      count: 2,
+      dn: 'd12',
+      negative: true,
+      display: '-2d12',
+      expanded: '-d12-d12'
+    },
+    {
+      count: 2,
+      dn: '',
+      negative: true,
+      display: '-2',
+      expanded: '-2'
+    }
+  ],
+  sumArray_display: '4d6-2d12-2',
+  sumArray_expanded: 'd6+d6+d6+d6-d12-d12-2',
+}
 
 function runTests(runTF) {
   if (runTF == true) {
+    console.log('MEMORY FUNCTION TESTS:')
     var passFail = [
-    // memory function unit tests
       new UnitTest('simulateFirstVisit()', function() {
           return (simulateFirstVisit(true) === '{}');
       }),
@@ -29,9 +56,89 @@ function runTests(runTF) {
         var saved = restoreDefaultSaveItems();
         saved = JSON.stringify(saved);
         return (saved === localStorage.saved);
+      })
+    ];
+    console.log('DATA FUNCTION TESTS:')
+    passFail += [
+      new UnitTest('new Addend()', function() {
+        var blankAddend = new Addend();
+        var pass = true;
+        if (blankAddend.count !== 0) {
+          pass = false;
+        }
+        if (blankAddend.dn !== '') {
+          pass = false;
+        }
+        if (blankAddend.negative !== false) {
+          pass = false;
+        }
+        return pass;
       }),
-      // data manipulation tests
-
+      new UnitTest('addendChange()', function() {
+        var pass = true;
+        var workingAddend = addendChange('d4', '', true);
+        if (workingAddend.dn !== 'd4') {
+          pass = false;
+        }
+        workingAddend = addendChange(4, workingAddend);
+        if (workingAddend.count !== 4) {
+          pass = false;
+        }
+        workingAddend = addendChange('-', workingAddend);
+        if (workingAddend.negative !== true) {
+          pass = false;
+        }
+        workingAddend = addendChange('+', workingAddend);
+        if (workingAddend.negative !== false) {
+          pass = false;
+        }
+        return pass;
+      }),
+      new UnitTest('addendToDisplay()', function() {
+        var pass = true;
+        if (addendToDisplay(testGlobals.sumArray[0]) !== testGlobals.sumArray[0].display) {
+          pass = false;
+        }
+        if (addendToDisplay(testGlobals.sumArray[1]) !== testGlobals.sumArray[1].display) {
+          pass = false;
+        }
+        if (addendToDisplay(testGlobals.sumArray[2]) !== testGlobals.sumArray[2].display) {
+          pass = false;
+        }
+        return pass;
+      }),
+      new UnitTest('sumArrayToDisplay()', function() {
+        return (sumArrayToDisplay(testGlobals.sumArray) === testGlobals.sumArray_display);
+      }),
+      new UnitTest('addendExpand()', function() {
+        var pass = true;
+        if (addendExpand(testGlobals.sumArray[0]) !== testGlobals.sumArray[0].expanded) {
+          pass = false;
+        }
+        if (addendExpand(testGlobals.sumArray[1]) !== testGlobals.sumArray[1].expanded) {
+          pass = false;
+        }
+        if (addendExpand(testGlobals.sumArray[2]) !== testGlobals.sumArray[2].expanded) {
+          pass = false;
+        }
+        return pass;
+      }),
+      new UnitTest('sumArrayExpand()', function() {
+        return (sumArrayExpand(testGlobals.sumArray) === testGlobals.sumArray_expanded);
+      }),
+      new UnitTest('randomIntByDice()', function() {
+        var pass = true;
+        for (var i = 1; i <= 20; i++) {
+          var randomInt = randomIntByDice('d' + i);
+          if ( 0 < randomInt && randomInt > i) {
+            pass = false;
+          }
+        }
+        return pass;
+      }),
+      new UnitTest('subRandomIntForDice()', function() {
+        return !(subRandomIntForDice(testGlobals.sumArray_expanded).includes('d'));
+      }),
     ];
     clearScreen();
     clearScreen();
@@ -46,14 +153,15 @@ function UnitTest(testName, functionToBeTested) {
   this.functionToBeTested = functionToBeTested;
   this.report;
   try {
-    if (!functionToBeTested()) {
-      throw 'unexpected result';
+    this.functionReturned = functionToBeTested()
+    if (this.functionReturned !== true) {
+      throw '\t\tunexpected result: ' + this.functionReturned;
     }
     this.report = ' PASS';
   }
   catch(err) {
     this.report = ' FAIL:\n' + err;
   }
-  console.log(this.testName + this.report);
+  console.log('\t' + this.testName + this.report);
   return this.testName + this.report;
 }
