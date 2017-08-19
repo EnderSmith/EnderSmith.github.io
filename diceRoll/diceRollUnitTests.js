@@ -143,7 +143,47 @@ function runTests(runTF) {
     console.log('DISPLAY FUNCTION TESTS:');
     passFail += [
       new UnitTest('toggleSaved()', function() {
-
+        var result;
+        if (g.contentStatus === content.calculator) {
+          result = (toggleSaved() === content.savedMenu);
+        } else if (g.contentStatus === content.savedMenu) {
+          result = (toggleSaved() === content.calculator);
+        }
+        if (result === true) {
+          toggleSaved();
+        }
+        return result;
+      }),
+      new UnitTest('printToInnerHTML()', function() {
+        var replacePass = true;
+        var addonPass = true;
+        document.getElementById('dispIn').innerHTML = 'init';
+        if (printToInnerHTML('dispIn', 'replaced', true) !== document.getElementById('dispIn').innerHTML) {
+          replacePass = false;
+        }
+        if ('replaced' + printToInnerHTML('dispIn', ' added on') !== document.getElementById('dispIn').innerHTML) {
+          addonPass = false;
+        }
+        return (replacePass && addonPass);
+      }),
+      new UnitTest('clearScreen()', function() {
+        var clearIn = true;
+        var clearOut = true;
+        document.getElementById('dispIn').innerHTML = 'not clear in';
+        document.getElementById('dispOut').innerHTML = 'not clear out';
+        if (clearScreen() !== document.getElementById('dispIn').innerHTML) {
+          clearIn = false;
+        }
+        if (clearScreen() !== document.getElementById('dispOut').innerHTML) {
+          clearOut = false;
+        }
+        return (clearIn && clearOut);
+      }),
+      new UnitTest('clearSumArray()', function() {
+        g.sumArray = [5, 4, 3, 2, 1];
+        g.sumIndex = 5;
+        var arr = '0,0';
+        return (clearSumArray() === arr);
       }),
     ];
     clearScreen();
