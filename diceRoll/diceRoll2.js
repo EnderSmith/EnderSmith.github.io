@@ -257,18 +257,19 @@ function subRandomIntForDice(str) {
 
 // functions for displaying data
 function toggleSaved() {
-  if (g.contentStatus == content.calculator) {
+  if (g.contentStatus === content.calculator) {
     printToInnerHTML('calcHolder', content.savedMenu, true);
     printToInnerHTML('savedBtn', 'calc', true);
     addSaveItemListeners();
     content.savedMenu = document.getElementById('calcHolder').innerHTML;
-    g.contentStatus = content.saved;
-  } else if (g.contentStatus == content.saved) {
+    g.contentStatus = content.savedMenu;
+  } else if (g.contentStatus === content.savedMenu) {
     printToInnerHTML('calcHolder', content.calculator, true);
     printToInnerHTML('savedBtn', 'saved', true);
     addCalculatorListeners();
     g.contentStatus = content.calculator;
   }
+  return g.contentStatus;
 }
 function printToInnerHTML(id, str, replaceTF) {
   if (replaceTF != true) {
@@ -276,27 +277,23 @@ function printToInnerHTML(id, str, replaceTF) {
   } else {
     document.getElementById(id).innerHTML = str;
   }
-  var testOutput = document.getElementById(id).innerHTML;
-  return testOutput;
+  return str;
 }
 function clearScreen(override) {
   if (document.getElementById('dispIn').innerHTML == '' || override == 'dispOut') {
     printToInnerHTML('dispOut', '', true);
     clearSumArray();
-    var testOutput = document.getElementById('dispOut').innerHTML;
-    return testOutput;
   } else if (document.getElementById('dispIn').innerHTML != '' || override == 'dispIn') {
     printToInnerHTML('dispIn', '', true);
     clearSumArray();
-    var testOutput = document.getElementById('dispIn').innerHTML;
-    return testOutput;
   }
+  return '';
 }
 function clearSumArray() {
   g.sumIndex = 0;
   g.sumArray.length = 0;
   var testOutput = [g.sumArray.length, g.sumIndex];
-  return testOutput;
+  return testOutput.toString();
 }
 
 // main
