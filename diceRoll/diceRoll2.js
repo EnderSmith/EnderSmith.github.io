@@ -288,6 +288,7 @@ function toggleSaved(override) {
     printToInnerHTML('calcHolder', content.calculator, true);
     printToInnerHTML('savedBtn', 'saved', true);
     addCalculatorListeners();
+    g.userSaveButtonListenerExists = false;
     g.contentStatus = content.calculator;
   }
   return g.contentStatus;
@@ -321,8 +322,9 @@ function displayUserSaveButton() {
     if (g.sumArray.length !== 0) {
       var saveText = sumArrayToDisplay(g.sumArray);
       printToInnerHTML('userSaveButton', "<button class='btn new saveItem col-m-12 col-t-12 col-12' id='newSave'>save: " + saveText + "</button>", true);
-      if (!g.alreadyListening) {
+      if (!g.userSaveButtonListenerExists) {
         addUserSaveButtonListener();
+        g.userSaveButtonListenerExists = true;
       }
       return saveText;
     }
