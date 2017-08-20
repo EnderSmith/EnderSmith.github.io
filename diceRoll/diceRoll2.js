@@ -173,16 +173,17 @@ function restoreDefaultSaveItems() {
  return saved;
 }
 function deleteSaveItem(id, testTF) {
- var copyOfSaved = JSON.parse(localStorage.saved);
- if (testTF || confirm('Are you sure you want to delete "' + copyOfSaved[id].name + '"?')) {
-   delete copyOfSaved[id];
-   localStorage.saved = JSON.stringify(copyOfSaved);
-   loadMemory();
-   toggleSaved(content.savedMenu);
-   return copyOfSaved;
- } else {
-   return copyOfSaved;
- }
+  g.userSaveButtonListenerExists = false;
+  var copyOfSaved = JSON.parse(localStorage.saved);
+  if (testTF || confirm('Are you sure you want to delete "' + copyOfSaved[id].name + '"?')) {
+    delete copyOfSaved[id];
+    localStorage.saved = JSON.stringify(copyOfSaved);
+    loadMemory();
+    toggleSaved(content.savedMenu);
+    return copyOfSaved;
+  } else {
+    return copyOfSaved;
+  }
 }
 function simulateFirstVisit(runTF) {
  if (runTF) {
@@ -277,7 +278,7 @@ function subRandomIntForDice(str) {
 
 // functions for displaying data
 function toggleSaved(override) {
-    if (g.contentStatus === content.calculator || override === content.savedMenu) {
+  if (g.contentStatus === content.calculator || override === content.savedMenu) {
     printToInnerHTML('calcHolder', content.savedMenu, true);
     printToInnerHTML('savedBtn', 'calc', true);
     addSaveItemListeners();
