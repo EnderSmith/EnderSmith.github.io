@@ -2,7 +2,7 @@ document.addEventListener('DOMContentLoaded', function() {
   addRollBarListeners();
   printToInnerHTML('calcHolder', content.calculator, true);
   addCalculatorListeners();
-  simulateFirstVisit(true);
+  simulateFirstVisit();
   checkMemory();
   // new SaveItem('maul', 'maul', '2d6');
 });
@@ -12,7 +12,8 @@ var g = {
   diceNameArray: ['d100', 'd20', 'd12', 'd10', 'd8', 'd6', 'd4', 'd2', 'd1'],
   sumArray: [],
   sumIndex: 0,
-  contentStatus: content.calculator
+  contentStatus: content.calculator,
+  userSaveButtonListenerExists: false
 }
 
 // prototype listeners
@@ -35,6 +36,7 @@ function SaveItemListeners(id, rollArray) {
     g.sumIndex = g.sumArray.length - 1;
     var output = sumArrayToDisplay(rollArray);
     printToInnerHTML('dispIn', output, true);
+    displayUserSaveButton();
   });
   document.getElementById('mod_' + id).addEventListener('click', function() {
     comingSoon();
@@ -77,6 +79,7 @@ function addOperatorKeyListeners() {
 function addRollBarListeners() {
   document.getElementById('clrBtn').addEventListener('click', function() {
     clearScreen();
+    displayUserSaveButton();
   });
   document.getElementById('rollBtn').addEventListener('click', function() {
     roll(g.sumArray);
@@ -93,21 +96,38 @@ function addSaveItemListeners() {
       new SaveItemListeners(saved[saved_props[i]].id, saved[saved_props[i]].rollArray);
     }
 }
+function addUserSaveButtonListener() {
+  document.getElementById('userSaveButton').addEventListener('click', function() {
+    var idNumber = (Object.keys(JSON.parse(localStorage.saved))).length + 1;
+    var name = prompt('Save ' + sumArrayToDisplay(g.sumArray) + ' as:', 'roll' + idNumber);
+    if (name == null) {
+      return;
+    }
+    if (name === '') {
+      alert('Oops! You need to enter a name!');
+      return;
+    }
+    var id = 'saveItem' + idNumber;
+    var output = new SaveItem(id, name, g.sumArray);
+    return output;
+  });
+}
 
 // -- testable functions --
 
 // memory
 function SaveItem(id, name, rollArray) {
- var copyOfSaved = JSON.parse(localStorage.saved);
- copyOfSaved[id] = {
+  var copyOfSaved = JSON.parse(localStorage.saved);
+  copyOfSaved[id] = {
    "id": id,
    "name": name,
    "rollArray": rollArray
- }
- localStorage.saved = JSON.stringify(copyOfSaved);
- loadMemory();
- // SaveItemListeners(copyOfSaved[id].id, copyOfSaved[id].rollArray);
- return copyOfSaved[id];
+  }
+  localStorage.saved = JSON.stringify(copyOfSaved);
+  loadMemory();
+  toggleSaved(content.savedMenu);
+  // SaveItemListeners(copyOfSaved[id].id, copyOfSaved[id].rollArray);
+  return copyOfSaved[id];
 }
 
 function checkMemory() {
@@ -140,7 +160,9 @@ function loadMemory() {
                      "</button>" +
                    "</div>";
    }
-   savedMenu += "<button class='btn new saveItem col-m-12 col-t-12 col-12' id='newSave'>+</button></div>";
+   savedMenu +=    "<div id='userSaveButton'>" +
+                   "</div>" +
+                 "</div>";
 
    content.savedMenu = savedMenu;
    return savedMenu;
@@ -155,10 +177,8 @@ function deleteSaveItem(id, testTF) {
  if (testTF || confirm('Are you sure you want to delete "' + copyOfSaved[id].name + '"?')) {
    delete copyOfSaved[id];
    localStorage.saved = JSON.stringify(copyOfSaved);
-   if (g.contentStatus == content.saved) {
-        document.getElementById('row_' + id).style.display = "none";
-   }
    loadMemory();
+   toggleSaved(content.savedMenu);
    return copyOfSaved;
  } else {
    return copyOfSaved;
@@ -256,14 +276,15 @@ function subRandomIntForDice(str) {
 }
 
 // functions for displaying data
-function toggleSaved() {
-  if (g.contentStatus === content.calculator) {
+function toggleSaved(override) {
+    if (g.contentStatus === content.calculator || override === content.savedMenu) {
     printToInnerHTML('calcHolder', content.savedMenu, true);
     printToInnerHTML('savedBtn', 'calc', true);
     addSaveItemListeners();
     content.savedMenu = document.getElementById('calcHolder').innerHTML;
     g.contentStatus = content.savedMenu;
-  } else if (g.contentStatus === content.savedMenu) {
+    displayUserSaveButton();
+  } else if (g.contentStatus === content.savedMenu || override === content.calculator) {
     printToInnerHTML('calcHolder', content.calculator, true);
     printToInnerHTML('savedBtn', 'saved', true);
     addCalculatorListeners();
@@ -294,6 +315,20 @@ function clearSumArray() {
   g.sumArray.length = 0;
   var testOutput = [g.sumArray.length, g.sumIndex];
   return testOutput.toString();
+}
+function displayUserSaveButton() {
+  if (g.contentStatus === content.savedMenu) {
+    if (g.sumArray.length !== 0) {
+      var saveText = sumArrayToDisplay(g.sumArray);
+      printToInnerHTML('userSaveButton', "<button class='btn new saveItem col-m-12 col-t-12 col-12' id='newSave'>save: " + saveText + "</button>", true);
+      if (!g.alreadyListening) {
+        addUserSaveButtonListener();
+      }
+      return saveText;
+    }
+    printToInnerHTML('userSaveButton', "", true);
+  }
+  return false;
 }
 
 // main
