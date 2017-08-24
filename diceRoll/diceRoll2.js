@@ -67,7 +67,7 @@ function Context(content, preloadedSaveItems) {
     },
     display: function(id) {
       return this.style(id).display;
-    }
+    },
     hide: function(id) {
       this.display(id) = 'none';
     },
