@@ -65,20 +65,23 @@ function Context(content, preloadedSaveItems) {
         return eval(target);
       }
     },
+    display: function(id) {
+      return this.style(id).display;
+    }
     hide: function(id) {
-      this.style(id).display = 'none';
+      this.display(id) = 'none';
     },
     show: function(id) {
-      this.style(id).display = '';
+      this.display(id) = '';
     },
     swap: function(id, swapId) {
-      if (this.style(id).display === 'none') {
+      if (this.display(id) === 'none') {
         this.show(id);
       } else {
         this.hide(id);
       }
       if (arguments.length > 1) {
-        if (this.style(id).display === '') {
+        if (this.display(id) === '') {
           this.hide(swapId);
         } else {
           this.show(swapId);
