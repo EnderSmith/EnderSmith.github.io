@@ -1,395 +1,445 @@
 document.addEventListener('DOMContentLoaded', function() {
-  addRollBarListeners();
-  printToInnerHTML('calcHolder', content.calculator, true);
-  addCalculatorListeners();
-  simulateFirstVisit();
-  checkMemory();
-  // new SaveItem('maul', 'maul', '2d6');
+  var context = new Context(content, preloadedSaveItems);
+  window.app = new App(context);
+  window.app.run();
 });
 
 // global variables
-var g = {
-  diceNameArray: ['d100', 'd20', 'd12', 'd10', 'd8', 'd6', 'd4', 'd2', 'd1'],
-  sumArray: [],
-  sumIndex: 0,
-  contentStatus: content.calculator,
-  userSaveButtonListenerExists: false
-}
+function Context(content, preloadedSaveItems) {
+  return {
+    diceNameArray: ['d100', 'd20', 'd12', 'd10', 'd8', 'd6', 'd4', 'd2', 'd1'],
+    sumArray: [],
+    sumIndex: 0,
+    preloadedSaveItems: preloadedSaveItems,
+    content: content,
+    contentStatus: content.calculator,
+    listeners: {},
+    //TODO: this needs to be depricated:
+    userSaveButtonListenerExists: false,
 
-// prototype listeners
-function NumberKeyListener(id) {
-  document.getElementById(id).addEventListener('click', function() {
-    var output = id.replace('num', '');
-    keypadPress(output);
-  });
-}
-function DiceKeyListener(id) {
-  document.getElementById(id).addEventListener('click', function() {
-    var output = id;
-    keypadPress(output);
-  });
-}
-function SaveItemListeners(id, rollArray) {
-  document.getElementById(id).addEventListener('click', function() {
-    var saved = JSON.parse(localStorage.saved);
-    g.sumArray = saved[id].rollArray;
-    g.sumIndex = g.sumArray.length - 1;
-    var output = sumArrayToDisplay(rollArray);
-    printToInnerHTML('dispIn', output, true);
-    displayUserSaveButton();
-  });
-  document.getElementById('mod_' + id).addEventListener('click', function() {
-    comingSoon();
-    return;
-  });
-  document.getElementById('delete_' + id).addEventListener('click', function() {
-    deleteSaveItem(id);
-    return;
-  });
-}
-
-// functions for adding listeners
-function addCalculatorListeners() {
-  addNumberKeyListeners();
-  addDiceKeyListeners();
-  addOperatorKeyListeners();
-}
-function addNumberKeyListeners() {
-  for (var i = 0; i < 10; i++) {
-    var id = "num" + i;
-    new NumberKeyListener(id);
-  }
-}
-function addDiceKeyListeners() {
-  for (var i = 0; i < 8; i++) {
-    var id = g.diceNameArray[i];
-    new DiceKeyListener(id);
-  }
-}
-function addOperatorKeyListeners() {
-  document.getElementById('num+').addEventListener('click', function() {
-    var output = '+';
-    keypadPress(output);
-  });
-  document.getElementById('num-').addEventListener('click', function() {
-    var output = '-';
-    keypadPress(output);
-  });
-}
-function addRollBarListeners() {
-  document.getElementById('clrBtn').addEventListener('click', function() {
-    clearScreen();
-    displayUserSaveButton();
-  });
-  document.getElementById('rollBtn').addEventListener('click', function() {
-    roll(g.sumArray);
-  });
-  document.getElementById('savedBtn').addEventListener('click', function() {
-    toggleSaved();
-  })
-}
-function addSaveItemListeners() {
-  var saved = JSON.parse(localStorage.saved);
-  var saved_props = (Object.getOwnPropertyNames(saved));
-    for (var i = 0; i < saved_props.length; i++) {
-
-      new SaveItemListeners(saved[saved_props[i]].id, saved[saved_props[i]].rollArray);
+    alert: function(message) {
+      alert(message);
+    },
+    confirm: function(message) {
+      return confirm(message);
+    },
+    storage: function() {
+      return localStorage;
+    },
+    elem: function(id) {
+      return document.getElementById(id);
+    },
+    attach: function(id, event, action) {
+      var key = id + '_' + event;
+      this.listeners[key] = new Listener(id, event, action, this);
+    },
+    detach: function(id, event) {
+      var listener = this.listeners[key];
+      if (listener) {
+        this.listeners[key].detach();
+      }
+    },
+    style: function(id) {
+      return this.elem(id).style;
+    },
+    html: function(id, html, append) {
+      var element = this.elem(id);
+      if (arguments.length === 1) {
+        return element.innerHTML;
+      } else {
+        if (append) {
+          element.innerHTML += html;
+        } else {
+          element.innerHTML = html;
+        }
+      }
+    },
+    eval: function(target, onerror) {
+      if (onerror) {
+        try {
+          return eval(target);
+        } catch (ex) {
+          onerror(ex);
+        }
+      } else {
+        return eval(target);
+      }
     }
-}
-function addUserSaveButtonListener() {
-  document.getElementById('userSaveButton').addEventListener('click', function() {
-    var idNumber = (Object.keys(JSON.parse(localStorage.saved))).length + 1;
-    var name = prompt('Save ' + sumArrayToDisplay(g.sumArray) + ' as:', 'roll' + idNumber);
-    if (name == null) {
-      return;
-    }
-    if (name === '') {
-      alert('Oops! You need to enter a name!');
-      return;
-    }
-    var id = 'saveItem' + idNumber;
-    var output = new SaveItem(id, name, g.sumArray);
-    return output;
-  });
+  };
 }
 
-// -- testable functions --
-
-// memory
-function SaveItem(id, name, rollArray) {
-  var copyOfSaved = JSON.parse(localStorage.saved);
-  copyOfSaved[id] = {
-   "id": id,
-   "name": name,
-   "rollArray": rollArray
-  }
-  localStorage.saved = JSON.stringify(copyOfSaved);
-  loadMemory();
-  toggleSaved(content.savedMenu);
-  // SaveItemListeners(copyOfSaved[id].id, copyOfSaved[id].rollArray);
-  return copyOfSaved[id];
+function Listener(id, event, action, context) {
+  this.id = id;
+  this.context = context;
+  this.event = 'click';
+  this.action = action;
+  this.exec = function() {
+    return this.action();
+  };
+  this.detach = function() {
+    this.context.elem(id).removeEventListener(this.event, this.exec.bind(this));
+  };
+  this.context.elem(id).addEventListener(this.event, this.exec.bind(this));
 }
 
-function checkMemory() {
- if (localStorage.visited) {
-   loadMemory();
- } else {
-   localStorage.visited = true;
-   restoreDefaultSaveItems();
-   loadMemory();
- }
- return localStorage.visited;
-}
-function loadMemory() {
- var savedMenu = "<div id='savedMenu'>";
- var saved = JSON.parse(localStorage.saved);
- var saved_props = (Object.getOwnPropertyNames(saved));
-   for (var i = 0; i < saved_props.length; i++) {
-     savedMenu += "<div class='row' id='row_" + saved[saved_props[i]].id + "'>" +
-                     "<button class='btn saveItem col-m-8 col-t-8 col-8' id='" +
-                       saved[saved_props[i]].id + "'>" +
-                         saved[saved_props[i]].name + ": " + sumArrayToDisplay(saved[saved_props[i]].rollArray) +
-                     "</button>" +
-                     "<button class='btn modify saveItem col-m-2 col-t-2 col-2' id='" +
-                       "mod_" + saved[saved_props[i]].id + "'>" +
-                       "mod" +
-                     "</button>" +
-                     "<button class='btn delete saveItem col-m-2 col-t-2 col-2' id='" +
-                       "delete_" + saved[saved_props[i]].id + "'>" +
-                       "X" +
-                     "</button>" +
-                   "</div>";
-   }
-   savedMenu +=    "<div id='userSaveButton'>" +
-                   "</div>" +
-                 "</div>";
-
-   content.savedMenu = savedMenu;
-   return savedMenu;
-}
-function restoreDefaultSaveItems() {
- var saved = preloaded;
- localStorage.saved = JSON.stringify(saved);
- return saved;
-}
-function deleteSaveItem(id, testTF) {
-  g.userSaveButtonListenerExists = false;
-  var copyOfSaved = JSON.parse(localStorage.saved);
-  if (testTF || confirm('Are you sure you want to delete "' + copyOfSaved[id].name + '"?')) {
-    delete copyOfSaved[id];
-    localStorage.saved = JSON.stringify(copyOfSaved);
-    loadMemory();
-    toggleSaved(content.savedMenu);
-    return copyOfSaved;
-  } else {
-    return copyOfSaved;
-  }
-}
-function simulateFirstVisit(runTF) {
- if (runTF) {
-   localStorage.removeItem('visited');
-   localStorage.removeItem('saved');
-   localStorage.removeItem('savedMenu');
-   return JSON.stringify(localStorage);
- } else {return runTF;}
-}
-
-// data manipulation
 function Addend() {
   this.count = 0;
   this.dn = '';
   this.negative = false;
+};
+
+function SaveItem(id, name, rollArray) {
+  return {
+    "id": id,
+    "name": name,
+    "rollArray": rollArray
+  };
 }
 
-function addendChange(input, targetAddend, newTF) {
-  if (newTF) { targetAddend = new Addend; }
-  var output = targetAddend;
-  if (g.diceNameArray.indexOf(input) > -1) {
-    output.dn = input;
-  } else if (!isNaN(input)) {
-    output.count = input;
-  } else if (input == '-') {
-    output.negative = true;
-  } else if (input == '+') {
-    output.negative = false;
-  }
-  // console.log(output);
-  return output;
-}
-function addendToDisplay(addend) {
-  var display;
-  if (addend.dn === '') {
-    display = addend.count;
-  } else {
-    display = addend.count + addend.dn;
-  }
-  if (addend.negative === true) {
-      display = "-" + display;
-  }
-  // console.log(display);
-  return display;
-}
-function sumArrayToDisplay(sumArray) {
-  var display = addendToDisplay(sumArray[0]);
-  for (var i = 1; i < sumArray.length; i++) {
-    if (sumArray[i].negative === false) {
-      display += '+'
-    }
-    display += addendToDisplay(sumArray[i]);
-  }
-  return display;
-}
-function addendExpand(addend) {
-  var expanded = '';
-  if (addend.dn != '') {
-    for (var i = 0; i < addend.count; i++) {
-      if (addend.negative == false) { expanded += '+' + addend.dn; }
-      else { expanded += '-' + addend.dn; }
-    }
-  } else {
-    expanded = addend.count;
-    if (addend.negative == false) { expanded = '+' + expanded; }
-    else { expanded = '-' + expanded; }
-  }
-  return expanded;
-}
-function sumArrayExpand(sumArray) {
-  var expanded = '';
-  for (var i = 0; i < sumArray.length; i++) {
-    expanded += addendExpand(sumArray[i]);
-  }
-  if (expanded.indexOf('+') == 0) { expanded = expanded.slice(1); }
-  return expanded;
-}
-function randomIntByDice(dn) {
-  var numberOfSides = dn.replace('d', '');
-  var randomInt = Math.floor((Math.random() * numberOfSides) + 1);
-  return randomInt;
-}
-function subRandomIntForDice(str) {
-  for (var i = 0; i < g.diceNameArray.length; i++) {
-    var currentDice = g.diceNameArray[i];
-    for (var t = true; t !=false; t = str.includes(currentDice) ) {
-      str = str.replace(currentDice, '(' + randomIntByDice(currentDice) + ')');
-    }
-  }
-  return str;
-}
+function App(context) {
+  return {
+    context: context,
 
-// functions for displaying data
-function toggleSaved(override) {
-  if (g.contentStatus === content.calculator || override === content.savedMenu) {
-    printToInnerHTML('calcHolder', content.savedMenu, true);
-    printToInnerHTML('savedBtn', 'calc', true);
-    addSaveItemListeners();
-    content.savedMenu = document.getElementById('calcHolder').innerHTML;
-    g.contentStatus = content.savedMenu;
-    displayUserSaveButton();
-  } else if (g.contentStatus === content.savedMenu || override === content.calculator) {
-    printToInnerHTML('calcHolder', content.calculator, true);
-    printToInnerHTML('savedBtn', 'saved', true);
-    addCalculatorListeners();
-    g.userSaveButtonListenerExists = false;
-    g.contentStatus = content.calculator;
-  }
-  return g.contentStatus;
-}
-function printToInnerHTML(id, str, replaceTF) {
-  if (replaceTF != true) {
-    document.getElementById(id).innerHTML += str;
-  } else {
-    document.getElementById(id).innerHTML = str;
-  }
-  return str;
-}
-function clearScreen(override) {
-  if (document.getElementById('dispIn').innerHTML == '' || override == 'dispOut') {
-    printToInnerHTML('dispOut', '', true);
-    clearSumArray();
-  } else if (document.getElementById('dispIn').innerHTML != '' || override == 'dispIn') {
-    printToInnerHTML('dispIn', '', true);
-    clearSumArray();
-  }
-  return '';
-}
-function clearSumArray() {
-  g.sumIndex = 0;
-  g.sumArray.length = 0;
-  var testOutput = [g.sumArray.length, g.sumIndex];
-  return testOutput.toString();
-}
-function displayUserSaveButton() {
-  if (g.contentStatus === content.savedMenu) {
-    if (g.sumArray.length !== 0) {
-      var saveText = sumArrayToDisplay(g.sumArray);
-      printToInnerHTML('userSaveButton', "<button class='btn new saveItem col-m-12 col-t-12 col-12' id='newSave'>save: " + saveText + "</button>", true);
-      if (!g.userSaveButtonListenerExists) {
-        addUserSaveButtonListener();
-        g.userSaveButtonListenerExists = true;
+    run: function() {
+      this.addRollBarListeners();
+      //TODO: depricate this:
+      this.context.html('calcHolder', this.context.content.calculator, false);
+      this.addCalculatorListeners();
+      this.simulateFirstVisit(true);
+      this.checkMemory();
+    },
+
+    saveItemPress: function(id, rollArray) {
+      var saved = JSON.parse(this.context.storage().saved);
+      this.context.sumArray = saved[id].rollArray;
+      this.context.sumIndex = this.context.sumArray.length - 1;
+      var output = this.sumArrayToDisplay(rollArray);
+      this.context.html('dispIn', output, false);
+      //TODO: depricate:
+      this.displayUserSaveButton();
+    },
+    userSaveButtonPress: function() {
+      var idNumber = (Object.keys(JSON.parse(this.context.storage.saved))).length + 1;
+      var name = prompt('Save ' + this.sumArrayToDisplay(this.context.sumArray) + ' as:', 'roll' + idNumber);
+      if (name == null) {
+        return;
       }
-      return saveText;
+      if (name === '') {
+        this.context.alert('Oops! You need to enter a name!');
+        return;
+      }
+      var id = 'saveItem' + idNumber;
+      var output = new SaveItem(id, name, this.context.sumArray);
+      return output;
+    },
+
+    // functions for adding listeners
+    addCalculatorListeners: function() {
+      this.addNumberKeyListeners();
+      this.addDiceKeyListeners();
+      this.addOperatorKeyListeners();
+    },
+    addNumberKeyListeners: function() {
+      for (var i = 0; i < 10; i++) {
+        var id = "num" + i;
+        this.context.attach(id, 'click', this.keypadPress.bind(this, i));
+      }
+    },
+    addDiceKeyListeners: function() {
+      for (var i = 0; i < 8; i++) {
+        var id = this.context.diceNameArray[i];
+        this.context.attach(id, 'click', this.keypadPress.bind(this, id));
+      }
+    },
+    addOperatorKeyListeners: function() {
+      this.context.attach('num+', 'click', this.keypadPress.bind(this, '+'));
+      this.context.attach('num-', 'click', this.keypadPress.bind(this, '-'));
+    },
+    addRollBarListeners: function() {
+      this.context.attach('clrBtn', 'click', this.clearDisplay.bind(this));
+      this.context.attach('rollBtn', 'click', this.roll.bind(this, this.context.sumArray));
+      this.context.attach('savedBtn', 'click', this.toggleSaved.bind(this));
+    },
+    addSaveItemListeners: function() {
+      var saved = JSON.parse(this.context.storage().saved);
+      var saved_props = (Object.getOwnPropertyNames(saved));
+      for (var i = 0; i < saved_props.length; i++) {
+        var prop = saved[saved_props[i]];
+        var id = prop.id;
+        var rollArray = prop.rollArray;
+
+        this.context.attach(id, 'click', this.saveItemPress.bind(this, id, rollArray));
+        this.context.attach('mod_' + id, 'click', this.comingSoon.bind(this));
+        this.context.attach('delete_' + id, 'click', this.deleteSaveItem.bind(this, id));
+      }
+    },
+    addUserSaveButtonListener: function() {
+      this.context.attach('userSaveButton', 'click', this.userSaveButtonPress.bind(this));
+    },
+
+    // memory
+    storeSaveItem: function(id, name, rollArray) {
+      var saved = JSON.parse(localStorage.saved);
+      saved[id] = new SaveItem(id, name, rollArray);
+      this.context.storage().saved = JSON.stringify(saved);
+      //TODO: depricate:
+      loadMemory();
+      //TODO: depricate:
+      toggleSaved(content.savedMenu);
+      return this.saved[id];
+    },
+    checkMemory: function() {
+      if (this.context.storage().visited) {
+        this.loadMemory();
+      } else {
+        this.context.storage().visited = true;
+        this.restoreDefaultSaveItems();
+        this.loadMemory();
+      }
+      return this.context.storage().visited;
+    },
+    loadMemory: function() {
+      var savedMenu = "<div id='savedMenu'>";
+      var saved = JSON.parse(this.context.storage().saved);
+      var saved_props = (Object.getOwnPropertyNames(saved));
+        for (var i = 0; i < saved_props.length; i++) {
+          var prop = saved[saved_props[i]];
+          savedMenu += "<div class='row' id='row_" + prop.id + "'>" +
+            "<button class='btn saveItem col-m-8 col-t-8 col-8' id='" +
+            prop.id + "'>" +
+            prop.name + ": " + this.sumArrayToDisplay(prop.rollArray) +
+            "</button>" +
+            "<button class='btn modify saveItem col-m-2 col-t-2 col-2' id='" +
+            "mod_" + prop.id + "'>" +
+            "mod" +
+            "</button>" +
+            "<button class='btn delete saveItem col-m-2 col-t-2 col-2' id='" +
+            "delete_" + prop.id + "'>" +
+            "X" +
+            "</button>" +
+            "</div>";
+      }
+      savedMenu += "<div id='userSaveButton'>" +
+        "</div>" +
+        "</div>";
+
+      this.context.content.savedMenu = savedMenu;
+      //TODO: depricate this:
+      this.context.contentStatus = savedMenu;
+      return savedMenu;
+    },
+    restoreDefaultSaveItems: function() {
+      var saved = this.context.preloadedSaveItems;
+      this.context.storage().saved = JSON.stringify(saved);
+      return saved;
+    },
+    deleteSaveItem: function(id) {
+      //TODO: depreicate:
+      this.context.userSaveButtonListenerExists = false;
+      var saved = JSON.parse(this.context.storage().saved);
+      var name = saved[id].name;
+      if (this.context.confirm('Are you sure you want to delete "' + name + '"?')) {
+        delete saved[id];
+        this.context.storage().saved = JSON.stringify(saved);
+        //TODO: depreicate:
+        loadMemory();
+        //TODO: depreicate:
+        toggleSaved(content.savedMenu);
+        return saved;
+      } else {
+        return saved;
+      }
+    },
+    simulateFirstVisit: function() {
+       this.context.storage().removeItem('visited');
+       this.context.storage().removeItem('saved');
+       this.context.storage().removeItem('savedMenu');
+       return JSON.stringify(this.context.storage());
+    },
+
+    // data manipulation
+    addendChange: function(input, targetAddend, first) {
+      if (first) { targetAddend = new Addend; }
+      var output = targetAddend;
+      if (this.context.diceNameArray.indexOf(input) > -1) {
+        output.dn = input;
+      } else if (!isNaN(input)) {
+        output.count = input;
+      } else if (input == '-') {
+        output.negative = true;
+      } else if (input == '+') {
+        output.negative = false;
+      }
+      return output;
+    },
+    addendToDisplay: function(addend) {
+      var display;
+      if (addend.dn === '') {
+        display = addend.count;
+      } else {
+        display = addend.count + addend.dn;
+      }
+      if (addend.negative === true) {
+          display = "-" + display;
+      }
+      return display;
+    },
+    sumArrayToDisplay: function(sumArray) {
+      var display = this.addendToDisplay(sumArray[0]);
+      for (var i = 1; i < sumArray.length; i++) {
+        if (sumArray[i].negative === false) {
+          display += '+'
+        }
+        display += this.addendToDisplay(sumArray[i]);
+      }
+      return display;
+    },
+    addendExpand: function(addend) {
+      var expanded = '';
+      if (addend.dn != '') {
+        for (var i = 0; i < addend.count; i++) {
+          if (addend.negative == false) { expanded += '+' + addend.dn; }
+          else { expanded += '-' + addend.dn; }
+        }
+      } else {
+        expanded = addend.count;
+        if (addend.negative == false) { expanded = '+' + expanded; }
+        else { expanded = '-' + expanded; }
+      }
+      return expanded;
+    },
+    sumArrayExpand: function(sumArray) {
+      var expanded = '';
+      for (var i = 0; i < sumArray.length; i++) {
+        expanded += this.addendExpand(sumArray[i]);
+      }
+      if (expanded.indexOf('+') == 0) { expanded = expanded.slice(1); }
+      return expanded;
+    },
+    randomIntByDice: function(dn) {
+      var numberOfSides = dn.replace('d', '');
+      var randomInt = Math.floor((Math.random() * numberOfSides) + 1);
+      return randomInt;
+    },
+    subRandomIntForDice: function(string) {
+      for (var i = 0; i < this.context.diceNameArray.length; i++) {
+        var currentDice = this.context.diceNameArray[i];
+        for (var t = true; t !=false; t = string.includes(currentDice) ) {
+          string = string.replace(currentDice, '(' + this.randomIntByDice(currentDice) + ')');
+        }
+      }
+      return string;
+    },
+
+    // functions for displaying data
+    toggleSaved: function(override) {
+      if (this.context.contentStatus === this.context.content.calculator || override === this.context.content.savedMenu) {
+        this.context.html('calcHolder', content.savedMenu, false);
+        this.context.html('savedBtn', 'calc', false);
+        //TODO: depricate:
+        this.addSaveItemListeners();
+        this.context.content.savedMenu = this.context.html('calcHolder');
+        this.context.contentStatus = this.context.content.savedMenu;
+        this.displayUserSaveButton();
+      } else if (this.context.contentStatus === this.context.content.savedMenu || override === this.context.content.calculator) {
+        this.context.html('calcHolder', content.calculator, false);
+        this.context.html('savedBtn', 'saved', false);
+        this.addCalculatorListeners();
+        this.context.userSaveButtonListenerExists = false;
+        this.context.contentStatus = content.calculator;
+      }
+      return this.context.contentStatus;
+    },
+    clearDisplay: function(override) {
+      if (this.context.html('dispIn') === '' || override === 'dispOut') {
+        this.context.html('dispOut', '', false);
+        this.clearSumArray();
+      } else if (this.context.html('dispIn') !== '' || override === 'dispIn') {
+        this.context.html('dispIn', '', false);
+        this.clearSumArray();
+      }
+      return '';
+    },
+    clearSumArray: function() {
+      this.context.sumIndex = 0;
+      this.context.sumArray.length = 0;
+      var testOutput = [this.context.sumArray.length, this.context.sumIndex];
+      return testOutput.toString();
+    },
+    displayUserSaveButton: function() {
+      if (this.context.contentStatus === content.savedMenu) {
+        if (this.context.sumArray.length !== 0) {
+          var saveText = this.sumArrayToDisplay(this.context.sumArray);
+          this.context.html('userSaveButton', "<button class='btn new saveItem col-m-12 col-t-12 col-12' id='newSave'>save: " + saveText + "</button>", false);
+          if (!this.context.userSaveButtonListenerExists) {
+            this.addUserSaveButtonListener();
+            this.context.userSaveButtonListenerExists = true;
+          }
+          return saveText;
+        }
+        this.context.html('userSaveButton', "", false);
+      }
+      return false;
+    },
+
+    // main
+    keypadPress: function(input, testTF) {
+      // if sumArray is empty
+      if (this.context.sumArray.length === 0) {
+        this.context.sumArray[this.context.sumIndex] = this.addendChange(input, this.context.sumArray[this.context.sumIndex], true);
+        if (this.context.diceNameArray.indexOf(input) > -1) {
+          this.context.sumArray[0].count++;
+        }
+        // else if input is a dice...
+      } else if (this.context.diceNameArray.indexOf(input) > -1) {
+        // ...and input is not the same dice as current addend dice
+        if (input !== this.context.sumArray[this.context.sumIndex].dn && '' != this.context.sumArray[this.context.sumIndex].dn) {
+          this.context.sumIndex++
+          this.context.sumArray[this.context.sumIndex] = this.addendChange(input, this.context.sumArray[this.context.sumIndex], true);
+          this.context.sumArray[this.context.sumIndex].count++;
+          // ...and input is the same as current addend dice
+        } else if (input === this.context.sumArray[this.context.sumIndex].dn) {
+          this.context.sumArray[this.context.sumIndex].count++;
+          // ...and current addend has a count, but no dice
+        } else if (0 !== this.context.sumArray[this.context.sumIndex].count) {
+          this.context.sumArray[this.context.sumIndex] = this.addendChange(input, this.context.sumArray[this.context.sumIndex], false);
+          // ...and current addend has no count, and no dice
+        } else if (0 === this.context.sumArray[this.context.sumIndex].count) {
+          this.context.sumArray[this.context.sumIndex] = this.addendChange(input, this.context.sumArray[this.context.sumIndex], false);
+          this.context.sumArray[this.context.sumIndex].count++;
+        }
+        // else if input is a number...
+      } else if (!isNaN(input)) {
+        // ...and current addend has dice
+        if ('' !== this.context.sumArray[this.context.sumIndex].dn) {
+          this.context.sumIndex++;
+          this.context.sumArray[this.context.sumIndex] = this.addendChange(input, this.context.sumArray[this.context.sumIndex], true);
+          // ...and current addend has no dice
+        } else if ('' === this.context.sumArray[this.context.sumIndex].dn) {
+          this.context.sumArray[this.context.sumIndex].count = (10 * parseInt(this.context.sumArray[this.context.sumIndex].count)) + parseInt(input);
+        }
+        // else if input is + or - sign...
+      } else if (input === '+' || input === '-' ) {
+          this.context.sumIndex++;
+          this.context.sumArray[this.context.sumIndex] = this.addendChange(input, this.context.sumArray[this.context.sumIndex], true);
+      }
+      // console.log(this.context.sumArray);
+      var output = this.sumArrayToDisplay(this.context.sumArray);
+      this.context.html('dispIn', output, false);
+      return output;
+    },
+    roll: function(sumArray) {
+      var equation = this.sumArrayExpand(sumArray);
+      equation = this.subRandomIntForDice(equation);
+      var evaluation = eval(equation);
+      var output = evaluation + ' [' + equation + '] ' + '<br><br>' + document.getElementById('dispOut').innerHTML;
+      this.context.html('dispOut', output, false);
+      return output;
+    },
+
+    // incomplete
+    comingSoon: function() {
+      this.context.alert('this feature is coming soon!');
     }
-    printToInnerHTML('userSaveButton', "", true);
-  }
-  return false;
-}
-
-// main
-function keypadPress(input, testTF) {
-  // if sumArray is empty
-  if (g.sumArray.length == 0) {
-    g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], true);
-    if (g.diceNameArray.indexOf(input) > -1) { g.sumArray[0].count++; }
-    // else if input is a dice...
-  } else if (g.diceNameArray.indexOf(input) > -1) {
-    // ...and input is not the same dice as current addend dice
-    if (input != g.sumArray[g.sumIndex].dn && '' != g.sumArray[g.sumIndex].dn) {
-      g.sumIndex++
-      g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], true);
-      g.sumArray[g.sumIndex].count++;
-      // ...and input is the same as current addend dice
-    } else if (input == g.sumArray[g.sumIndex].dn) {
-      g.sumArray[g.sumIndex].count++;
-      // ...and current addend has a count, but no dice
-    } else if (0 != g.sumArray[g.sumIndex].count) {
-      g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], false);
-      // ...and current addend has no count, and no dice
-    } else if (0 == g.sumArray[g.sumIndex].count) {
-      g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], false);
-      g.sumArray[g.sumIndex].count++;
-    }
-    // else if input is a number...
-  } else if (!isNaN(input)) {
-    // ...and current addend has dice
-    if ('' != g.sumArray[g.sumIndex].dn) {
-      g.sumIndex++;
-      g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], true);
-      // ...and current addend has no dice
-    } else if ('' == g.sumArray[g.sumIndex].dn) {
-      g.sumArray[g.sumIndex].count = (10 * parseInt(g.sumArray[g.sumIndex].count)) + parseInt(input);
-    }
-    // else if input is + or - sign...
-  } else if (input == '+' || input == '-' ) {
-      g.sumIndex++;
-      g.sumArray[g.sumIndex] = addendChange(input, g.sumArray[g.sumIndex], true);
-  }
-  // console.log(g.sumArray);
-  var output = sumArrayToDisplay(g.sumArray);
-  printToInnerHTML('dispIn', output, true);
-
-  if (!testTF) { return output; }
-  else { var testOut = addendToDisplay(g.sumArray[g.sumIndex]); return testOut; }
-
-}
-function roll(sumArray) {
-  var equation = sumArrayExpand(sumArray);
-  equation = subRandomIntForDice(equation);
-  var evaluation = eval(equation);
-  var output = evaluation + ' [' + equation + '] ' + '<br><br>' + document.getElementById('dispOut').innerHTML;
-  printToInnerHTML('dispOut', output, true);
-  return output;
-}
-
-function comingSoon() {
-  alert('this feature is coming soon!');
+  };
 }
