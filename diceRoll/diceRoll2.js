@@ -64,6 +64,26 @@ function Context(content, preloadedSaveItems) {
       } else {
         return eval(target);
       }
+    },
+    hide: function(id) {
+      this.style(id).display = 'none';
+    },
+    show: function(id) {
+      this.style(id).display = '';
+    },
+    swap: function(id, swapId) {
+      if (this.style(id).display === 'none') {
+        this.show(id);
+      } else {
+        this.hide(id);
+      }
+      if (arguments.length > 1) {
+        if (this.style(id).display === '') {
+          this.hide(swapId);
+        } else {
+          this.show(swapId);
+        }
+      }
     }
   };
 }
@@ -103,7 +123,7 @@ function App(context) {
     run: function() {
       this.addRollBarListeners();
       //TODO: depricate this:
-      this.context.html('calcHolder', this.context.content.calculator, false);
+      // this.context.html('calcHolder', this.context.content.calculator, false);
       this.addCalculatorListeners();
       this.simulateFirstVisit(true);
       this.checkMemory();
@@ -243,9 +263,9 @@ function App(context) {
         delete saved[id];
         this.context.storage().saved = JSON.stringify(saved);
         //TODO: depreicate:
-        loadMemory();
+        this.loadMemory();
         //TODO: depreicate:
-        toggleSaved(content.savedMenu);
+        this.toggleSaved(content.savedMenu);
         return saved;
       } else {
         return saved;
