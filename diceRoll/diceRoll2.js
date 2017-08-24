@@ -119,6 +119,7 @@ function App(context) {
       this.displayUserSaveButton();
     },
     userSaveButtonPress: function() {
+      //TODO: running into a bug here, where the storage is undefined.
       var idNumber = (Object.keys(JSON.parse(this.context.storage.saved))).length + 1;
       var name = prompt('Save ' + this.sumArrayToDisplay(this.context.sumArray) + ' as:', 'roll' + idNumber);
       if (name == null) {
@@ -367,6 +368,7 @@ function App(context) {
       return testOutput.toString();
     },
     displayUserSaveButton: function() {
+      // TODO: this method is based on material that needs to be depricated. there are bugs with it, but I think those are okay, since we need to rebuild this anyway
       if (this.context.contentStatus === content.savedMenu) {
         if (this.context.sumArray.length !== 0) {
           var saveText = this.sumArrayToDisplay(this.context.sumArray);
