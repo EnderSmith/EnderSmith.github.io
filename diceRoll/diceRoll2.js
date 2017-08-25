@@ -14,8 +14,8 @@ function Context(content, preloadedSaveItems) {
     content: content,
     contentStatus: content.calculator,
     listeners: {},
-    //TODO: this needs to be depricated:
-    userSaveButtonListenerExists: false,
+    // //TODO: this needs to be depricated:
+    // userSaveButtonListenerExists: false,
 
     alert: function(message) {
       alert(message);
@@ -65,23 +65,20 @@ function Context(content, preloadedSaveItems) {
         return eval(target);
       }
     },
-    display: function(id) {
-      return this.style(id).display;
-    },
     hide: function(id) {
-      this.display(id) = 'none';
+      this.style(id).display = 'none';
     },
     show: function(id) {
-      this.display(id) = '';
+      this.style(id).display = '';
     },
     swap: function(id, swapId) {
-      if (this.display(id) === 'none') {
+      if (this.style(id).display === 'none') {
         this.show(id);
       } else {
         this.hide(id);
       }
       if (arguments.length > 1) {
-        if (this.display(id) === '') {
+        if (this.style(id).display === '') {
           this.hide(swapId);
         } else {
           this.show(swapId);
@@ -125,11 +122,10 @@ function App(context) {
 
     run: function() {
       this.addRollBarListeners();
-      //TODO: depricate this:
-      // this.context.html('calcHolder', this.context.content.calculator, false);
       this.addCalculatorListeners();
       this.simulateFirstVisit(true);
       this.checkMemory();
+      this.toggleMenu();
     },
 
     saveItemPress: function(id, rollArray) {
@@ -182,7 +178,7 @@ function App(context) {
     addRollBarListeners: function() {
       this.context.attach('clrBtn', 'click', this.clearDisplay.bind(this));
       this.context.attach('rollBtn', 'click', this.roll.bind(this, this.context.sumArray));
-      this.context.attach('savedBtn', 'click', this.toggleSaved.bind(this));
+      this.context.attach('toggleMenuBtn', 'click', this.toggleMenu.bind(this));
     },
     addSaveItemListeners: function() {
       var saved = JSON.parse(this.context.storage().saved);
@@ -209,7 +205,7 @@ function App(context) {
       //TODO: depricate:
       loadMemory();
       //TODO: depricate:
-      toggleSaved(content.savedMenu);
+      toggleMenu(content.savedMenu);
       return this.saved[id];
     },
     checkMemory: function() {
@@ -223,7 +219,7 @@ function App(context) {
       return this.context.storage().visited;
     },
     loadMemory: function() {
-      var savedMenu = "<div id='savedMenu'>";
+      var savedMenu = '';
       var saved = JSON.parse(this.context.storage().saved);
       var saved_props = (Object.getOwnPropertyNames(saved));
         for (var i = 0; i < saved_props.length; i++) {
@@ -243,9 +239,7 @@ function App(context) {
             "</button>" +
             "</div>";
       }
-      savedMenu += "<div id='userSaveButton'>" +
-        "</div>" +
-        "</div>";
+      savedMenu += "</div>";
 
       this.context.content.savedMenu = savedMenu;
       //TODO: depricate this:
@@ -268,7 +262,7 @@ function App(context) {
         //TODO: depreicate:
         this.loadMemory();
         //TODO: depreicate:
-        this.toggleSaved(content.savedMenu);
+        this.toggleMenu(content.savedMenu);
         return saved;
       } else {
         return saved;
@@ -356,23 +350,8 @@ function App(context) {
     },
 
     // functions for displaying data
-    toggleSaved: function(override) {
-      if (this.context.contentStatus === this.context.content.calculator || override === this.context.content.savedMenu) {
-        this.context.html('calcHolder', content.savedMenu, false);
-        this.context.html('savedBtn', 'calc', false);
-        //TODO: depricate:
-        this.addSaveItemListeners();
-        this.context.content.savedMenu = this.context.html('calcHolder');
-        this.context.contentStatus = this.context.content.savedMenu;
-        this.displayUserSaveButton();
-      } else if (this.context.contentStatus === this.context.content.savedMenu || override === this.context.content.calculator) {
-        this.context.html('calcHolder', content.calculator, false);
-        this.context.html('savedBtn', 'saved', false);
-        this.addCalculatorListeners();
-        this.context.userSaveButtonListenerExists = false;
-        this.context.contentStatus = content.calculator;
-      }
-      return this.context.contentStatus;
+    toggleMenu: function(override) {
+      this.context.swap('savedMenu'/*, 'calculator'*/);
     },
     clearDisplay: function(override) {
       if (this.context.html('dispIn') === '' || override === 'dispOut') {
