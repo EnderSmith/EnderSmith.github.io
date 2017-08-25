@@ -12,10 +12,7 @@ function Context(content, preloadedSaveItems) {
     sumIndex: 0,
     preloadedSaveItems: preloadedSaveItems,
     content: content,
-    contentStatus: content.calculator,
     listeners: {},
-    // //TODO: this needs to be depricated:
-    // userSaveButtonListenerExists: false,
 
     alert: function(message) {
       alert(message);
@@ -123,9 +120,11 @@ function App(context) {
     run: function() {
       this.addRollBarListeners();
       this.addCalculatorListeners();
+      this.addUserSaveButtonListener();
       this.simulateFirstVisit(true);
       this.checkMemory();
       this.toggleMenu();
+      this.UserSaveButtonCheckDisplay();
     },
 
     saveItemPress: function(id, rollArray) {
@@ -138,8 +137,7 @@ function App(context) {
       this.displayUserSaveButton();
     },
     userSaveButtonPress: function() {
-      //TODO: running into a bug here, where the storage is undefined.
-      var idNumber = (Object.keys(JSON.parse(this.context.storage.saved))).length + 1;
+      var idNumber = (Object.keys(JSON.parse(this.context.storage().saved))).length + 1;
       var name = prompt('Save ' + this.sumArrayToDisplay(this.context.sumArray) + ' as:', 'roll' + idNumber);
       if (name == null) {
         return;
@@ -219,6 +217,7 @@ function App(context) {
       return this.context.storage().visited;
     },
     loadMemory: function() {
+      //TODO: refactor!
       var savedMenu = '';
       var saved = JSON.parse(this.context.storage().saved);
       var saved_props = (Object.getOwnPropertyNames(saved));
@@ -350,16 +349,23 @@ function App(context) {
     },
 
     // functions for displaying data
-    toggleMenu: function(override) {
-      this.context.swap('savedMenu'/*, 'calculator'*/);
+    toggleMenu: function() {
+      this.context.swap('savedMenu', 'calculator');
+      if (this.context.style('calculator').display === '') {
+        this.context.html('toggleMenuBtn', 'saved');
+      } else {
+        this.context.html('toggleMenuBtn', 'calc');
+      }
     },
     clearDisplay: function(override) {
       if (this.context.html('dispIn') === '' || override === 'dispOut') {
         this.context.html('dispOut', '', false);
         this.clearSumArray();
+        this.UserSaveButtonCheckDisplay();
       } else if (this.context.html('dispIn') !== '' || override === 'dispIn') {
         this.context.html('dispIn', '', false);
         this.clearSumArray();
+        this.UserSaveButtonCheckDisplay();
       }
       return '';
     },
@@ -369,25 +375,21 @@ function App(context) {
       var testOutput = [this.context.sumArray.length, this.context.sumIndex];
       return testOutput.toString();
     },
-    displayUserSaveButton: function() {
-      // TODO: this method is based on material that needs to be depricated. there are bugs with it, but I think those are okay, since we need to rebuild this anyway
-      if (this.context.contentStatus === content.savedMenu) {
-        if (this.context.sumArray.length !== 0) {
-          var saveText = this.sumArrayToDisplay(this.context.sumArray);
-          this.context.html('userSaveButton', "<button class='btn new saveItem col-m-12 col-t-12 col-12' id='newSave'>save: " + saveText + "</button>", false);
-          if (!this.context.userSaveButtonListenerExists) {
-            this.addUserSaveButtonListener();
-            this.context.userSaveButtonListenerExists = true;
-          }
-          return saveText;
-        }
-        this.context.html('userSaveButton', "", false);
+    UserSaveButtonCheckDisplay: function() {
+      if (this.context.html('dispIn') === '') {
+        this.context.hide('userSaveButtonHolder');
+      } else {
+        this.userSaveButtonText()
+        this.context.show('userSaveButtonHolder');
       }
-      return false;
+    },
+    userSaveButtonText: function() {
+      var userSaveText = this.sumArrayToDisplay(this.context.sumArray);
+      this.context.html('userSaveButton', 'save: ' + userSaveText);
     },
 
     // main
-    keypadPress: function(input, testTF) {
+    keypadPress: function(input) {
       // if sumArray is empty
       if (this.context.sumArray.length === 0) {
         this.context.sumArray[this.context.sumIndex] = this.addendChange(input, this.context.sumArray[this.context.sumIndex], true);
@@ -427,9 +429,9 @@ function App(context) {
           this.context.sumIndex++;
           this.context.sumArray[this.context.sumIndex] = this.addendChange(input, this.context.sumArray[this.context.sumIndex], true);
       }
-      // console.log(this.context.sumArray);
       var output = this.sumArrayToDisplay(this.context.sumArray);
       this.context.html('dispIn', output, false);
+      this.UserSaveButtonCheckDisplay();
       return output;
     },
     roll: function(sumArray) {
