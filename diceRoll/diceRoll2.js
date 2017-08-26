@@ -177,11 +177,13 @@ function App(context) {
     },
 
     // memory
-    simulateFirstVisit: function() {
-       this.context.storage().removeItem('visited');
-       this.context.storage().removeItem('saved');
-       this.context.storage().removeItem('savedMenu');
-       return JSON.stringify(this.context.storage());
+    simulateFirstVisit: function(run) {
+      if (run) {
+        this.context.storage().removeItem('visited');
+        this.context.storage().removeItem('saved');
+        this.context.storage().removeItem('savedMenu');
+        return JSON.stringify(this.context.storage());
+      }
     },
     checkMemory: function() {
       if (this.context.storage().visited) {
