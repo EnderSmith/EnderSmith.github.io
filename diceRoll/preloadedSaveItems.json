@@ -1,0 +1,35 @@
+preloadedSaveItems = {
+  "longsword": {
+    "id": "longsword",
+    "name": "longsword",
+    "rollArray": [
+      {
+        "count": 1,
+        "dn": "d8",
+        "negative": false
+      }
+    ]
+  },
+  "longsword_versa": {
+    "id": "longsword_versa",
+    "name": "longsword (versatile)",
+    "rollArray": [
+      {
+        "count": 1,
+        "dn": "d10",
+        "negative": false
+      }
+    ]
+  },
+  "greataxe": {
+    "id": "greataxe",
+    "name": "greataxe",
+    "rollArray": [
+      {
+        "count": 1,
+        "dn": "d12",
+        "negative": false
+      }
+    ]
+  }
+}
