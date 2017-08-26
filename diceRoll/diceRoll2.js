@@ -134,7 +134,7 @@ function App(context) {
       this.addRollBarListeners();
       this.addCalculatorListeners();
       this.addUserSaveButtonListener();
-      this.simulateFirstVisit(true);
+      this.simulateFirstVisit(false);
       this.checkMemory();
       this.toggleMenu();
       this.userSaveButtonCheckDisplay();
