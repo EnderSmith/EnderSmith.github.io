@@ -195,19 +195,6 @@ function runTests(runTF) {
 }
 
 function UnitTest(testName, functionToBeTested) {
-  this.testName = testName;
-  this.functionToBeTested = functionToBeTested;
-  this.report;
-  try {
-    this.functionReturned = functionToBeTested()
-    if (this.functionReturned !== true) {
-      throw '\t\tunexpected result: ' + this.functionReturned;
-    }
-    this.report = ' PASS';
-  }
-  catch(err) {
-    this.report = ' FAIL:\n' + err;
-  }
-  console.log('\t' + this.testName + this.report);
-  return this.testName + this.report;
+  this.context = context;
+  return;
 }
