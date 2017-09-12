@@ -164,7 +164,7 @@ function App(context) {
     },
     addRollBarListeners: function() {
       this.context.attach('clrBtn', 'click', this.clearDisplay.bind(this));
-      this.context.attach('rollBtn', 'click', this.rollPress.bind(this, this.context.sumArray));
+      this.context.attach('rollBtn', 'click', this.rollPress.bind(this));
       this.context.attach('toggleMenuBtn', 'click', this.toggleMenu.bind(this));
     },
     addUserSaveButtonListener: function() {
@@ -435,9 +435,15 @@ function App(context) {
       this.createSaveItem(id, name, this.context.sumArray);
     },
     rollPress: function(sumArray) {
-      var equation = this.sumArrayExpand(sumArray);
+      var sumArrayLocal;
+      if (arguments.length === 0) {
+        sumArrayLocal = this.context.sumArray;
+      } else {
+        sumArrayLocal = sumArray;
+      }
+      var equation = this.sumArrayExpand(sumArrayLocal);
       equation = this.subRandomIntForDice(equation);
-      var evaluation = eval(equation);
+      var evaluation = this.context.eval(equation);
       var output = evaluation + ' [' + equation + '] ' + '<br><br>' + document.getElementById('dispOut').innerHTML;
       this.context.html('dispOut', output, false);
       return output;
