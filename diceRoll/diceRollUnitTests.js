@@ -12,7 +12,6 @@ function runTests(runTF) {
     for (var i = 0; i < testArray.length; i++) {
       var context = new Context(preloadedSaveItems);
       var app = new App(context);
-      // app.run();
       var test = testArray[i];
       test.run(app, this);
       if (test.passed) {
@@ -31,11 +30,40 @@ function runTests(runTF) {
 
 function testList() {
   return [
-
+    new UnitTest('run()', function() {
+      this.called = {
+        addRollBarListeners: false,
+        addCalculatorListeners: false,
+        addUserSaveButtonListener: false,
+        simulateFirstVisit: false,
+        checkMemory: false,
+        toggleMenu: false,
+        userSaveButtonCheckDisplay: false,
+      }
+      for (functionName in this.called) {
+        placeHolder = new PlaceHolderFor(functionName, this.called);
+        app[functionName] = placeHolder.placeHolder;
+      };
+      app.run();
+      for (functionName in this.called) {
+        assert((this.called[functionName] === true), functionName);
+      }
+      return true;
+    }),
   ];
 }
 
-function assert(contition, message) {
+function PlaceHolderFor(functionName, calledObject) {
+  return {
+    functionName: functionName,
+    calledObject: calledObject,
+    placeHolder: function() {
+      calledObject[functionName] = true;
+    }
+  }
+}
+
+function assert(condition, message) {
   if (!condition) {
     message = message || 'Assertion failed';
     if (typeof Error !== 'undefined') {
