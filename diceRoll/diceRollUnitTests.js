@@ -33,6 +33,13 @@ function CheckCalledListFor(functionName, calledObject) {
     }
   }
 }
+function placeHolderForAttach(listenerPlaceHolders, app, test) {
+  app.context.attach = function(id, event, action) {
+    listenerPlaceHolders[id] = {};
+    listenerPlaceHolders[id].event = event;
+    listenerPlaceHolders[id].action = action;
+  };
+}
 
 function assert(condition, message) {
   if (!condition) {
@@ -88,11 +95,7 @@ function testList() {
     new UnitTest('addNumberKeyListeners()', function(app, test) {
       var listenerPlaceHolders = {};
       var expectedListenerPlaceHolderKeys = ["num0","num1","num2","num3","num4","num5","num6","num7","num8","num9"];
-      app.context.attach = function(id, event, action) {
-        listenerPlaceHolders[id] = {};
-        listenerPlaceHolders[id].event = event;
-        listenerPlaceHolders[id].action = action;
-      };
+      placeHolderForAttach(listenerPlaceHolders, app, test);
       app.addNumberKeyListeners();
       var listenerPlaceHolderKeys = Object.getOwnPropertyNames(listenerPlaceHolders);
       assert((JSON.stringify(listenerPlaceHolderKeys) === JSON.stringify(expectedListenerPlaceHolderKeys)), 'failed to add numKey listener(s)');
@@ -104,14 +107,22 @@ function testList() {
     new UnitTest('addDiceKeyListeners()', function(app, test) {
       var listenerPlaceHolders = {};
       var expectedListenerPlaceHolderKeys = app.context.diceNameArray;
-      app.context.attach = function(id, event, action) {
-        listenerPlaceHolders[id] = {};
-        listenerPlaceHolders[id].event = event;
-        listenerPlaceHolders[id].action = action;
-      };
+      placeHolderForAttach(listenerPlaceHolders, app, test);
       app.addDiceKeyListeners();
       var listenerPlaceHolderKeys = Object.getOwnPropertyNames(listenerPlaceHolders);
       assert((JSON.stringify(listenerPlaceHolderKeys) === JSON.stringify(expectedListenerPlaceHolderKeys)), 'failed to add diceKey listener(s)');
+      for (var listenerId in listenerPlaceHolders) {
+        assert((listenerPlaceHolders[listenerId].event === 'click'), listenerId + '.event should be "click"');
+      }
+      return true;
+    }),
+    new UnitTest('addOperatorKeyListeners()', function(app, test) {
+      var listenerPlaceHolders = {};
+      var expectedListenerPlaceHolderKeys = ["num+","num-"];
+      placeHolderForAttach(listenerPlaceHolders, app, test);
+      app.addOperatorKeyListeners();
+      var listenerPlaceHolderKeys = Object.getOwnPropertyNames(listenerPlaceHolders);
+      assert((JSON.stringify(listenerPlaceHolderKeys) === JSON.stringify(expectedListenerPlaceHolderKeys)), 'failed to add operator listener(s)');
       for (var listenerId in listenerPlaceHolders) {
         assert((listenerPlaceHolders[listenerId].event === 'click'), listenerId + '.event should be "click"');
       }
