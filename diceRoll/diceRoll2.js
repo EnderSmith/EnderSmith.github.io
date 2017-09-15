@@ -1,9 +1,3 @@
-document.addEventListener('DOMContentLoaded', function() {
-  var context = new Context(preloadedSaveItems);
-  window.app = new App(context);
-  window.app.run();
-});
-
 // global variables
 function Context(preloadedSaveItems) {
   return {
