@@ -30,8 +30,8 @@ function runTests(runTF) {
 
 function testList() {
   return [
-    new UnitTest('run()', function() {
-      this.called = {
+    new UnitTest('run()', function(app, test) {
+      var called = {
         addRollBarListeners: false,
         addCalculatorListeners: false,
         addUserSaveButtonListener: false,
@@ -40,13 +40,29 @@ function testList() {
         toggleMenu: false,
         userSaveButtonCheckDisplay: false,
       }
-      for (functionName in this.called) {
-        placeHolder = new PlaceHolderFor(functionName, this.called);
+      for (var functionName in called) {
+        var placeHolder = new PlaceHolderFor(functionName, called);
         app[functionName] = placeHolder.placeHolder;
       };
       app.run();
-      for (functionName in this.called) {
-        assert((this.called[functionName] === true), functionName);
+      for (var functionName in called) {
+        assert((called[functionName] === true), functionName);
+      }
+      return true;
+    }),
+    new UnitTest('addCalculatorListeners()', function(app, test) {
+      var called = {
+        addNumberKeyListeners: false,
+        addDiceKeyListeners: false,
+        addOperatorKeyListeners: false,
+      }
+      for (var functionName in called) {
+        var placeHolder = new PlaceHolderFor(functionName, called);
+        app[functionName] = placeHolder.placeHolder;
+      };
+      app.addCalculatorListeners();
+      for (var functionName in called) {
+        assert((called[functionName] === true), functionName);
       }
       return true;
     }),
