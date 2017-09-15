@@ -17,14 +17,14 @@ function UnitTest(testName, testFunction) {
           return true;
         }
       } catch(err) {
-        this.report = ' ERROR: ' + err;
+        this.report = 'ERROR: ' + err;
         this.passed = false;
       }
     }
   };
 }
 
-function PlaceHolderFor(functionName, calledObject) {
+function CheckCalledListFor(functionName, calledObject) {
   return {
     functionName: functionName,
     calledObject: calledObject,
@@ -60,7 +60,7 @@ function testList() {
         userSaveButtonCheckDisplay: false,
       }
       for (var functionName in called) {
-        var placeHolder = new PlaceHolderFor(functionName, called);
+        var placeHolder = new CheckCalledListFor(functionName, called);
         app[functionName] = placeHolder.placeHolder;
       };
       app.run();
@@ -76,12 +76,28 @@ function testList() {
         addOperatorKeyListeners: false,
       }
       for (var functionName in called) {
-        var placeHolder = new PlaceHolderFor(functionName, called);
+        var placeHolder = new CheckCalledListFor(functionName, called);
         app[functionName] = placeHolder.placeHolder;
       };
       app.addCalculatorListeners();
       for (var functionName in called) {
         assert((called[functionName] === true), functionName);
+      }
+      return true;
+    }),
+    new UnitTest('addNumberKeyListeners()', function(app, test) {
+      var listenerPlaceHolders = {};
+      var expectedListenerPlaceHolderKeys = ["num0","num1","num2","num3","num4","num5","num6","num7","num8","num9"]
+      app.context.attach = function(id, event, action) {
+        listenerPlaceHolders[id] = {};
+        listenerPlaceHolders[id].event = event;
+        listenerPlaceHolders[id].action = action;
+      };
+      app.addNumberKeyListeners();
+      var listenerPlaceHolderKeys = Object.getOwnPropertyNames(listenerPlaceHolders);
+      assert((JSON.stringify(listenerPlaceHolderKeys) === JSON.stringify(expectedListenerPlaceHolderKeys)), 'failed to add numKey listener(s)');
+      for (var listenerId in listenerPlaceHolders) {
+        assert((listenerPlaceHolders[listenerId].event === 'click'), listenerId + '.event should be "click"');
       }
       return true;
     }),
@@ -108,7 +124,7 @@ function runTests(runTF) {
       }
       console.log((test.passed ? 'PASSED: ' : 'FAILED: ') + test.testName + ': ' + test.report + ': ' + JSON.stringify(test.result || ''));
     }
-    console.log('\nTEST RUN ' + (passed ? 'PASSED ' : 'FAILED ') + '(Failed: ' + failedCount + '; Passed: ' + passedCount + ')');
+    console.log('TEST RUN ' + (passed ? 'PASSED ' : 'FAILED ') + '(Failed: ' + failedCount + '; Passed: ' + passedCount + ')');
   } else {
     return;
   }
