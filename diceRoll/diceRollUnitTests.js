@@ -40,6 +40,17 @@ function placeHolderForAttach(listenerPlaceHolders, app, test) {
     listenerPlaceHolders[id].action = action;
   };
 }
+function checkListeners(expectedListenerPlaceHolderKeys, functionName, app, test) {
+  var listenerPlaceHolders = {};
+  var expectedListenerPlaceHolderKeys = expectedListenerPlaceHolderKeys;
+  placeHolderForAttach(listenerPlaceHolders, app, test);
+  app[functionName]();
+  var listenerPlaceHolderKeys = Object.getOwnPropertyNames(listenerPlaceHolders);
+  assert((JSON.stringify(listenerPlaceHolderKeys) === JSON.stringify(expectedListenerPlaceHolderKeys)), 'failed to add listener(s)');
+  for (var listenerId in listenerPlaceHolders) {
+    assert((listenerPlaceHolders[listenerId].event === 'click'), listenerId + '.event should be "click"');
+  }
+}
 
 function assert(condition, message) {
   if (!condition) {
@@ -93,39 +104,23 @@ function testList() {
       return true;
     }),
     new UnitTest('addNumberKeyListeners()', function(app, test) {
-      var listenerPlaceHolders = {};
-      var expectedListenerPlaceHolderKeys = ["num0","num1","num2","num3","num4","num5","num6","num7","num8","num9"];
-      placeHolderForAttach(listenerPlaceHolders, app, test);
-      app.addNumberKeyListeners();
-      var listenerPlaceHolderKeys = Object.getOwnPropertyNames(listenerPlaceHolders);
-      assert((JSON.stringify(listenerPlaceHolderKeys) === JSON.stringify(expectedListenerPlaceHolderKeys)), 'failed to add numKey listener(s)');
-      for (var listenerId in listenerPlaceHolders) {
-        assert((listenerPlaceHolders[listenerId].event === 'click'), listenerId + '.event should be "click"');
-      }
+      checkListeners(['num0','num1','num2','num3','num4','num5','num6','num7','num8','num9'], 'addNumberKeyListeners', app, test);
       return true;
     }),
     new UnitTest('addDiceKeyListeners()', function(app, test) {
-      var listenerPlaceHolders = {};
-      var expectedListenerPlaceHolderKeys = app.context.diceNameArray;
-      placeHolderForAttach(listenerPlaceHolders, app, test);
-      app.addDiceKeyListeners();
-      var listenerPlaceHolderKeys = Object.getOwnPropertyNames(listenerPlaceHolders);
-      assert((JSON.stringify(listenerPlaceHolderKeys) === JSON.stringify(expectedListenerPlaceHolderKeys)), 'failed to add diceKey listener(s)');
-      for (var listenerId in listenerPlaceHolders) {
-        assert((listenerPlaceHolders[listenerId].event === 'click'), listenerId + '.event should be "click"');
-      }
+      checkListeners(app.context.diceNameArray, 'addDiceKeyListeners', app, test);
       return true;
     }),
     new UnitTest('addOperatorKeyListeners()', function(app, test) {
-      var listenerPlaceHolders = {};
-      var expectedListenerPlaceHolderKeys = ["num+","num-"];
-      placeHolderForAttach(listenerPlaceHolders, app, test);
-      app.addOperatorKeyListeners();
-      var listenerPlaceHolderKeys = Object.getOwnPropertyNames(listenerPlaceHolders);
-      assert((JSON.stringify(listenerPlaceHolderKeys) === JSON.stringify(expectedListenerPlaceHolderKeys)), 'failed to add operator listener(s)');
-      for (var listenerId in listenerPlaceHolders) {
-        assert((listenerPlaceHolders[listenerId].event === 'click'), listenerId + '.event should be "click"');
-      }
+      checkListeners(['num+','num-'], 'addOperatorKeyListeners', app, test);
+      return true;
+    }),
+    new UnitTest('addRollBarListeners()', function(app, test) {
+      checkListeners(['clrBtn','rollBtn','toggleMenuBtn'], 'addRollBarListeners', app, test);
+      return true;
+    }),
+    new UnitTest('addUserSaveButtonListener()', function(app, test) {
+      checkListeners(['userSaveButton'], 'addUserSaveButtonListener', app, test);
       return true;
     }),
   ];
