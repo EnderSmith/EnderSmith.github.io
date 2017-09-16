@@ -9,6 +9,13 @@
     <script type="text/javascript" src="preloadedSaveItems.json"></script>
     <script src="diceRoll2.js"></script>
     <link rel="stylesheet" href="diceRoll.css">
+    <script>
+      document.addEventListener('DOMContentLoaded', function() {
+        var context = new Context(preloadedSaveItems);
+        window.app = new App(context);
+        window.app.run();
+      });
+    </script>
   </head>
   <body>
     <div id="wholepage" class="holder">
