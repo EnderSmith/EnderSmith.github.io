@@ -43,7 +43,11 @@ function Stub() {
     called: {
       count: 0,
       check: function(expectedCount) {
-        return (expectedCount && (expectedCount === info.called.count)) || info.called.count > 0;
+        if (expectedCount) {
+          return (expectedCount === info.called.count)
+        } else {
+          return info.called.count > 0;
+        }
       }
     },
     args: {
@@ -148,6 +152,7 @@ function testList() {
       return true;
     }),
     new UnitTest('addOperatorKeyListeners()', function(app, test) {
+      // assert(app.contex.attach.info.called.check)
       // return true;
     }),
     new UnitTest('addRollBarListeners()', function(app, test) {
