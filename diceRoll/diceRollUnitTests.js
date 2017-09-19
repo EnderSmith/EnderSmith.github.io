@@ -25,34 +25,6 @@ function UnitTest(testName, testFunction) {
   };
 }
 
-function CheckCalledListFor(functionName, calledObject) {
-  return {
-    functionName: functionName,
-    calledObject: calledObject,
-    placeHolder: function() {
-      calledObject[functionName] = true;
-    }
-  }
-}
-function placeHolderForAttach(listenerPlaceHolders, app, test) {
-  app.context.attach = function(id, event, action) {
-    listenerPlaceHolders[id] = {};
-    listenerPlaceHolders[id].event = event;
-    listenerPlaceHolders[id].action = action;
-  };
-}
-function checkListeners(expectedListenerPlaceHolderKeys, functionName, app, test) {
-  var listenerPlaceHolders = {};
-  var expectedListenerPlaceHolderKeys = expectedListenerPlaceHolderKeys;
-  placeHolderForAttach(listenerPlaceHolders, app, test);
-  app[functionName]();
-  var listenerPlaceHolderKeys = Object.getOwnPropertyNames(listenerPlaceHolders);
-  assert((JSON.stringify(listenerPlaceHolderKeys) === JSON.stringify(expectedListenerPlaceHolderKeys)), 'failed to add listener(s)');
-  for (var listenerId in listenerPlaceHolders) {
-    assert((listenerPlaceHolders[listenerId].event === 'click'), listenerId + '.event should be "click"');
-  }
-}
-
 function assert(condition, message) {
   if (!condition) {
     message = message || 'Assertion failed';
@@ -68,8 +40,6 @@ function assert(condition, message) {
 
 function stub() {
   var info = {
-    expectedArgs: null,
-    args: null,
     called: {
       true: false,
       expectedCount: null,
@@ -81,20 +51,42 @@ function stub() {
         } else {
           return (info.called.count === info.called.expectedCount);
         }
+      }
+    },
+    args: {
+      expected: null,
+      current: null,
+      all: {
+        array: [],
+        check: function(index, expectedArray) {
+          var index = arguments[0];
+          info.args.expected = {};
+          for (key in arguments) {
+            if (key !== "0") {
+              info.args.expected[key - 1] = arguments[key];
+            }
+          }
+          return (JSON.stringify(info.args.expected) === JSON.stringify(info.args.all.array[index]));
+        }
       },
+      log: function(current) {
+        info.args.all.array[info.called.count] = current;
+      },
+      check: function(expectedArgs) {
+        info.args.expected = arguments;
+        return (JSON.stringify(info.args.expected) === JSON.stringify(info.args.current));
+      }
     },
   }
 
   var placeHolder = function() {
     info.called.true = true;
+    info.args.current = arguments;
+    info.args.log(info.args.current);
     info.called.count++;
-    info.args = arguments;
-    info.expectedArgs = function(expectedArgs) {
-      info.expectedArgs.args = arguments;
-      return (JSON.stringify(info.expectedArgs.args) === JSON.stringify(info.args));
-    }
     return true;
   }
+
   placeHolder.info = info;
   return placeHolder;
 }
@@ -133,25 +125,29 @@ function testList() {
       app.context.attach = stub();
       app.keypadPress = stub();
       app.addNumberKeyListeners();
-      assert(app.context.attach.info.called, 'context.attach() not called');
-      assert(app.context.attach.info.expectedArgs('num9', 'click', app.keypadPress.bind(this, 9)));
-      checkListeners(['num0','num1','num2','num3','num4','num5','num6','num7','num8','num9'], 'addNumberKeyListeners', app, test);
+      assert(app.context.attach.info.called.check, 'context.attach() not called');
+      assert(app.context.attach.info.args.all.check(0, 'num0', 'click', app.keypadPress.bind(this, 0)), 'attach() unexpected arguments');
+      assert(app.context.attach.info.args.all.check(1, 'num1', 'click', app.keypadPress.bind(this, 1)), 'attach() unexpected arguments');
+      assert(app.context.attach.info.args.all.check(2, 'num2', 'click', app.keypadPress.bind(this, 2)), 'attach() unexpected arguments');
+      assert(app.context.attach.info.args.all.check(3, 'num3', 'click', app.keypadPress.bind(this, 3)), 'attach() unexpected arguments');
+      assert(app.context.attach.info.args.all.check(4, 'num4', 'click', app.keypadPress.bind(this, 4)), 'attach() unexpected arguments');
+      assert(app.context.attach.info.args.all.check(5, 'num5', 'click', app.keypadPress.bind(this, 5)), 'attach() unexpected arguments');
+      assert(app.context.attach.info.args.all.check(6, 'num6', 'click', app.keypadPress.bind(this, 6)), 'attach() unexpected arguments');
+      assert(app.context.attach.info.args.all.check(7, 'num7', 'click', app.keypadPress.bind(this, 7)), 'attach() unexpected arguments');
+      assert(app.context.attach.info.args.all.check(8, 'num8', 'click', app.keypadPress.bind(this, 8)), 'attach() unexpected arguments');
+      assert(app.context.attach.info.args.all.check(9, 'num9', 'click', app.keypadPress.bind(this, 9)), 'attach() unexpected arguments');
       return true;
     }),
     new UnitTest('addDiceKeyListeners()', function(app, test) {
-      // checkListeners(app.context.diceNameArray, 'addDiceKeyListeners', app, test);
       // return true;
     }),
     new UnitTest('addOperatorKeyListeners()', function(app, test) {
-      // checkListeners(['num+','num-'], 'addOperatorKeyListeners', app, test);
       // return true;
     }),
     new UnitTest('addRollBarListeners()', function(app, test) {
-      // checkListeners(['clrBtn','rollBtn','toggleMenuBtn'], 'addRollBarListeners', app, test);
       // return true;
     }),
     new UnitTest('addUserSaveButtonListener()', function(app, test) {
-      // checkListeners(['userSaveButton'], 'addUserSaveButtonListener', app, test);
       // return true;
     }),
   ];
@@ -175,7 +171,7 @@ function runTests(runTF) {
         failedCount++;
         passed = false;
       }
-      console.log((test.passed ? 'PASSED: ' : 'FAILED: ') + test.testName + ': ' + test.report + ': ' + JSON.stringify(test.result));
+      console.log((test.passed ? 'PASSED: ' : 'FAILED: ') + test.testName + ':\n reported ' + test.report + '\n ' + 'returned ' + JSON.stringify(test.result));
     }
     console.log('TEST RUN ' + (passed ? 'PASSED ' : 'FAILED ') + '(Failed: ' + failedCount + '; Passed: ' + passedCount + ')');
   } else {
