@@ -41,40 +41,32 @@ function assert(condition, message) {
 function stub() {
   var info = {
     called: {
-      true: false,
-      expectedCount: null,
       count: 0,
       check: function(expectedCount) {
-        info.called.expectedCount = expectedCount;
-        if (info.called.expectedCount === undefined || info.called.expectedCount === null) {
-          return info.called.true;
-        } else {
-          return (info.called.count === info.called.expectedCount);
-        }
+        return (expectedCount && (expectedCount === info.called.count)) || info.called.count > 0;
       }
     },
     args: {
-      expected: null,
       current: null,
       all: {
         array: [],
-        check: function(index, expectedArray) {
+        check: function(index, expectedArguments) {
           var index = arguments[0];
-          info.args.expected = {};
+          var expected = {};
           for (key in arguments) {
             if (key !== "0") {
-              info.args.expected[key - 1] = arguments[key];
+              expected[key - 1] = arguments[key];
             }
           }
-          return (JSON.stringify(info.args.expected) === JSON.stringify(info.args.all.array[index]));
+          return (JSON.stringify(expected) === JSON.stringify(info.args.all.array[index]));
         }
       },
       log: function(current) {
         info.args.all.array[info.called.count] = current;
       },
       check: function(expectedArgs) {
-        info.args.expected = arguments;
-        return (JSON.stringify(info.args.expected) === JSON.stringify(info.args.current));
+        var expected = arguments;
+        return (JSON.stringify(expected) === JSON.stringify(info.args.current));
       }
     },
   }
