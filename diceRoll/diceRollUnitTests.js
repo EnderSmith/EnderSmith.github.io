@@ -19,44 +19,17 @@ function UnitTest(testName, testFunction) {
       } catch(err) {
         this.report = 'ERROR: ' + err;
         this.passed = false;
+        this.result = false;
       }
     }
   };
-}
-
-function CheckCalledListFor(functionName, calledObject) {
-  return {
-    functionName: functionName,
-    calledObject: calledObject,
-    placeHolder: function() {
-      calledObject[functionName] = true;
-    }
-  }
-}
-function placeHolderForAttach(listenerPlaceHolders, app, test) {
-  app.context.attach = function(id, event, action) {
-    listenerPlaceHolders[id] = {};
-    listenerPlaceHolders[id].event = event;
-    listenerPlaceHolders[id].action = action;
-  };
-}
-function checkListeners(expectedListenerPlaceHolderKeys, functionName, app, test) {
-  var listenerPlaceHolders = {};
-  var expectedListenerPlaceHolderKeys = expectedListenerPlaceHolderKeys;
-  placeHolderForAttach(listenerPlaceHolders, app, test);
-  app[functionName]();
-  var listenerPlaceHolderKeys = Object.getOwnPropertyNames(listenerPlaceHolders);
-  assert((JSON.stringify(listenerPlaceHolderKeys) === JSON.stringify(expectedListenerPlaceHolderKeys)), 'failed to add listener(s)');
-  for (var listenerId in listenerPlaceHolders) {
-    assert((listenerPlaceHolders[listenerId].event === 'click'), listenerId + '.event should be "click"');
-  }
 }
 
 function assert(condition, message) {
   if (!condition) {
     message = message || 'Assertion failed';
     if (typeof Error !== 'undefined') {
-      var err = Error.name + ' ' + message;
+      var err = Error.name + ': ' + message;
       throw err;
     }
     throw message;
@@ -65,63 +38,110 @@ function assert(condition, message) {
   }
 }
 
+function stub() {
+  var info = {
+    called: {
+      count: 0,
+      check: function(expectedCount) {
+        return (expectedCount && (expectedCount === info.called.count)) || info.called.count > 0;
+      }
+    },
+    args: {
+      current: null,
+      all: {
+        array: [],
+        check: function(index, expectedArguments) {
+          var index = arguments[0];
+          var expected = {};
+          for (key in arguments) {
+            if (key !== "0") {
+              expected[key - 1] = arguments[key];
+            }
+          }
+          return (JSON.stringify(expected) === JSON.stringify(info.args.all.array[index]));
+        }
+      },
+      log: function(current) {
+        info.args.all.array[info.called.count] = current;
+      },
+      check: function(expectedArgs) {
+        var expected = arguments;
+        return (JSON.stringify(expected) === JSON.stringify(info.args.current));
+      }
+    },
+  }
+
+  var placeHolder = function() {
+    info.called.true = true;
+    info.args.current = arguments;
+    info.args.log(info.args.current);
+    info.called.count++;
+    return true;
+  }
+
+  placeHolder.info = info;
+  return placeHolder;
+}
+
 function testList() {
   return [
     new UnitTest('run()', function(app, test) {
-      var called = {
-        addRollBarListeners: false,
-        addCalculatorListeners: false,
-        addUserSaveButtonListener: false,
-        simulateFirstVisit: false,
-        checkMemory: false,
-        toggleMenu: false,
-        userSaveButtonCheckDisplay: false,
-      }
-      for (var functionName in called) {
-        var placeHolder = new CheckCalledListFor(functionName, called);
-        app[functionName] = placeHolder.placeHolder;
-      };
+      app.addRollBarListeners = stub();
+      app.addCalculatorListeners = stub();
+      app.addUserSaveButtonListener = stub();
+      app.simulateFirstVisit = stub();
+      app.checkMemory = stub();
+      app.toggleMenu = stub();
+      app.userSaveButtonCheckDisplay = stub();
       app.run();
-      for (var functionName in called) {
-        assert((called[functionName] === true), functionName);
-      }
+      assert(app.addRollBarListeners.info.called.check(), 'addRollBarListeners() not called');
+      assert(app.addCalculatorListeners.info.called.check(), 'addCalculatorListeners() not called');
+      assert(app.addUserSaveButtonListener.info.called.check(), 'addUserSaveButtonListener() not called');
+      assert(app.simulateFirstVisit.info.called.check(), 'simulateFirstVisit() not called');
+      assert(app.checkMemory.info.called.check(), 'checkMemory() not called');
+      assert(app.toggleMenu.info.called.check(), 'toggleMenu() not called');
+      assert(app.userSaveButtonCheckDisplay.info.called.check(), 'userSaveButtonCheckDisplay() not called');
       return true;
     }),
     new UnitTest('addCalculatorListeners()', function(app, test) {
-      var called = {
-        addNumberKeyListeners: false,
-        addDiceKeyListeners: false,
-        addOperatorKeyListeners: false,
-      }
-      for (var functionName in called) {
-        var placeHolder = new CheckCalledListFor(functionName, called);
-        app[functionName] = placeHolder.placeHolder;
-      };
+      app.addNumberKeyListeners = stub();
+      app.addDiceKeyListeners = stub();
+      app.addOperatorKeyListeners = stub();
       app.addCalculatorListeners();
-      for (var functionName in called) {
-        assert((called[functionName] === true), functionName);
-      }
+      assert(app.addNumberKeyListeners.info.called.check(), 'addNumberKeyListeners() not called');
+      assert(app.addDiceKeyListeners.info.called.check(), 'addDiceKeyListeners() not called');
+      assert(app.addOperatorKeyListeners.info.called.check(), 'addOperatorKeyListeners() not called');
       return true;
     }),
     new UnitTest('addNumberKeyListeners()', function(app, test) {
-      checkListeners(['num0','num1','num2','num3','num4','num5','num6','num7','num8','num9'], 'addNumberKeyListeners', app, test);
+      app.context.attach = stub();
+      app.keypadPress = stub();
+      app.addNumberKeyListeners();
+      assert(app.context.attach.info.called.check(), 'context.attach() not called');
+      assert(app.context.attach.info.called.check(10), 'context.attach() not called 10 times');
+      assert(app.context.attach.info.args.all.check(0, 'num0', 'click', app.keypadPress.bind(this, 0)), 'attach() unexpected arguments');
+      assert(app.context.attach.info.args.all.check(1, 'num1', 'click', app.keypadPress.bind(this, 1)), 'attach() unexpected arguments');
+      assert(app.context.attach.info.args.all.check(2, 'num2', 'click', app.keypadPress.bind(this, 2)), 'attach() unexpected arguments');
+      assert(app.context.attach.info.args.all.check(3, 'num3', 'click', app.keypadPress.bind(this, 3)), 'attach() unexpected arguments');
+      assert(app.context.attach.info.args.all.check(4, 'num4', 'click', app.keypadPress.bind(this, 4)), 'attach() unexpected arguments');
+      assert(app.context.attach.info.args.all.check(5, 'num5', 'click', app.keypadPress.bind(this, 5)), 'attach() unexpected arguments');
+      assert(app.context.attach.info.args.all.check(6, 'num6', 'click', app.keypadPress.bind(this, 6)), 'attach() unexpected arguments');
+      assert(app.context.attach.info.args.all.check(7, 'num7', 'click', app.keypadPress.bind(this, 7)), 'attach() unexpected arguments');
+      assert(app.context.attach.info.args.all.check(8, 'num8', 'click', app.keypadPress.bind(this, 8)), 'attach() unexpected arguments');
+      assert(app.context.attach.info.args.all.check(9, 'num9', 'click', app.keypadPress.bind(this, 9)), 'attach() unexpected arguments');
       return true;
     }),
     new UnitTest('addDiceKeyListeners()', function(app, test) {
-      checkListeners(app.context.diceNameArray, 'addDiceKeyListeners', app, test);
-      return true;
+      // return true;
     }),
     new UnitTest('addOperatorKeyListeners()', function(app, test) {
-      checkListeners(['num+','num-'], 'addOperatorKeyListeners', app, test);
-      return true;
+      // return true;
     }),
     new UnitTest('addRollBarListeners()', function(app, test) {
-      checkListeners(['clrBtn','rollBtn','toggleMenuBtn'], 'addRollBarListeners', app, test);
-      return true;
+      // return true;
     }),
     new UnitTest('addUserSaveButtonListener()', function(app, test) {
-      checkListeners(['userSaveButton'], 'addUserSaveButtonListener', app, test);
-      return true;
+      // return true;
     }),
   ];
 }
@@ -144,7 +164,7 @@ function runTests(runTF) {
         failedCount++;
         passed = false;
       }
-      console.log((test.passed ? 'PASSED: ' : 'FAILED: ') + test.testName + ': ' + test.report + ': ' + JSON.stringify(test.result || ''));
+      console.log((test.passed ? 'PASSED: ' : 'FAILED: ') + test.testName + ':\n reported ' + test.report + '\n ' + 'returned ' + JSON.stringify(test.result));
     }
     console.log('TEST RUN ' + (passed ? 'PASSED ' : 'FAILED ') + '(Failed: ' + failedCount + '; Passed: ' + passedCount + ')');
   } else {
