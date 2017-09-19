@@ -125,7 +125,8 @@ function testList() {
       app.context.attach = stub();
       app.keypadPress = stub();
       app.addNumberKeyListeners();
-      assert(app.context.attach.info.called.check, 'context.attach() not called');
+      assert(app.context.attach.info.called.check(), 'context.attach() not called');
+      assert(app.context.attach.info.called.check(10), 'context.attach() not called 10 times');
       assert(app.context.attach.info.args.all.check(0, 'num0', 'click', app.keypadPress.bind(this, 0)), 'attach() unexpected arguments');
       assert(app.context.attach.info.args.all.check(1, 'num1', 'click', app.keypadPress.bind(this, 1)), 'attach() unexpected arguments');
       assert(app.context.attach.info.args.all.check(2, 'num2', 'click', app.keypadPress.bind(this, 2)), 'attach() unexpected arguments');
