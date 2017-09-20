@@ -38,7 +38,7 @@ function assert(condition, message) {
   }
 }
 
-function Stub() {
+function Stub(output) {
   var info = {
     called: {
       count: 0,
@@ -79,13 +79,13 @@ function Stub() {
     info.args.current = arguments;
     info.args.log(info.args.current);
     info.called.count++;
-    return true;
+    return output;
   }
   var bindStub = function() {
     bindStub.info.args.current = arguments;
     bindStub.info.args.log(bindStub.info.args.current);
     bindStub.info.called.count++;
-    return true;
+    return arguments;
   }
 
   functionStub.info = info;
@@ -127,9 +127,7 @@ function testList() {
     new UnitTest('addNumberKeyListeners()', function(app, test) {
       app.context.attach = new Stub();
       app.keypadPress = new Stub();
-
       app.addNumberKeyListeners();
-
       assert(app.keypadPress.bind.info.called.check(), 'keypadPress.bind() not called');
       assert(app.keypadPress.bind.info.called.check(10), 'keypadPress.bind() not called 10 times');
       assert(app.keypadPress.bind.info.args.all.check(0, app, 0), 'keypadPress.bind() num0 unexpected arguments');
@@ -142,7 +140,6 @@ function testList() {
       assert(app.keypadPress.bind.info.args.all.check(7, app, 7), 'keypadPress.bind() num7 unexpected arguments');
       assert(app.keypadPress.bind.info.args.all.check(8, app, 8), 'keypadPress.bind() num8 unexpected arguments');
       assert(app.keypadPress.bind.info.args.all.check(9, app, 9), 'keypadPress.bind() num9 unexpected arguments');
-
       assert(app.context.attach.info.called.check(), 'context.attach() not called');
       assert(app.context.attach.info.called.check(10), 'context.attach() not called 10 times');
       assert(app.context.attach.info.args.all.check(0, 'num0', 'click', app.keypadPress.bind(app, 0)), 'context.attach() num0 unexpected arguments');
@@ -160,9 +157,7 @@ function testList() {
     new UnitTest('addDiceKeyListeners()', function(app, test) {
       app.context.attach = new Stub();
       app.keypadPress = new Stub();
-
       app.addDiceKeyListeners();
-
       assert(app.keypadPress.bind.info.called.check(), 'keypadPress.bind() not called');
       assert(app.keypadPress.bind.info.called.check(8), 'keypadPress.bind() not called 8 times');
       assert(app.keypadPress.bind.info.args.all.check(0, app, 'd100'), 'keypadPress.bind() d100 unexpected arguments');
@@ -173,7 +168,6 @@ function testList() {
       assert(app.keypadPress.bind.info.args.all.check(5, app, 'd6'), 'keypadPress.bind() d6 unexpected arguments');
       assert(app.keypadPress.bind.info.args.all.check(6, app, 'd4'), 'keypadPress.bind() d4 unexpected arguments');
       assert(app.keypadPress.bind.info.args.all.check(7, app, 'd2'), 'keypadPress.bind() d2 unexpected arguments');
-
       assert(app.context.attach.info.called.check(), 'context.attach() not called');
       assert(app.context.attach.info.called.check(8), 'context.attach() not called 8 times');
       assert(app.context.attach.info.args.all.check(0, 'd100', 'click', app.keypadPress.bind(app, 'd100')), 'context.attach() d100 unexpected arguments');
@@ -189,19 +183,15 @@ function testList() {
     new UnitTest('addOperatorKeyListeners()', function(app, test) {
       app.context.attach = new Stub();
       app.keypadPress = new Stub();
-
       app.addOperatorKeyListeners();
-
       assert(app.keypadPress.bind.info.called.check(), 'keypadPress.bind() not called');
       assert(app.keypadPress.bind.info.called.check(2), 'keypadPress.bind() not called twice');
       assert(app.keypadPress.bind.info.args.all.check(0, app, '+'), 'keypadPress.bind() num+ unexpected arguments');
       assert(app.keypadPress.bind.info.args.all.check(1, app, '-'), 'keypadPress.bind() num- unexpected arguments');
-
       assert(app.context.attach.info.called.check(), 'context.attach() not called');
       assert(app.context.attach.info.called.check(2), 'context.attach() not called twice');
       assert(app.context.attach.info.args.all.check(0, 'num+', 'click', app.keypadPress.bind(app, '+')), 'context.attach() num+ unexpected arguments');
       assert(app.context.attach.info.args.all.check(1, 'num-', 'click', app.keypadPress.bind(app, '-')), 'context.attach() num- unexpected arguments');
-
       return true;
     }),
     new UnitTest('addRollBarListeners()', function(app, test) {
@@ -209,28 +199,50 @@ function testList() {
       app.clearDisplay = new Stub();
       app.rollPress = new Stub();
       app.toggleMenu = new Stub();
-
       app.addRollBarListeners();
-
       assert(app.clearDisplay.bind.info.called.check(), 'clearDisplay.bind() not called');
       assert(app.clearDisplay.bind.info.args.all.check(0, app), 'clearDisplay.bind() unexpected arguments');
-
       assert(app.rollPress.bind.info.called.check(), 'rollPress.bind() not called');
       assert(app.rollPress.bind.info.args.all.check(0, app), 'rollPress.bind() unexpected arguments');
-
       assert(app.toggleMenu.bind.info.called.check(), 'toggleMenu.bind() not called');
       assert(app.toggleMenu.bind.info.args.all.check(0, app), 'toggleMenu.bind() unexpected arguments');
-
       assert(app.context.attach.info.called.check(), 'context.attach() not called');
       assert(app.context.attach.info.called.check(3), 'context.attach() not called twice');
       assert(app.context.attach.info.args.all.check(0, 'clrBtn',  'click', app.clearDisplay.bind(app)), 'context.attach() clrBtn unexpected arguments');
       assert(app.context.attach.info.args.all.check(1, 'rollBtn',  'click', app.rollPress.bind(app)), 'context.attach() rollBtn unexpected arguments');
       assert(app.context.attach.info.args.all.check(2, 'toggleMenuBtn',  'click', app.toggleMenu.bind(app)), 'context.attach() toggleMenuBtn unexpected arguments');
-
       return true;
     }),
     new UnitTest('addUserSaveButtonListener()', function(app, test) {
-      // return true;
+      app.context.attach = new Stub();
+      app.userSaveButtonPress = new Stub();
+      app.addUserSaveButtonListener();
+      assert(app.userSaveButtonPress.bind.info.called.check(), 'userSaveButtonPress.bind() not called');
+      assert(app.userSaveButtonPress.bind.info.args.check(app), 'userSaveButtonPress.bind() unexpected arguments');
+      assert(app.context.attach.info.called.check(), 'context.attach() not called');
+      assert(app.context.attach.info.args.check('userSaveButton', 'click', app.userSaveButtonPress.bind(app)), 'context.attach() unexpected arguments');
+      return true;
+    }),
+    new UnitTest('addSaveItemListeners()', function(app, test) {
+      app.context.attach = new Stub();
+      app.saveItemPress = new Stub();
+      app.comingSoon = new Stub();
+      app.deleteSaveItem = new Stub();
+      var id = 'id';
+      var rollArray = ['rollArray'];
+      app.addSaveItemListeners('id', rollArray);
+      assert(app.saveItemPress.bind.info.called.check(), 'saveItemPress.bind() not called');
+      assert(app.saveItemPress.bind.info.args.check(app, id, rollArray), 'saveItemPress.bind() unexpected arguments');
+      assert(app.comingSoon.bind.info.called.check(), 'comingSoon.bind() not called');
+      assert(app.comingSoon.bind.info.args.check(app), 'comingSoon.bind() unexpected arguments');
+      assert(app.deleteSaveItem.bind.info.called.check(), 'deleteSaveItem.bind() not called');
+      assert(app.deleteSaveItem.bind.info.args.check(app, id), 'deleteSaveItem.bind() unexpected arguments');
+      assert(app.context.attach.info.called.check(), 'context.attach() not called');
+      assert(app.context.attach.info.called.check(3), 'context.attach() not called 3 times');
+      assert(app.context.attach.info.args.all.check(0, id, 'click', app.saveItemPress.bind(app, id, rollArray)), 'context.attach() saveItemPress unexpected args');
+      assert(app.context.attach.info.args.all.check(1, 'mod_' + id, 'click', app.comingSoon.bind(app)), 'context.attach() mod_id unexpected args');
+      assert(app.context.attach.info.args.all.check(2, 'delete_' + id, 'click', app.deleteSaveItem.bind(app, id)), 'context.attach() delete_id unexpected args');
+      return true;
     }),
   ];
 }
