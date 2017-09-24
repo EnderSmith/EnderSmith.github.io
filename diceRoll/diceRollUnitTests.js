@@ -66,17 +66,17 @@ var assert = {
   },
 }
 
-function Stub(suggestedOutput) {
+function Stub(forcedOutput) {
   var info = {
-    suggestedOutput: suggestedOutput,
+    forcedOutput: forcedOutput,
     calls: [],
   }
   var functionStub = function() {
-      info.calls.push({
-        suggestedOutput: info.suggestedOutput,
-        args: arguments,
-      });
-      return info.suggestedOutput;
+    info.calls.push({
+      forcedOutput: info.forcedOutput,
+      args: arguments,
+    });
+    return info.forcedOutput;
   }
   functionStub.info = info;
   return functionStub;
