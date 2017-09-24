@@ -66,17 +66,17 @@ var assert = {
   },
 }
 
-function Stub(forcedOutput) {
+function Stub(suggestedOutput) {
   var info = {
-    forcedOutput: forcedOutput,
+    suggestedOutput: suggestedOutput,
     calls: [],
   }
   var functionStub = function() {
-    info.calls.push({
-      forcedOutput: info.forcedOutput,
-      args: arguments,
-    });
-    return info.forcedOutput;
+      info.calls.push({
+        suggestedOutput: info.suggestedOutput,
+        args: arguments,
+      });
+      return info.suggestedOutput;
   }
   functionStub.info = info;
   return functionStub;
@@ -222,6 +222,19 @@ function testList() {
       assert.compareArgs(app.context.attach.info.calls[0].args, [id, 'click', 'app.saveItemPress.bind()'], 'context.attach() saveItemPress unexpected args');
       assert.compareArgs(app.context.attach.info.calls[1].args, ['mod_' + id, 'click', 'app.comingSoon.bind()'], 'context.attach() mod_id unexpected args');
       assert.compareArgs(app.context.attach.info.calls[2].args, ['delete_' + id, 'click', 'app.deleteSaveItem.bind()'], 'context.attach() delete_id unexpected args');
+      return true;
+    }),
+    new UnitTest('clearMemory(true)', function(app, test) {
+      var falseStorage = {};
+      falseStorage.removeItem = new Stub();
+      app.context.storage = new Stub(falseStorage);
+      var output = app.clearMemory(true);
+      assert.compare(output, '{}', 'clearMemory(true) unexpected output');
+      assert.compare(app.context.storage.info.calls.length, 4, 'context.storage() not called 4 times');
+      assert.compare(falseStorage.removeItem.info.calls.length, 3, 'context.storage().removeItem() not called 3 times');
+      assert.compareArgs(falseStorage.removeItem.info.calls[0].args, ['visited'], 'context.storage().removeItem() visited unexpected argument');
+      assert.compareArgs(falseStorage.removeItem.info.calls[1].args, ['saved'], 'context.storage().removeItem() saved unexpected argument');
+      assert.compareArgs(falseStorage.removeItem.info.calls[2].args, ['savedMenu'], 'context.storage().removeItem() savedMenu unexpected argument');
       return true;
     }),
   ];
