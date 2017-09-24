@@ -128,8 +128,8 @@ function App(context) {
       this.addRollBarListeners();
       this.addCalculatorListeners();
       this.addUserSaveButtonListener();
-      this.simulateFirstVisit(false);
-      this.checkMemory();
+      this.clearMemory(false);
+      this.initializeMemory();
       this.toggleMenu();
       this.userSaveButtonCheckDisplay();
     },
@@ -171,7 +171,7 @@ function App(context) {
     },
 
     // memory
-    simulateFirstVisit: function(run) {
+    clearMemory: function(run) {
       if (run) {
         this.context.storage().removeItem('visited');
         this.context.storage().removeItem('saved');
@@ -179,7 +179,7 @@ function App(context) {
         return JSON.stringify(this.context.storage());
       }
     },
-    checkMemory: function() {
+    initializeMemory: function() {
       if (this.context.storage().visited) {
         this.loadSaved();
       } else {
