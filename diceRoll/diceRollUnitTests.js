@@ -88,16 +88,16 @@ function testList() {
       app.addRollBarListeners = new Stub();
       app.addCalculatorListeners = new Stub();
       app.addUserSaveButtonListener = new Stub();
-      app.simulateFirstVisit = new Stub();
-      app.checkMemory = new Stub();
+      app.clearMemory = new Stub();
+      app.initializeMemory = new Stub();
       app.toggleMenu = new Stub();
       app.userSaveButtonCheckDisplay = new Stub();
       app.run();
       assert.compare(app.addRollBarListeners.info.calls.length, 1, 'addRollBarListeners() not called');
       assert.compare(app.addCalculatorListeners.info.calls.length, 1, 'addCalculatorListeners() not called');
       assert.compare(app.addUserSaveButtonListener.info.calls.length, 1, 'addUserSaveButtonListener() not called');
-      assert.compare(app.simulateFirstVisit.info.calls.length, 1, 'simulateFirstVisit() not called');
-      assert.compare(app.checkMemory.info.calls.length, 1, 'checkMemory() not called');
+      assert.compare(app.clearMemory.info.calls.length, 1, 'clearMemory() not called');
+      assert.compare(app.initializeMemory.info.calls.length, 1, 'initializeMemory() not called');
       assert.compare(app.toggleMenu.info.calls.length, 1, 'toggleMenu() not called');
       assert.compare(app.userSaveButtonCheckDisplay.info.calls.length, 1, 'userSaveButtonCheckDisplay() not called');
       return true;
@@ -224,6 +224,57 @@ function testList() {
       assert.compareArgs(app.context.attach.info.calls[2].args, ['delete_' + id, 'click', 'app.deleteSaveItem.bind()'], 'context.attach() delete_id unexpected args');
       return true;
     }),
+    new UnitTest('clearMemory(true)', function(app, test) {
+      var falseStorage = {property:'value'};
+      falseStorage.removeItem = new Stub();
+      app.context.storage = new Stub(falseStorage);
+      var output = app.clearMemory(true);
+      assert.compare(output, '{"property":"value"}', 'clearMemory(true) unexpected output');
+      assert.compare(app.context.storage.info.calls.length, 4, 'context.storage() not called 4 times');
+      assert.compare(falseStorage.removeItem.info.calls.length, 3, 'context.storage().removeItem() not called 3 times');
+      assert.compareArgs(falseStorage.removeItem.info.calls[0].args, ['visited'], 'context.storage().removeItem() visited unexpected argument');
+      assert.compareArgs(falseStorage.removeItem.info.calls[1].args, ['saved'], 'context.storage().removeItem() saved unexpected argument');
+      assert.compareArgs(falseStorage.removeItem.info.calls[2].args, ['savedMenu'], 'context.storage().removeItem() savedMenu unexpected argument');
+      return true;
+    }),
+    new UnitTest('initializeMemory(), visited = false', function(app, test) {
+      var falseStorage = {};
+      falseStorage.visited = false;
+      app.context.storage = new Stub(falseStorage);
+      app.restoreDefaultSaveItems = new Stub();
+      app.loadSaved = new Stub();
+      var output = app.initializeMemory();
+      assert.compare(output, true, 'initializeMemory() unexpected output');
+      assert.compare(app.context.storage.info.calls.length, 3, 'context.storage() not called 3 times');
+      assert.compare(app.restoreDefaultSaveItems.info.calls.length, 1, 'restoreDefaultSaveItems() not called 1 time');
+      assert.compare(app.loadSaved.info.calls.length, 1, 'loadSaved() not called 1 time');
+      return true;
+    }),
+    new UnitTest('initializeMemory(), visited = true', function(app, test) {
+      var falseStorage = {};
+      falseStorage.visited = true;
+      app.context.storage = new Stub(falseStorage);
+      app.restoreDefaultSaveItems = new Stub();
+      app.loadSaved = new Stub();
+      var output = app.initializeMemory();
+      assert.compare(output, true, 'initializeMemory() unexpected output');
+      assert.compare(app.context.storage.info.calls.length, 2, 'context.storage() not called 2 times');
+      assert.compare(app.restoreDefaultSaveItems.info.calls.length, 0, 'restoreDefaultSaveItems() not called 0 times');
+      assert.compare(app.loadSaved.info.calls.length, 1, 'loadSaved() not called 1 times');
+      return true;
+    }),
+    new UnitTest('restoreDefaultSaveItems()', function(app, test) {
+      var falsePreloadedStorage = {preloadedProperty:'preloadedValue'};
+      var falseStorage = {property:'value'};
+      app.context.preloadedSaveItems = falsePreloadedStorage;
+      app.context.storage = new Stub(falseStorage);
+      var output = app.restoreDefaultSaveItems();
+      assert.compare(output, falsePreloadedStorage, 'restoreDefaultSaveItems() unexpected output');
+      assert.compare(falseStorage.saved, '{"preloadedProperty":"preloadedValue"}', 'context.storage() unexpected output');
+      assert.compare(app.context.storage.info.calls.length, 1, 'context.storage() not called once');
+      return true;
+    }),
+
   ];
 }
 
