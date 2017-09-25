@@ -271,7 +271,7 @@ function testList() {
       var output = app.restoreDefaultSaveItems();
       assert.compare(output, falsePreloadedStorage, 'restoreDefaultSaveItems() unexpected output');
       assert.compare(falseStorage.saved, '{"preloadedProperty":"preloadedValue"}', 'context.storage() unexpected output');
-      assert.compare(app.context.storage.info.calls.length, 1, 'context.storage() unexpected output');
+      assert.compare(app.context.storage.info.calls.length, 1, 'context.storage() not called once');
       return true;
     }),
 
