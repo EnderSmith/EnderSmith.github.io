@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <meta name="apple-mobile-web-app-capable" content="yes">
+        <meta name="mobile-web-app-capable" content="yes">
+        <title>Pitch Class Transformer</title>
+        <!-- <script type="text/javascript" src="preloadedSaveItems.json"></script> -->
+        <script src="pitchTransform.js"></script>
+        <!-- <link rel="stylesheet" href="style.css"> -->
+        <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            var context = new Context();
+            window.app = new App(context);
+            window.app.run();
+        });
+        </script>
+        <style>
+            body {
+                font-family: 'Courier New', Courier, monospace;
+                background-color: hsl(180, 62%, 12%);
+                color: hsl(180, 75%, 50%);
+                padding: 3em;
+                font-size: 1.25em;
+            }
+            input {
+                height: 1.25em;
+                width: 1.25em;
+            }
+            #output {
+                background-color: hsl(180, 88%, 6%);
+                padding: 2em;
+                margin-top: 2em;
+            }
+        </style>
+    </head>
+    <body>
+        <div>
+            C &nbsp;<input type="checkbox" name="C" id="0" onchange="update()"><br>
+            Db <input type="checkbox" name="Db" id="1" onchange="update()"><br>
+            D &nbsp;<input type="checkbox" name="D" id="2" onchange="update()"><br>
+            Eb <input type="checkbox" name="Eb" id="3" onchange="update()"><br>
+            E &nbsp;<input type="checkbox" name="E" id="4" onchange="update()"><br>
+            F &nbsp;<input type="checkbox" name="F" id="5" onchange="update()"><br>
+            Gb <input type="checkbox" name="Gb" id="6" onchange="update()"><br>
+            G &nbsp;<input type="checkbox" name="G" id="7" onchange="update()"><br>
+            Ab <input type="checkbox" name="Ab" id="8" onchange="update()"><br>
+            A &nbsp;<input type="checkbox" name="A" id="9" onchange="update()"><br>
+            Bb <input type="checkbox" name="Bb" id="10" onchange="update()"><br>
+            B &nbsp;<input type="checkbox" name="B" id="11" onchange="update()">
+        </div>
+        <div id="output">
+            TRANSPOSITIONS:<br>
+            T-0: <br>
+            T-1: <br>
+            T-2: <br>
+            T-3: <br>
+            T-4: <br>
+            T-5: <br>
+            T-6: <br>
+            T-7: <br>
+            T-8: <br>
+            T-9: <br>
+            T10: <br>
+            T11: <br>
+            <br>
+            INVERSIONS:<br>
+            I-0: <br>
+            I-1: <br>
+            I-2: <br>
+            I-3: <br>
+            I-4: <br>
+            I-5: <br>
+            I-6: <br>
+            I-7: <br>
+            I-8: <br>
+            I-9: <br>
+            I10: <br>
+            I11: <br>
+        </div>
+    </body>
+  </html>
