@@ -33,7 +33,7 @@ const normalizeArray = (array) => {
 
 const transFromArray = (array, trans, useSharps, root) => {
     let output = '';
-    let validRoot = root > -1 ? (12 - root) + 1: 0;
+    let validRoot = root > -1 ? root + root + 1 : 0;
     for (let note = 0; note < array.length; note++) {
         const transNote = (note + trans + validRoot) % 12;
         output += array[note] ? `&nbsp;${useSharps ? noteNames.sharp[transNote] : noteNames.flat[transNote]}&nbsp;` : '';
