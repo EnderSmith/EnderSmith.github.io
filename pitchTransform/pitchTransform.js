@@ -1,4 +1,5 @@
 "use strict";
+
 const noteNames = {
     flat:  ['C&nbsp;', 'Db', 'D&nbsp;', 'Eb', 'E&nbsp;', 'F&nbsp;', 'Gb', 'G&nbsp;', 'Ab', 'A&nbsp;', 'Bb', 'B '],
     sharp: ['C&nbsp;', 'C#', 'D&nbsp;', 'D#', 'E&nbsp;', 'F&nbsp;', 'F#', 'G&nbsp;', 'G#', 'A&nbsp;', 'A#', 'B ']
@@ -30,10 +31,11 @@ const normalizeArray = (array) => {
     return output;
 };
 
-const transFromArray = (array, trans, useSharps) => {
+const transFromArray = (array, trans, useSharps, root) => {
     let output = '';
+    let validRoot = root > -1 ? (12 - root) + 1: 0;
     for (let note = 0; note < array.length; note++) {
-        const transNote = (note + trans) % array.length;
+        const transNote = (note + trans + validRoot) % 12;
         output += array[note] ? `&nbsp;${useSharps ? noteNames.sharp[transNote] : noteNames.flat[transNote]}&nbsp;` : '';
     }
     return output;
@@ -47,29 +49,41 @@ const invrsName = (invrs) => {
     return invrs < 10 ? `I-${invrs}` : `I${invrs}`;
 }
 
-const allTransFromArray = (array, useSharps, isInverted) => {
+const allTransFromArray = (array, useSharps, isInverted, root) => {
     const norm = normalizeArray(array);
     let output = '';
     for (let trans = 0; trans < norm.array.length; trans++) {
         if (!isInverted) {
             output += `${transName(trans)}: ${transFromArray(norm.array, trans, useSharps)}<br>`
         } else {
-            output += `${invrsName(trans)}: ${transFromArray(norm.array, trans, useSharps)}<br>`
+            output += `${invrsName(trans)}: ${transFromArray(norm.array, trans, useSharps, root)}<br>`
         }
     }
     return output;
 };
 
+const findRoot = (array) => {
+    return array.indexOf(1) > 0 ? array.indexOf(1) : 0;
+}
+
+const reverseSegment = (arr, start, end) => {
+    while (start < end) {
+        [arr[start], arr[end]] = [arr[end], arr[start]];
+        start++;
+        end--;
+    }
+};
+
 const allInvrsFromArray = (array, useSharps) => {
+    const root = findRoot(array);
     array.reverse();
-    return allTransFromArray(array, useSharps, true);
+    return allTransFromArray(array, useSharps, true, root);
 };
 
 const update = () => {
     let array = [];
     for (let i = 0; i < 12; i++) {
         array.push(document.getElementById(`${i}`).checked ? 1 : 0);
-        
     }
     document.getElementById('output').innerHTML = `TRANSPOSITIONS:<br>${allTransFromArray(array)}<br>INVERSIONS:<br>${allInvrsFromArray(array)}`
 }

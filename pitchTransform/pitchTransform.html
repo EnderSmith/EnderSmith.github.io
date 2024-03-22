@@ -9,13 +9,6 @@
         <!-- <script type="text/javascript" src="preloadedSaveItems.json"></script> -->
         <script src="pitchTransform.js"></script>
         <!-- <link rel="stylesheet" href="style.css"> -->
-        <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            var context = new Context();
-            window.app = new App(context);
-            window.app.run();
-        });
-        </script>
         <style>
             body {
                 font-family: 'Courier New', Courier, monospace;
@@ -37,18 +30,18 @@
     </head>
     <body>
         <div>
-            C&nbsp;&nbsp;<input type="checkbox" name="C" id="0" onchange="update()"><br>&nbsp;B
-            Db&nbsp;<input type="checkbox" name="Db" id="1" onchange="update()"><br>&nbsp;Bb
-            D&nbsp;&nbsp;<input type="checkbox" name="D" id="2" onchange="update()"><br>&nbsp;A
-            Eb&nbsp;<input type="checkbox" name="Eb" id="3" onchange="update()"><br>&nbsp;Ab
-            E&nbsp;&nbsp;<input type="checkbox" name="E" id="4" onchange="update()"><br>&nbsp;G
-            F&nbsp;&nbsp;<input type="checkbox" name="F" id="5" onchange="update()"><br>&nbsp;Gb
-            Gb&nbsp;<input type="checkbox" name="Gb" id="6" onchange="update()"><br>&nbsp;F
-            G&nbsp;&nbsp;<input type="checkbox" name="G" id="7" onchange="update()"><br>&nbsp;E
-            Ab&nbsp;<input type="checkbox" name="Ab" id="8" onchange="update()"><br>&nbsp;Eb
-            A&nbsp;&nbsp;<input type="checkbox" name="A" id="9" onchange="update()"><br>&nbsp;D
-            Bb&nbsp;<input type="checkbox" name="Bb" id="10" onchange="update()"><br>&nbsp;Db
-            B&nbsp;&nbsp;<input type="checkbox" name="B" id="11" onchange="update()">&nbsp;C
+            C&nbsp;&nbsp;<input type="checkbox" name="C" id="0" onchange="update()"><br>
+            Db&nbsp;<input type="checkbox" name="Db" id="1" onchange="update()"><br>
+            D&nbsp;&nbsp;<input type="checkbox" name="D" id="2" onchange="update()"><br>
+            Eb&nbsp;<input type="checkbox" name="Eb" id="3" onchange="update()"><br>
+            E&nbsp;&nbsp;<input type="checkbox" name="E" id="4" onchange="update()"><br>
+            F&nbsp;&nbsp;<input type="checkbox" name="F" id="5" onchange="update()"><br>
+            Gb&nbsp;<input type="checkbox" name="Gb" id="6" onchange="update()"><br>
+            G&nbsp;&nbsp;<input type="checkbox" name="G" id="7" onchange="update()"><br>
+            Ab&nbsp;<input type="checkbox" name="Ab" id="8" onchange="update()"><br>
+            A&nbsp;&nbsp;<input type="checkbox" name="A" id="9" onchange="update()"><br>
+            Bb&nbsp;<input type="checkbox" name="Bb" id="10" onchange="update()"><br>
+            B&nbsp;&nbsp;<input type="checkbox" name="B" id="11" onchange="update()">
         </div>
         <div id="output">
             TRANSPOSITIONS:<br>
