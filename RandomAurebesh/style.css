@@ -21,4 +21,6 @@ body {
     font-size: 48px;
     background-color: var(--darkblue);
     color: var(--blue);
+    font-kerning: none;
+    font-variant-ligatures: none;
 }
