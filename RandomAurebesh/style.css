@@ -1,0 +1,24 @@
+:root {
+    --yellow: #ffcc33;
+    --orange: #ff9933;
+    --red: #ff6666;
+    --pink: #cc3399;
+    --purple: #9966cc;
+    --blue: #3399ff;
+    --green: #339966;
+    --darkblue: #000033;
+}
+
+@font-face {
+    font-family: 'AurebeshClassic';
+    src: url(./AurebeshClassicAF-Regular.otf);
+}
+
+body {
+    font-family: 'AurebeshClassic';
+    text-align: center;
+    margin: 50px;
+    font-size: 48px;
+    background-color: var(--darkblue);
+    color: var(--blue);
+}

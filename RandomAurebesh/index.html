@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>RandomAurebesh</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body onload="newName()">
+    <script type="text/javascript">
+        const newName = () => {
+            const characters = [
+                'A',
+                'B',
+                'C',
+                'D',
+                'E',
+                'F',
+                // 'G',
+                'H',
+                'I',
+                'J',
+                'K',
+                'L',
+                'M',
+                'N',
+                // 'O',
+                'P',
+                'Q',
+                // 'R',
+                'S',
+                'T',
+                'U',
+                'V',
+                // 'W',
+                'X',
+                'Y',
+                // 'Z',
+                '', // AE
+                // '', // CH
+                '', // CK
+                '', // EE
+                '', // GH
+                '', // NG
+                '', // OE
+                '', // OO
+                '', // PH
+                '', // QU
+                '', // RH
+                // '', // SH
+                '', // TH
+                '', // WH
+                '', // ZH
+            ];
+            var output = '';
+            for (let j = 0; j < 12; j++) {
+                for (let i = 0; i < 15; i++) {
+                    output += characters[Math.floor(Math.random() * characters.length)];
+                }
+                output += '</br>'
+            }
+            const prev = document.getElementById('output').innerHTML;
+            document.getElementById('output').innerHTML = `${output}`;
+        };
+    </script>
+    <div id="output"></div>
+</body>
+</html>
