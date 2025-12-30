@@ -70,10 +70,12 @@ const newGeneric = () => {
     let dice1 = (Math.random() * 20) + 1;
     let dice2 = (Math.random() * 20) + 1;
     let output = '';
-    if (dice1 >= 11) {
+    if (dice1 >= 8) {
         output += `${jediFNs[Math.floor(Math.random() * jediFNs.length)]}`;
-    } else {
+    } else if (dice1 >= 14) {
         output += newMace();
+    } else {
+        output += newKenobiJinn();
     }
     if (dice2 >= 20) {
         output += ` ${skywalkers[Math.floor(Math.random() * skywalkers.length)]}`;
