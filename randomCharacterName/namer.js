@@ -89,7 +89,7 @@ const newGeneric = () => {
 const newMaster = (name) => {
     let dice = (Math.random() * 20) +1;
     let output = dice >= 16 ? `Master ${name}`
-        : dice < .2 ? `Grandmaster ${name}`
+        : dice < 1.2 ? `Grandmaster ${name}`
         : name;
     return output;
 }
@@ -114,6 +114,35 @@ const newJedi = () => {
     return output;
 }
 
+const newChiss = () => {
+    let dice = (Math.random() * 20) + 1;
+    let dice2 = (Math.random() * 20) + 1;
+    let output = '';
+    let fam = undefined;
+    if (dice >= 5) {
+        fam = chissFam[Math.floor(Math.random() * chissFam.length)];
+    }
+    let giv = chissGiv[Math.floor(Math.random() * chissGiv.length)];
+    let soc = chissSoc[Math.floor(Math.random() * chissSoc.length)];
+    let odo = dice2 < 1.1 ? 'odo' : '';
+    if (fam) {
+        output = `${fam[1]}${giv.toLowerCase()}${soc[1]} <em>(${fam[0]}'${giv.toLowerCase()}'${soc[0]}${odo})</em>`;
+    } else {
+        let rank = dice2 >= 19 ? `Supreme Admiral`
+            : dice2 >= 18 ? `Supreme General`
+            : dice2 >= 16 ? `Fleet Admiral`
+            : dice2 >= 14 ? `Senior General`
+            : dice2 >= 12 ? `Admiral`
+            : dice2 >= 10 ? `General`
+            : dice2 >= 7 ? `Mid Admiral`
+            : dice2 >= 4 ? `Mid General`
+            : dice2 >= 2 ? `Commodore`
+            : `Sky-walker`;
+        output = `${rank} ${giv}'${soc[0]}`;
+    }
+    return output;
+}
+
 const newName = (callback) => {
     let output = callback();
     let current = document.getElementById('output').innerHTML;
@@ -126,3 +155,7 @@ document.getElementById('newSith').addEventListener('click', () => {
 document.getElementById('newJedi').addEventListener('click', () => {
     newName(newJedi);
 })
+document.getElementById('newChiss').addEventListener('click', () => {
+    newName(newChiss);
+})
+

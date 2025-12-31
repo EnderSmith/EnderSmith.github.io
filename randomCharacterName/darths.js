@@ -1,5 +1,6 @@
 const darths = [
     'Anthelion',
+    'Nadirius',
     'Cisor',
     'Trudor',
     'Fernus',
