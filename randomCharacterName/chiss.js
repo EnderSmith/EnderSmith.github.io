@@ -122,7 +122,7 @@ const chissSoc = [
     ['omi', 'o'],
     ['iflar', 'if'],
     ['kleoni', 'k'],
-    ['ovodo', 'ov'],
+    ['ov', 'ov'],
     ['cykok', 'cyk'],
     ['diamir', 'dia'],
 ];
