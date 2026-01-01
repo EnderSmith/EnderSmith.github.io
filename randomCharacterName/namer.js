@@ -28,15 +28,15 @@ const newObiWan = () => {
 const newKenobiJinn = () => {
     let dice = (Math.random() * 20) + 1;
     let output = `${wans[Math.floor(Math.random() * wans.length)]}`;
-    output += dice >= 15 ? `${obis[Math.floor(Math.random() * obis.length)].toLowerCase()}`
-        : dice >= 5 ? `${dis[Math.floor(Math.random() * dis.length)].toLowerCase()}`
+    output += dice >= 16 ? `${obis[Math.floor(Math.random() * obis.length)].toLowerCase()}`
+        : dice >= 14 ? `${dis[Math.floor(Math.random() * dis.length)].toLowerCase()}`
         : ``;
     return output;
 }
 const newAnakin = () => {
     let dice = (Math.random() * 20) + 1;
     let output = `${obis[Math.floor(Math.random() * obis.length)]}`;
-    output += dice >= 1 ? `${dis[Math.floor(Math.random() * dis.length)].toLowerCase()}`
+    output += dice >= 4 ? `${dis[Math.floor(Math.random() * dis.length)].toLowerCase()}`
         : `${wans[Math.floor(Math.random() * wans.length)].toLowerCase()}`;
     return output;
 }
@@ -79,10 +79,12 @@ const newGeneric = () => {
     }
     if (dice2 >= 20) {
         output += ` ${skywalkers[Math.floor(Math.random() * skywalkers.length)]}`;
-    } else if (dice2 >= 3) {
+    } else if (dice2 >= 6) {
         output += ` ${jediLNs[Math.floor(Math.random() * jediLNs.length)]}`
-    } else if (dice2 >= 2) {
+    } else if (dice2 >= 5) {
         output += ` ${whitesuns[Math.floor(Math.random() * whitesuns.length)]}`
+    } else if (dice2 >= 3) {
+        output += newKenobiJinn();
     }
     return output;
 }
@@ -100,8 +102,8 @@ const newJedi = () => {
     let output = '';
     if (dice >= 11) { // OBI-WAN / QUI-GON
         output += newObiWan();
-        output += dice2 >= 16 ? ` ${newKenobiJinn()}`
-            : dice2 >= 8 ? ` ${newAnakin()}`
+        output += dice2 >= 5 ? ` ${newKenobiJinn()}`
+            : dice2 >= 3 ? ` ${newAnakin()}`
             : ` ${newDijon()}`;
     } else if (dice >= 10) {
         output += newKiAdiMundi();
@@ -129,16 +131,16 @@ const newChiss = () => {
         output = `${fam[1]}${giv.toLowerCase()}${soc[1]} <em>(${fam[0]}'${giv.toLowerCase()}'${soc[0]}${odo})</em>`;
     } else {
         let rank = dice2 >= 19 ? `Supreme Admiral`
-            : dice2 >= 18 ? `Supreme General`
-            : dice2 >= 16 ? `Fleet Admiral`
-            : dice2 >= 14 ? `Senior General`
-            : dice2 >= 12 ? `Admiral`
-            : dice2 >= 10 ? `General`
-            : dice2 >= 7 ? `Mid Admiral`
-            : dice2 >= 4 ? `Mid General`
-            : dice2 >= 2 ? `Commodore`
+            : dice2 >= 20 ? `Supreme General`
+            : dice2 >= 19 ? `Fleet Admiral`
+            : dice2 >= 17 ? `Senior General`
+            : dice2 >= 15 ? `Admiral`
+            : dice2 >= 13 ? `General`
+            : dice2 >= 10 ? `Mid Admiral`
+            : dice2 >= 7 ? `Mid General`
+            : dice2 >= 3 ? `Commodore`
             : `Sky-walker`;
-        output = `${rank} ${giv}'${soc[0]}`;
+        output = `${rank} ${giv}'${soc[0]}${odo}`;
     }
     return output;
 }
