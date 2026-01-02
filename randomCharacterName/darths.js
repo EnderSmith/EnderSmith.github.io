@@ -500,6 +500,13 @@ const darths = [
     'Xogog',
     'Yodrexus',
     'Zulius',
+    // Possible darth ruin names by Abel G. Peña
+    'Ruin',
+    'Eradicus',
+    'Fatalis',
+    'Solopsis',
+    'Necros',
+    'Reaper',
 ]
 
 const darthEpithets = [
