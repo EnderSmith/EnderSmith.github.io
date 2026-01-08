@@ -2,11 +2,15 @@
 
 const newSith = () => {
     let dice = (Math.random() * 20) + 1;
-    let output = 'Darth ';
-    output += darths[Math.floor(Math.random() * darths.length)];
+    let dice2 = (Math.random() * 20) + 1;
+    let title = darths[Math.floor(Math.random() * darths.length)];
+    let output = title;
     if (dice >= 17) {
-        output += ` ${darthEpithets[Math.floor(Math.random() * darthEpithets.length)]}`;
+        output = `${title} ${darthEpithets[Math.floor(Math.random() * darthEpithets.length)]}`;
+    // } else if (dice >= 12) {
+    //     output = `${title}, Dark Lord of the Sith`;
     }
+    output = `Darth ${output}`;
     return output;
 }
 
@@ -84,7 +88,7 @@ const newGeneric = () => {
     } else if (dice2 >= 5) {
         output += ` ${whitesuns[Math.floor(Math.random() * whitesuns.length)]}`
     } else if (dice2 >= 3) {
-        output += newKenobiJinn();
+        output += ` ${newKenobiJinn()}`;
     }
     return output;
 }
