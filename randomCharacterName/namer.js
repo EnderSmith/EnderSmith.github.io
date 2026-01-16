@@ -3,14 +3,18 @@
 const newSith = () => {
     let dice = (Math.random() * 20) + 1;
     let dice2 = (Math.random() * 20) + 1;
-    let title = darths[Math.floor(Math.random() * darths.length)];
-    let output = title;
+    let darth = darths[Math.floor(Math.random() * darths.length)]
+    let output = {};
+    output.canonicity = darth.canonicity;
     if (dice >= 17) {
-        output = `${title} ${darthEpithets[Math.floor(Math.random() * darthEpithets.length)]}`;
-    // } else if (dice >= 12) {
-    //     output = `${title}, Dark Lord of the Sith`;
+        output.name = `Darth ${darth.name} ${darthEpithets[Math.floor(Math.random() * darthEpithets.length)]}`;
+    } else {
+        output.name = `Darth ${darth.name}`;
     }
-    output = `Darth ${output}`;
+    if (dice2 > 0) {
+        output.lightsaber = "red"
+    }
+    output.class = 'sith';
     return output;
 }
 
@@ -103,27 +107,35 @@ const newMaster = (name) => {
 const newJedi = () => {
     let dice = (Math.random() * 20) + 1;
     let dice2 = (Math.random() * 20) + 1;
-    let output = '';
+    let dice3 = (Math.random() * 20) + 1;
+    let output = {};
+    output.name = '';
     if (dice >= 11) { // OBI-WAN / QUI-GON
-        output += newObiWan();
-        output += dice2 >= 5 ? ` ${newKenobiJinn()}`
+        output.name += newObiWan();
+        output.name += dice2 >= 5 ? ` ${newKenobiJinn()}`
             : dice2 >= 3 ? ` ${newAnakin()}`
             : ` ${newDijon()}`;
     } else if (dice >= 10) {
-        output += newKiAdiMundi();
+        output.name += newKiAdiMundi();
     } else if (dice >= 6) {
-        output += `${newMace()} ${newWindu()}`;
+        output.name += `${newMace()} ${newWindu()}`;
     } else {
-        output += newGeneric();
+        output.name += newGeneric();
     }
-    output = newMaster(output);
+    output.name = newMaster(output.name);
+    output.class = 'jedi';
+    output.canonicity = 0;
+    output.lightsaber = dice3 <= 12 ? 'blue'
+        : dice3 <= 18 ? 'green'
+        : dice3 <= 20 ? 'yellow'
+        : 'purple'
     return output;
 }
 
 const newChiss = () => {
     let dice = (Math.random() * 20) + 1;
     let dice2 = (Math.random() * 20) + 1;
-    let output = '';
+    let output = {};
     let fam = undefined;
     if (dice >= 5) {
         fam = chissFam[Math.floor(Math.random() * chissFam.length)];
@@ -132,7 +144,12 @@ const newChiss = () => {
     let soc = chissSoc[Math.floor(Math.random() * chissSoc.length)];
     let odo = dice2 < 1.1 ? 'odo' : '';
     if (fam) {
-        output = `${fam[1]}${giv.toLowerCase()}${soc[1]} <em>(${fam[0]}'${giv.toLowerCase()}'${soc[0]}${odo})</em>`;
+        output.name = `${fam[1]}${giv.toLowerCase()}${soc[1]}`;
+        output.fullname = `(${fam[0]}'${giv.toLowerCase()}'${soc[0]}${odo})`
+        output.rulingFamily = fam[2] === 1 ? `Ruling Family`
+        : fam[2] === 2 ? `Former Ruling Family`
+        : fam[2] === 3 ? `of the Forty Great Houses`
+        : undefined;
     } else {
         let rank = dice2 >= 19 ? `Supreme Admiral`
             : dice2 >= 20 ? `Supreme General`
@@ -144,15 +161,40 @@ const newChiss = () => {
             : dice2 >= 7 ? `Mid General`
             : dice2 >= 3 ? `Commodore`
             : `Sky-walker`;
-        output = `${rank} ${giv}'${soc[0]}${odo}`;
+        output.name = `${rank} ${giv}'${soc[0]}${odo}`;
     }
+
     return output;
+}
+
+const newCanonicityNote = (canonicity) => {
+    return canonicity === 3 ? `<sup>(Legends/Canon)</sup>`
+        : canonicity === 2 ? `<sup>(Legends)</sup>`
+        : canonicity === 1 ? `<sup>(Canon)</sup>`
+        : canonicity === 99 ? `<sup>(Non-Canon)</sup>`
+        : ``;
 }
 
 const newName = (callback) => {
     let output = callback();
+    let card = `<div class="card ${output.class}">
+            <div class="name">
+                ${output.name}
+            </div>
+            <div class="fullname">
+            ${output.fullname ? output.fullname : ''}
+            </div>
+            <div class="rulingFamily">
+            ${output.rulingFamily ? output.rulingFamily : ''}
+            </div>
+            <div class="canonicity">
+                ${newCanonicityNote(output.canonicity)}
+            </div>
+            <div class="lightsaber ${output.lightsaber}">
+            </div>
+        </div>`;
     let current = document.getElementById('output').innerHTML;
-    document.getElementById('output').innerHTML = `${output}<br>${current}`;
+    document.getElementById('output').innerHTML = `${card}<br>${current}`;
 }
 
 document.getElementById('newSith').addEventListener('click', () => {
