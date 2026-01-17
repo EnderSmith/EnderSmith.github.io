@@ -1,3 +1,26 @@
+:root {
+    --red: ;
+    --vert: rgba(48, 255, 0, 1);
+    --azure: rgba(0, 192, 255, 1);
+    --amber: rgba(255, 128, 0, 1);
+    --amber2: rgba(255, 192, 0, 1);
+    --amethyst: rgba(112, 0, 255, 1);
+    --amethyst2: rgba(192, 96, 255, 1);
+    --crimson: rgba(255, 0, 0, 1);
+    --synth: rgba(255, 96, 0, 1);
+    --synthcore: rgba(255, 224, 0, 1);
+}
+html {
+    height: 100%;
+}
+body {
+    background: #261f12;
+    background: linear-gradient(0deg,rgba(38, 31, 18, 1) 0%, rgba(38, 20, 19, 1) 35%, rgba(9, 9, 28, 1) 100%);
+    height: 100%;
+    margin: 0;
+    background-repeat: no-repeat;
+    background-attachment: fixed;
+}
 .card {
     border-style: solid;
     border-width: 1px;
@@ -5,9 +28,12 @@
     max-width: 20em;
     margin: .5em auto;
     padding: 1em;
-    background-color: #222222;
+    background-color: #444444;
     color: white;
     font-family: sans-serif;
+    box-shadow: 10px 5px 5px #00000088, inset 0 -2px 30px #442200aa, inset 1px 1px 4px #aaaaffcc;
+    /* corner-shape: bevel; */
+    border-radius: 0.5em 0 .5em 0;
 }
 .lightsaber {
     margin: .5em auto;
@@ -19,26 +45,32 @@
 }
 .lightsaber.red {
     display: block;
-    border: 3px solid red;
-    box-shadow: 0 0 15px red;
+    border: 3px solid var(--crimson);
+    box-shadow: 0 0 15px var(--crimson);
+}
+.lightsaber.synth {
+    display: block;
+    background-color: var(--synthcore);
+    border: 3px solid var(--synth);
+    box-shadow: 0 0 15px var(--synth);
 }
 .lightsaber.blue {
     display: block;
-    border: 3px solid blue;
-    box-shadow: 0 0 15px blue;
+    border: 3px solid var(--azure);
+    box-shadow: 0 0 15px var(--azure);
 }
 .lightsaber.green {
     display: block;
-    border: 3px solid green;
-    box-shadow: 0 0 15px green;
+    border: 3px solid var(--vert);
+    box-shadow: 0 0 15px var(--vert);
 }
 .lightsaber.yellow {
     display: block;
-    border: 3px solid gold;
-    box-shadow: 0 0 15px gold;
+    border: 3px solid var(--amber2);
+    box-shadow: 0 0 15px var(--amber2);
 }
 .lightsaber.purple {
     display: block;
-    border: 3px solid purple;
-    box-shadow: 0 0 15px purple;
+    border: 3px solid var(--amethyst2);
+    box-shadow: 0 0 15px var(--amethyst2);
 }

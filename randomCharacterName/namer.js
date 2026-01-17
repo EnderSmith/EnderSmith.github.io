@@ -3,6 +3,7 @@
 const newSith = () => {
     let dice = (Math.random() * 20) + 1;
     let dice2 = (Math.random() * 20) + 1;
+    let dice3 = (Math.random() * 20) + 1;
     let darth = darths[Math.floor(Math.random() * darths.length)]
     let output = {};
     output.canonicity = darth.canonicity;
@@ -11,9 +12,17 @@ const newSith = () => {
     } else {
         output.name = `Darth ${darth.name}`;
     }
-    if (dice2 > 0) {
+    if (dice2 <= 1.05) {
+        output.lightsaber = newJediSaber();
+    } else if (dice2 <= 1.15) {
+        output.lightsaber = "synth"
+    } else {
         output.lightsaber = "red"
     }
+    output.lightsaber2 = dice3 <= 1.05 ? newJediSaber()
+        : dice3 <= 1.15 ? "synth"
+        : dice3 <= 1.75 ? "red"
+        : undefined;
     output.class = 'sith';
     return output;
 }
@@ -125,13 +134,20 @@ const newJedi = () => {
     output.name = newMaster(output.name);
     output.class = 'jedi';
     output.canonicity = 0;
-    output.lightsaber = dice3 <= 12 ? 'blue'
-        : dice3 <= 18 ? 'green'
-        : dice3 <= 20 ? 'yellow'
-        : 'purple'
+    output.lightsaber = newJediSaber();
+    output.lightsaber2 = dice3 <= 1.5 ? newJediSaber() : undefined;
+
     return output;
 }
 
+const newJediSaber = () => {
+    let dice = (Math.random() * 20) + 1;
+    var lightsaber = dice <= 12 ? 'blue'
+        : dice <= 18 ? 'green'
+        : dice <= 20 ? 'yellow'
+        : 'purple';
+    return lightsaber
+}
 const newChiss = () => {
     let dice = (Math.random() * 20) + 1;
     let dice2 = (Math.random() * 20) + 1;
@@ -191,6 +207,8 @@ const newName = (callback) => {
                 ${newCanonicityNote(output.canonicity)}
             </div>
             <div class="lightsaber ${output.lightsaber}">
+            </div>
+            <div class="lightsaber ${output.lightsaber2}">
             </div>
         </div>`;
     let current = document.getElementById('output').innerHTML;
