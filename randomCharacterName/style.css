@@ -1,6 +1,7 @@
 :root {
     --red: ;
     --vert: rgba(48, 255, 0, 1);
+    --vert2: rgba(32, 255, 0, 1);
     --azure: rgba(0, 192, 255, 1);
     --amber: rgba(255, 128, 0, 1);
     --amber2: rgba(255, 192, 0, 1);
@@ -62,8 +63,8 @@ body {
 }
 .lightsaber.green {
     display: block;
-    border: 3px solid var(--vert);
-    box-shadow: 0 0 15px var(--vert);
+    border: 3px solid var(--vert2);
+    box-shadow: 0 0 15px var(--vert2);
 }
 .lightsaber.yellow {
     display: block;
