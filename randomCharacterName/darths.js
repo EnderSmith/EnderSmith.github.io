@@ -2350,6 +2350,11 @@ const darths = [
         derivation: 'Modal'
     },
     {
+        name: 'Modulous',
+        canonicity: 0,
+        derivation: 'Modulate'
+    },
+    {
         name: 'Nether',
         canonicity: 0,
         derivation: 'Nether'

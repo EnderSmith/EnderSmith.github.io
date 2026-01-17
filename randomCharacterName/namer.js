@@ -3,7 +3,6 @@
 const newSith = () => {
     let dice = (Math.random() * 20) + 1;
     let dice2 = (Math.random() * 20) + 1;
-    let dice3 = (Math.random() * 20) + 1;
     let darth = darths[Math.floor(Math.random() * darths.length)]
     let output = {};
     output.canonicity = darth.canonicity;
@@ -12,17 +11,11 @@ const newSith = () => {
     } else {
         output.name = `Darth ${darth.name}`;
     }
-    if (dice2 <= 1.05) {
-        output.lightsaber = newJediSaber();
-    } else if (dice2 <= 1.25) {
-        output.lightsaber = "synth"
-    } else {
-        output.lightsaber = "red"
-    }
-    output.lightsaber2 = dice3 <= 1.05 ? newJediSaber()
-        : dice3 <= 1.15 ? "synth"
-        : dice3 <= 1.75 ? "red"
-        : undefined;
+
+    output.lightsaber = newSithSaber();
+    output.lightsaber2 = dice2 <= 3 ? newSithSaber(output.lightsaber) : undefined;
+    output.lightsaber3 = dice2 <= 1.1 ? newSithSaber(output.lightsaber) : undefined;
+    output.lightsaber4 = output.lightsaber3 ? newSithSaber(output.lightsaber) : undefined;
     output.class = 'sith';
     return output;
 }
@@ -135,22 +128,41 @@ const newJedi = () => {
     output.class = 'jedi';
     output.canonicity = 0;
     output.lightsaber = newJediSaber();
-    output.lightsaber2 = dice3 <= 1.5 ? newJediSaber() : undefined;
+    output.lightsaber2 = dice3 <= 2 ? newJediSaber(output.lightsaber) : undefined;
+    output.lightsaber3 = dice3 <= 1.1 ? newJediSaber() : undefined;
+    output.lightsaber4 = output.lightsaber3 ? newJediSaber(output.lightsaber3) : undefined;
 
     return output;
 }
 
-const newJediSaber = () => {
-    let dice = (Math.random() * 20) + 1;
-    var lightsaber = dice <= 12 ? 'blue'
-        : dice <= 18 ? 'green'
-        : dice <= 20 ? 'yellow'
-        : 'purple';
-    return lightsaber
-}
-const newChiss = () => {
+const newJediSaber = (dual) => {
     let dice = (Math.random() * 20) + 1;
     let dice2 = (Math.random() * 20) + 1;
+    let lightsaber = undefined;
+    if (dice < 10 && dual) {
+        lightsaber = dual;
+    } else {
+        lightsaber = dice2 <= 12 ? 'blue'
+            : dice2 <= 18 ? 'green'
+            : dice2 <= 20 ? 'yellow'
+            : 'purple';
+    }
+    return lightsaber;
+}
+
+const newSithSaber = (dual) => {
+    let dice = (Math.random() * 20) + 1;
+    let lightsaber = dice <= 1.01 ? "synthblue"
+        : dice <= 1.1 ? newJediSaber()
+        : dice <= 1.4 ? "synth"
+        : "red"
+    if (dual && (dual === 'synth' || dual === 'synthblue' || lightsaber === 'synth' || lightsaber === 'synthblue')) lightsaber = dual;
+    return lightsaber;
+}
+
+const newChiss = () => {
+    let dice = (Math.random() * 20) + 1;
+    let dice2 = (Math.random() * 25) + 1;
     let output = {};
     let fam = undefined;
     if (dice >= 5) {
@@ -162,12 +174,25 @@ const newChiss = () => {
     if (fam) {
         output.name = `${fam[1]}${giv.toLowerCase()}${soc[1]}`;
         output.fullname = `(${fam[0]}'${giv.toLowerCase()}'${soc[0]}${odo})`
-        output.rulingFamily = fam[2] === 1 ? `Ruling Family`
-        : fam[2] === 2 ? `Former Ruling Family`
-        : fam[2] === 3 ? `of the Forty Great Houses`
-        : undefined;
+        if (fam[2] === 1) {
+            output.familyRank = dice2 >= 20.9 ? `Patriarch`
+                : dice2 >= 20.5 ? `Speaker`
+                : dice2 >= 20.25 ? `Syndic Prime`
+                : dice2 >= 20 ? `Syndic`
+                : dice2 >= 18 ? `Patriel`
+                : dice2 >= 16 ? `Aristocra`
+                : dice2 >= 13 ? `Blood`
+                : dice2 >= 10 ? `Cousin`
+                : dice2 >= 4 ? `Ranking Distant`
+                : dice2 >= 2 ? `Trial-born`
+                : `Merit Adoptive`
+        }
+        output.rulingFamily = fam[2] === 1 ? `of House ${fam[0]}<br>of the Nine Ruling Families`
+            : fam[2] === 2 ? `of House ${fam[0]},<br>Former Ruling Family`
+            : fam[2] === 3 ? `of House ${fam[0]}<br>of the Forty Great Houses`
+            : `of House ${fam[0]}`;
     } else {
-        let rank = dice2 >= 19 ? `Supreme Admiral`
+        let rank = dice2 >= 20.5 ? `Supreme Admiral`
             : dice2 >= 20 ? `Supreme General`
             : dice2 >= 19 ? `Fleet Admiral`
             : dice2 >= 17 ? `Senior General`
@@ -176,18 +201,20 @@ const newChiss = () => {
             : dice2 >= 10 ? `Mid Admiral`
             : dice2 >= 7 ? `Mid General`
             : dice2 >= 3 ? `Commodore`
+            : dice2 >= 2 ? `Caretaker`
             : `Sky-walker`;
         output.name = `${rank} ${giv}'${soc[0]}${odo}`;
+        output.rulingFamily = `of the Expansionary<br>Defense Fleet`
     }
 
     return output;
 }
 
 const newCanonicityNote = (canonicity) => {
-    return canonicity === 3 ? `<sup>(Legends/Canon)</sup>`
-        : canonicity === 2 ? `<sup>(Legends)</sup>`
-        : canonicity === 1 ? `<sup>(Canon)</sup>`
-        : canonicity === 99 ? `<sup>(Non-Canon)</sup>`
+    return canonicity === 3 ? `(Legends/Canon)`
+        : canonicity === 2 ? `(Legends)`
+        : canonicity === 1 ? `(Canon)`
+        : canonicity === 99 ? `(Non-Canon)`
         : ``;
 }
 
@@ -198,30 +225,36 @@ const newName = (callback) => {
                 ${output.name}
             </div>
             <div class="fullname">
-            ${output.fullname ? output.fullname : ''}
+                ${output.fullname ? output.fullname : ''}
             </div>
-            <div class="rulingFamily">
-            ${output.rulingFamily ? output.rulingFamily : ''}
+            <div class="familyRank">
+                <b>${output.familyRank ? output.familyRank : ''}</b> ${output.rulingFamily ? output.rulingFamily : ''}
             </div>
             <div class="canonicity">
                 ${newCanonicityNote(output.canonicity)}
             </div>
-            <div class="lightsaber ${output.lightsaber}">
-            </div>
-            <div class="lightsaber ${output.lightsaber2}">
-            </div>
+            <div class="lightsaber ${output.lightsaber}"></div>
+            <div class="lightsaber ${output.lightsaber2}"></div>
+            <div class="lightsaber ${output.lightsaber3}"></div>
+            <div class="lightsaber ${output.lightsaber4}"></div>
         </div>`;
     let current = document.getElementById('output').innerHTML;
     document.getElementById('output').innerHTML = `${card}<br>${current}`;
 }
 
-document.getElementById('newSith').addEventListener('click', () => {
-    newName(newSith);
-})
-document.getElementById('newJedi').addEventListener('click', () => {
-    newName(newJedi);
-})
-document.getElementById('newChiss').addEventListener('click', () => {
-    newName(newChiss);
-})
+const clearPage = () => {
+    document.getElementById('output').innerHTML = ``;
+}
+
+document.getElementById('newSith').addEventListener('click', () => newName(newSith));
+document.getElementById('newJedi').addEventListener('click', () => newName(newJedi));
+document.getElementById('newChiss').addEventListener('click', () => newName(newChiss));
+document.getElementById('clear').addEventListener('click', () => clearPage());
+document.addEventListener('keydown', (event) => {
+    if (event.key === 'S' || event.key === 's') newName(newSith);
+    if (event.key === 'J' || event.key === 'j') newName(newJedi);
+    if (event.key === 'C' || event.key === 'c') newName(newChiss);
+    if (event.key === 'Escape') clearPage();
+    return;
+});
 
