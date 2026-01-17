@@ -1,0 +1,44 @@
+.card {
+    border-style: solid;
+    border-width: 1px;
+    border-color: black;
+    max-width: 20em;
+    margin: .5em auto;
+    padding: 1em;
+    background-color: #222222;
+    color: white;
+    font-family: sans-serif;
+}
+.lightsaber {
+    margin: .5em auto;
+    height: 3px;
+    width: 80%;
+    border-radius: 6px;
+    background-color: white;
+    display: none;
+}
+.lightsaber.red {
+    display: block;
+    border: 3px solid red;
+    box-shadow: 0 0 15px red;
+}
+.lightsaber.blue {
+    display: block;
+    border: 3px solid blue;
+    box-shadow: 0 0 15px blue;
+}
+.lightsaber.green {
+    display: block;
+    border: 3px solid green;
+    box-shadow: 0 0 15px green;
+}
+.lightsaber.yellow {
+    display: block;
+    border: 3px solid gold;
+    box-shadow: 0 0 15px gold;
+}
+.lightsaber.purple {
+    display: block;
+    border: 3px solid purple;
+    box-shadow: 0 0 15px purple;
+}
