@@ -14,7 +14,7 @@ const newSith = () => {
     }
     if (dice2 <= 1.05) {
         output.lightsaber = newJediSaber();
-    } else if (dice2 <= 1.15) {
+    } else if (dice2 <= 1.25) {
         output.lightsaber = "synth"
     } else {
         output.lightsaber = "red"
