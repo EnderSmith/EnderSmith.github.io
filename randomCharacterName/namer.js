@@ -1,15 +1,19 @@
 "use strict";
 
 const newSith = () => {
+    let dice0 = (Math.random() * 20) + 1;
     let dice = (Math.random() * 20) + 1;
     let dice2 = (Math.random() * 20) + 1;
+    let dice3 = (Math.random() * 20) + 1;
     let darth = darths[Math.floor(Math.random() * darths.length)]
     let output = {};
     output.canonicity = darth.canonicity;
+    if (dice0 > 1) {
+        output.darth = 'Darth'
+    }  
+    output.name = `${darth.name}`;
     if (dice >= 17) {
-        output.name = `Darth ${darth.name} ${darthEpithets[Math.floor(Math.random() * darthEpithets.length)]}`;
-    } else {
-        output.name = `Darth ${darth.name}`;
+        output.epithet = darthEpithets[Math.floor(Math.random() * darthEpithets.length)];
     }
 
     output.lightsaber = newSithSaber();
@@ -17,6 +21,7 @@ const newSith = () => {
     output.lightsaber3 = dice2 <= 1.1 ? newSithSaber(output.lightsaber) : undefined;
     output.lightsaber4 = output.lightsaber3 ? newSithSaber(output.lightsaber) : undefined;
     output.class = 'sith';
+    output.aka = dice3 <= 4 && output.darth ? newJedi().name : undefined;
     return output;
 }
 
@@ -26,6 +31,7 @@ const newObiWan = () => {
     let dice3 = (Math.random() * 20) + 1;
     let output = dice >= 8 ? `${obis[Math.floor(Math.random() * obis.length)]}`
         : `${dis[Math.floor(Math.random() * dis.length)]}`;
+    output = output[0] === 'I' ? output.slice(1).charAt(0).toUpperCase() + output.slice(2) : output; //unsure
     if (dice2 >= 14) {
         output += dice3 >= 8 ? `${wans[Math.floor(Math.random() * wans.length)].toLowerCase()}`
             : `${dis[Math.floor(Math.random() * dis.length)].toLowerCase()}`;
@@ -46,6 +52,7 @@ const newKenobiJinn = () => {
 const newAnakin = () => {
     let dice = (Math.random() * 20) + 1;
     let output = `${obis[Math.floor(Math.random() * obis.length)]}`;
+    output = output[0] === 'I' ? output.slice(1).charAt(0).toUpperCase() + output.slice(2) : output; //unsure
     output += dice >= 4 ? `${dis[Math.floor(Math.random() * dis.length)].toLowerCase()}`
         : `${wans[Math.floor(Math.random() * wans.length)].toLowerCase()}`;
     return output;
@@ -66,6 +73,7 @@ const newMace = () => {
     let output = ``;
     if (dice >= 17) {
         output += `${obis[Math.floor(Math.random() * obis.length)]}`;
+        output = output[0] === 'I' && output[2] != 'p' ? output.slice(1).charAt(0).toUpperCase() + output.slice(2) : output; //unsure
         output += `${maces[Math.floor(Math.random() * maces.length)].toLowerCase()}`;
     } else {
         output += `${maces[Math.floor(Math.random() * maces.length)]}`;
@@ -112,19 +120,19 @@ const newJedi = () => {
     let dice3 = (Math.random() * 20) + 1;
     let output = {};
     output.name = '';
-    if (dice >= 11) { // OBI-WAN / QUI-GON
+    if (dice >= 14) { // OBI-WAN / QUI-GON
         output.name += newObiWan();
         output.name += dice2 >= 5 ? ` ${newKenobiJinn()}`
             : dice2 >= 3 ? ` ${newAnakin()}`
             : ` ${newDijon()}`;
-    } else if (dice >= 10) {
+    } else if (dice >= 13) {
         output.name += newKiAdiMundi();
-    } else if (dice >= 6) {
+    } else if (dice >= 8) {
         output.name += `${newMace()} ${newWindu()}`;
     } else {
         output.name += newGeneric();
     }
-    output.name = newMaster(output.name);
+    output.jediRank = newMaster('');
     output.class = 'jedi';
     output.canonicity = 0;
     output.lightsaber = newJediSaber();
@@ -211,10 +219,10 @@ const newChiss = () => {
 }
 
 const newCanonicityNote = (canonicity) => {
-    return canonicity === 3 ? `(Legends/Canon)`
-        : canonicity === 2 ? `(Legends)`
-        : canonicity === 1 ? `(Canon)`
-        : canonicity === 99 ? `(Non-Canon)`
+    return canonicity === 3 ? `Appears in Legends & Canon`
+        : canonicity === 2 ? `Appears in Legends`
+        : canonicity === 1 ? `Appears in Canon`
+        : canonicity === -1 ? `Does not appear in Canon`
         : ``;
 }
 
@@ -222,24 +230,31 @@ const newName = (callback) => {
     let output = callback();
     let card = `<div class="card ${output.class}">
             <div class="name">
-                ${output.name}
+                ${output.jediRank ? `${output.jediRank} ` : ''}
+                ${output.darth ? `${output.darth} ` : ''}
+                ${output.name}${output.canonicity ? `*` : ''}
+                ${output.epithet ? ` ${output.epithet}` : ''}
             </div>
             <div class="fullname">
                 ${output.fullname ? output.fullname : ''}
+                ${output.aka ? `(a.k.a ${output.aka})` : ''}
             </div>
             <div class="familyRank">
                 <b>${output.familyRank ? output.familyRank : ''}</b> ${output.rulingFamily ? output.rulingFamily : ''}
-            </div>
-            <div class="canonicity">
-                ${newCanonicityNote(output.canonicity)}
             </div>
             <div class="lightsaber ${output.lightsaber}"></div>
             <div class="lightsaber ${output.lightsaber2}"></div>
             <div class="lightsaber ${output.lightsaber3}"></div>
             <div class="lightsaber ${output.lightsaber4}"></div>
+            <div class="canonicity">
+                <sup>${output.canonicity ? `*(${newCanonicityNote(output.canonicity)})` : ''}</sup>
+            </div>
         </div>`;
+    let cards = document.getElementsByClassName('card');
+    if (cards.length >= 10) cards[9].remove();
+    // document.getElementsByTagName('body')[0].style.height = '100vh';
     let current = document.getElementById('output').innerHTML;
-    document.getElementById('output').innerHTML = `${card}<br>${current}`;
+    document.getElementById('output').innerHTML = `${card}${current}`;
 }
 
 const clearPage = () => {
