@@ -1475,7 +1475,7 @@ const darths = [
         derivation: 'sounds cool, crazy'
     },
     {
-        name: 'Psadus',
+        name: 'Psadis',
         canonicity: 0,
         derivation: 'Sadist'
     },

@@ -31,7 +31,7 @@ const newObiWan = () => {
     let dice3 = (Math.random() * 20) + 1;
     let output = dice >= 8 ? `${obis[Math.floor(Math.random() * obis.length)]}`
         : `${dis[Math.floor(Math.random() * dis.length)]}`;
-    output = output[0] === 'I' ? output.slice(1).charAt(0).toUpperCase() + output.slice(2) : output; //unsure
+    output = output[0] === 'I' && output[2] != 'p' && output[2] != 'z' ? output.slice(1).charAt(0).toUpperCase() + output.slice(2) : output; //unsure
     if (dice2 >= 14) {
         output += dice3 >= 8 ? `${wans[Math.floor(Math.random() * wans.length)].toLowerCase()}`
             : `${dis[Math.floor(Math.random() * dis.length)].toLowerCase()}`;
@@ -52,7 +52,7 @@ const newKenobiJinn = () => {
 const newAnakin = () => {
     let dice = (Math.random() * 20) + 1;
     let output = `${obis[Math.floor(Math.random() * obis.length)]}`;
-    output = output[0] === 'I' ? output.slice(1).charAt(0).toUpperCase() + output.slice(2) : output; //unsure
+    output = output[0] === 'I' && output[2] != 'p' && output[2] != 'z' ? output.slice(1).charAt(0).toUpperCase() + output.slice(2) : output; //unsure
     output += dice >= 4 ? `${dis[Math.floor(Math.random() * dis.length)].toLowerCase()}`
         : `${wans[Math.floor(Math.random() * wans.length)].toLowerCase()}`;
     return output;
@@ -73,7 +73,7 @@ const newMace = () => {
     let output = ``;
     if (dice >= 17) {
         output += `${obis[Math.floor(Math.random() * obis.length)]}`;
-        output = output[0] === 'I' && output[2] != 'p' ? output.slice(1).charAt(0).toUpperCase() + output.slice(2) : output; //unsure
+        output = output[0] === 'I' && output[2] != 'p' && output[2] != 'z' ? output.slice(1).charAt(0).toUpperCase() + output.slice(2) : output; //unsure
         output += `${maces[Math.floor(Math.random() * maces.length)].toLowerCase()}`;
     } else {
         output += `${maces[Math.floor(Math.random() * maces.length)]}`;
@@ -127,8 +127,12 @@ const newJedi = () => {
             : ` ${newDijon()}`;
     } else if (dice >= 13) {
         output.name += newKiAdiMundi();
-    } else if (dice >= 8) {
+    } else if (dice >= 10) {
         output.name += `${newMace()} ${newWindu()}`;
+    } else if (dice >= 9) {
+        output.name += `${newRodian().name} ${newWindu()}`;
+    } else if (dice >= 8.5) {
+        output = newWookiee();
     } else {
         output.name += newGeneric();
     }
@@ -170,7 +174,7 @@ const newSithSaber = (dual) => {
 
 const newChiss = () => {
     let dice = (Math.random() * 20) + 1;
-    let dice2 = (Math.random() * 25) + 1;
+    let dice2 = (Math.random() * 20) + 1;
     let output = {};
     let fam = undefined;
     if (dice >= 5) {
@@ -226,6 +230,47 @@ const newCanonicityNote = (canonicity) => {
         : ``;
 }
 
+const newRodian = () => {
+    let dice = (Math.random() * 20) + 1;
+    let output = {};
+    if (dice <= 5) { 
+        output.name = `${rodianPrebaked[Math.floor(Math.random() * rodianPrebaked.length)]}`;
+    }
+    let fname = `${rodianFirst[Math.floor(Math.random() * rodianFirst.length)]}${rodianLast[Math.floor(Math.random() * rodianLast.length)]}`;
+    let lname = `${rodianFirst[Math.floor(Math.random() * rodianFirst.length)]}${rodianLast[Math.floor(Math.random() * rodianLast.length)]}`;
+    if (dice <= 20.5) {
+        output.name = `${fname} ${lname}`;
+    }
+    output.name = fname;
+    console.log('newRodian');
+    return output;
+}
+
+const newWookiee = () => {
+    let dice = (Math.random() * 20) + 1;
+    // let dice2 = (Math.random() * 20) + 1;
+    let output = {};
+    
+    let prefix = wookieePre[Math.floor(Math.random() * wookieePre.length)];
+    let suffix = wookieeSuf[Math.floor(Math.random() * wookieeSuf.length)];
+    // let lastPrefix = wookieePre[Math.floor(Math.random() * wookieePre.length)];
+    // let lastSuffix = wookieeSuf[Math.floor(Math.random() * wookieeSuf.length)];
+
+    if (prefix.nick || suffix.nick) {
+        output.name = `"${prefix.nick ? prefix.nick : suffix.nick}"`;
+        output.fullname = `(${prefix.prefix + suffix.suffix})`;
+        if (dice > 15) {
+            output.name = prefix.prefix + suffix.suffix;
+            output.nick, output.fullname = undefined;
+            console.log('nickname override');
+        }
+    } else {
+        output.name = prefix.prefix + suffix.suffix
+    }
+    console.log('newWookiee')
+    return output;
+}
+
 const newName = (callback) => {
     let output = callback();
     let card = `<div class="card ${output.class}">
@@ -264,11 +309,15 @@ const clearPage = () => {
 document.getElementById('newSith').addEventListener('click', () => newName(newSith));
 document.getElementById('newJedi').addEventListener('click', () => newName(newJedi));
 document.getElementById('newChiss').addEventListener('click', () => newName(newChiss));
+document.getElementById('newRodian').addEventListener('click', () => newName(newRodian));
+document.getElementById('newWookiee').addEventListener('click', () => newName(newWookiee));
 document.getElementById('clear').addEventListener('click', () => clearPage());
 document.addEventListener('keydown', (event) => {
     if (event.key === 'S' || event.key === 's') newName(newSith);
     if (event.key === 'J' || event.key === 'j') newName(newJedi);
     if (event.key === 'C' || event.key === 'c') newName(newChiss);
+    if (event.key === 'R' || event.key === 'r') newName(newRodian);
+    if (event.key === 'W' || event.key === 'w') newName(newWookiee);
     if (event.key === 'Escape') clearPage();
     return;
 });
