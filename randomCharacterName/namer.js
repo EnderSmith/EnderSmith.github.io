@@ -130,9 +130,16 @@ const newJedi = () => {
     } else if (dice >= 10) {
         output.name += `${newMace()} ${newWindu()}`;
     } else if (dice >= 9) {
-        output.name += `${newRodian().name} ${newWindu()}`;
+        let rodian = newRodian();
+        output.name += `${rodian.fname ? rodian.fname : rodian.name}`;
+        output.name += dice2 >= 15 ? ` ${newWindu()}`
+            : dice2 >= 10 ? ` ${rodian.lname ? rodian.lname : newKenobiJinn()}`
+            : dice2 >= 9 ? ` ${newMace()}`
+            : '';
     } else if (dice >= 8.5) {
-        output = newWookiee();
+        output = newWookiee2();
+    } else if (dice >= 8.3) {
+        output = newSullustan();
     } else {
         output.name += newGeneric();
     }
@@ -151,10 +158,13 @@ const newJediSaber = (dual) => {
     let dice = (Math.random() * 20) + 1;
     let dice2 = (Math.random() * 20) + 1;
     let lightsaber = undefined;
-    if (dice < 10 && dual) {
+    if (dual === 'white') {
+        lightsaber = dual;
+    } else if (dice < 10 && dual) {
         lightsaber = dual;
     } else {
-        lightsaber = dice2 <= 12 ? 'blue'
+        lightsaber = dice2 <= 1.01 ? 'white'
+            : dice2 <= 12 ? 'blue'
             : dice2 <= 18 ? 'green'
             : dice2 <= 20 ? 'yellow'
             : 'purple';
@@ -218,7 +228,7 @@ const newChiss = () => {
         output.name = `${rank} ${giv}'${soc[0]}${odo}`;
         output.rulingFamily = `of the Expansionary<br>Defense Fleet`
     }
-
+    output.class = 'chiss';
     return output;
 }
 
@@ -233,15 +243,19 @@ const newCanonicityNote = (canonicity) => {
 const newRodian = () => {
     let dice = (Math.random() * 20) + 1;
     let output = {};
+    output.class = 'rodian';
     if (dice <= 5) { 
         output.name = `${rodianPrebaked[Math.floor(Math.random() * rodianPrebaked.length)]}`;
+        return output;
     }
     let fname = `${rodianFirst[Math.floor(Math.random() * rodianFirst.length)]}${rodianLast[Math.floor(Math.random() * rodianLast.length)]}`;
     let lname = `${rodianFirst[Math.floor(Math.random() * rodianFirst.length)]}${rodianLast[Math.floor(Math.random() * rodianLast.length)]}`;
-    if (dice <= 20.5) {
-        output.name = `${fname} ${lname}`;
-    }
     output.name = fname;
+    if (dice <= 8) {
+        output.name = `${fname} ${lname}`;
+        output.fname = fname;
+        output.lname = lname;
+    }
     console.log('newRodian');
     return output;
 }
@@ -255,25 +269,95 @@ const newWookiee = () => {
     let suffix = wookieeSuf[Math.floor(Math.random() * wookieeSuf.length)];
     // let lastPrefix = wookieePre[Math.floor(Math.random() * wookieePre.length)];
     // let lastSuffix = wookieeSuf[Math.floor(Math.random() * wookieeSuf.length)];
+    // let prefixFlaggedEndings = [
+    //     'k',
+    //     'r',
+    //     'w',
+    // ]
+    // if (prefixFlaggedEndings.includes(prefix.prefix.at(-1))) {
+    //     suffix.suffix = suffix.suffix.at(0)
+    // }
 
     if (prefix.nick || suffix.nick) {
-        output.name = `"${prefix.nick ? prefix.nick : suffix.nick}"`;
-        output.fullname = `(${prefix.prefix + suffix.suffix})`;
+        output.name = `${prefix.prefix + suffix.suffix}`;
+        output.nick = `"${prefix.nick ? prefix.nick : suffix.nick}"`;
         if (dice > 15) {
             output.name = prefix.prefix + suffix.suffix;
-            output.nick, output.fullname = undefined;
+            output.nick = undefined;
             console.log('nickname override');
         }
     } else {
-        output.name = prefix.prefix + suffix.suffix
+        output.name = prefix.prefix + suffix.suffix;
     }
+    output.class = 'wookiee'
     console.log('newWookiee')
+    return output;
+}
+
+const newWookiee2 = () => {
+    let dice = (Math.random() * 20) + 1;
+    // let dice2 = (Math.random() * 20) + 1;
+    let output = {};
+    
+    let wookiee = wookiees2[Math.floor(Math.random() * wookiees2.length)];
+    output.name = wookiee.name;
+    output.nick = wookiee.nicks.length && dice > 16 ? wookiee.nicks[Math.floor(Math.random() * wookiee.nicks.length)] : undefined;
+    output.class = 'wookiee'
+    console.log('newWookiee2')
+    return output;
+}
+
+// const everyWookiee = () => {
+//     let output = {};
+//     output.name = 'test';
+//     output.fullname = '';
+//     wookieePre.forEach((prefix) => {
+//         wookieeSuf.forEach((suffix) => {
+//             output.fullname += `{ name: '${prefix.prefix}${suffix.suffix}', nicks: ['${prefix.nick}']},<br>`
+//         })
+//     })
+//     return output;
+// }
+
+const newSullustan = () => {
+    let dice = (Math.random() * 20) + 1;
+    let output = {};
+    if (dice <= 10) {
+        // output.name = `${sullNumFNames[Math.floor(Math.random() * sullNumFNames.length)]} ${sullNumLNames[Math.floor(Math.random() * sullNumLNames.length)]}`;
+        let fname = sullNumFNames[Math.floor(Math.random() * sullNumFNames.length)];
+        let lname = sullNumLNames[Math.floor(Math.random() * sullNumLNames.length)];
+        output.name = `${fname.name} ${lname.name}`;
+        // if (fname.canonicity || lname.canonicity) {
+        //     output.canonicity = 
+        // }
+    } else if (dice <= 15) {
+        let fname = sullSymFNames[Math.floor(Math.random() * sullSymFNames.length)];
+        let lname = sullSymLNames[Math.floor(Math.random() * sullSymLNames.length)];
+        output.name = `${fname.name} ${lname.name}`;
+        // output.name = `${sullSymFNames[Math.floor(Math.random() * sullSymFNames.length)]} ${sullSymLNames[Math.floor(Math.random() * sullSymLNames.length)]}`;
+    } else if (dice <= 18) {
+        let fname = sullMathFNames[Math.floor(Math.random() * sullMathFNames.length)];
+        let lname = sullMathLNames[Math.floor(Math.random() * sullMathLNames.length)];
+        output.name = `${fname.name} ${lname.name}`;
+        // output.name = `${sullMathFNames[Math.floor(Math.random() * sullMathFNames.length)]} ${sullMathLNames[Math.floor(Math.random() * sullMathLNames.length)]}`;
+    } else if (dice <= 21) {
+        let fname = sullPuncFNames[Math.floor(Math.random() * sullPuncFNames.length)];
+        let lname = sullPuncLNames[Math.floor(Math.random() * sullPuncLNames.length)];
+        output.name = `${fname.name} ${lname.name}`;
+        // output.name = `${sullMathFNames[Math.floor(Math.random() * sullMathFNames.length)]} ${sullMathLNames[Math.floor(Math.random() * sullMathLNames.length)]}`;
+    }
+    output.class = 'sullustan';
+    console.log('newSullustan');
     return output;
 }
 
 const newName = (callback) => {
     let output = callback();
-    let card = `<div class="card ${output.class}">
+    let card = `
+        <div
+            class="card ${output.class}
+            title=""
+        ">
             <div class="name">
                 ${output.jediRank ? `${output.jediRank} ` : ''}
                 ${output.darth ? `${output.darth} ` : ''}
@@ -281,6 +365,7 @@ const newName = (callback) => {
                 ${output.epithet ? ` ${output.epithet}` : ''}
             </div>
             <div class="fullname">
+                ${output.nick ? output.nick : ''}
                 ${output.fullname ? output.fullname : ''}
                 ${output.aka ? `(a.k.a ${output.aka})` : ''}
             </div>
@@ -310,14 +395,17 @@ document.getElementById('newSith').addEventListener('click', () => newName(newSi
 document.getElementById('newJedi').addEventListener('click', () => newName(newJedi));
 document.getElementById('newChiss').addEventListener('click', () => newName(newChiss));
 document.getElementById('newRodian').addEventListener('click', () => newName(newRodian));
-document.getElementById('newWookiee').addEventListener('click', () => newName(newWookiee));
+document.getElementById('newWookiee').addEventListener('click', () => newName(newWookiee2));
+// document.getElementById('newSullustan').addEventListener('click', () => newName(newSullustan));
 document.getElementById('clear').addEventListener('click', () => clearPage());
 document.addEventListener('keydown', (event) => {
+    if (event.ctrlKey || event.metaKey) return;
     if (event.key === 'S' || event.key === 's') newName(newSith);
     if (event.key === 'J' || event.key === 'j') newName(newJedi);
     if (event.key === 'C' || event.key === 'c') newName(newChiss);
     if (event.key === 'R' || event.key === 'r') newName(newRodian);
-    if (event.key === 'W' || event.key === 'w') newName(newWookiee);
+    if (event.key === 'W' || event.key === 'w') newName(newWookiee2);
+    if (event.key === '9') newName(newSullustan);
     if (event.key === 'Escape') clearPage();
     return;
 });

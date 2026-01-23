@@ -78,6 +78,11 @@ body {
     border: 3px solid var(--amethyst);
     box-shadow: 0 0 15px var(--amethyst);
 }
+.lightsaber.white {
+    display: block;
+    border: 3px solid white;
+    box-shadow: 0 0 15px white;
+}
 .lightsaber.blue {
     display: block;
     border: 3px solid var(--azure);

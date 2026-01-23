@@ -3210,6 +3210,16 @@ const darths = [
         canonicity: 0,
         derivation: 'Reaper (considered by Abel G. Peña for Darth Ruin)'
     },
+    {
+        name: 'Vilzad',
+        canonicity: 0,
+        derivation: `Devil's advocate`
+    },
+    {
+        name: 'Tankerous',
+        canonicity: 0,
+        derivation: 'Contankerous'
+    },
     // 'Nucula',
     // 'Nameless',
     // 'Trembol',
