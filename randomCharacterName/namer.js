@@ -17,9 +17,11 @@ const newSith = () => {
     }
 
     output.lightsaber = newSithSaber();
-    output.lightsaber2 = dice2 <= 3 ? newSithSaber(output.lightsaber) : undefined;
-    output.lightsaber3 = dice2 <= 1.1 ? newSithSaber(output.lightsaber) : undefined;
-    output.lightsaber4 = output.lightsaber3 ? newSithSaber(output.lightsaber) : undefined;
+    if (!output.lightsaber.includes('staff')) {
+        output.lightsaber2 = dice2 <= 3 ? newSithSaber(output.lightsaber) : undefined;
+        output.lightsaber3 = dice2 <= 1.1 ? newSithSaber(output.lightsaber) : undefined;
+        output.lightsaber4 = output.lightsaber3 ? newSithSaber(output.lightsaber) : undefined;
+    }
     output.class = 'sith';
     output.aka = dice3 <= 4 && output.darth ? newJedi().name : undefined;
     return output;
@@ -136,9 +138,9 @@ const newJedi = () => {
             : dice2 >= 10 ? ` ${rodian.lname ? rodian.lname : newKenobiJinn()}`
             : dice2 >= 9 ? ` ${newMace()}`
             : '';
-    } else if (dice >= 8.5) {
+    } else if (dice >= 8.8) {
         output = newWookiee2();
-    } else if (dice >= 8.3) {
+    } else if (dice >= 8.75) {
         output = newSullustan();
     } else {
         output.name += newGeneric();
@@ -147,9 +149,11 @@ const newJedi = () => {
     output.class = 'jedi';
     output.canonicity = 0;
     output.lightsaber = newJediSaber();
-    output.lightsaber2 = dice3 <= 2 ? newJediSaber(output.lightsaber) : undefined;
-    output.lightsaber3 = dice3 <= 1.1 ? newJediSaber() : undefined;
-    output.lightsaber4 = output.lightsaber3 ? newJediSaber(output.lightsaber3) : undefined;
+    if (!output.lightsaber.includes('staff')) {
+        output.lightsaber2 = dice3 <= 2 ? newJediSaber(output.lightsaber) : undefined;
+        output.lightsaber3 = dice3 <= 1.05 ? newJediSaber() : undefined;
+        output.lightsaber4 = output.lightsaber3 ? newJediSaber(output.lightsaber2) : undefined;
+    }
 
     return output;
 }
@@ -157,10 +161,12 @@ const newJedi = () => {
 const newJediSaber = (dual) => {
     let dice = (Math.random() * 20) + 1;
     let dice2 = (Math.random() * 20) + 1;
+    let dice3 = (Math.random() * 20) + 1;
+    let dice4 = (Math.random() * 20) + 1;
     let lightsaber = undefined;
-    if (dual === 'white') {
+    if (dual && dual.includes('white')) {
         lightsaber = dual;
-    } else if (dice < 10 && dual) {
+    } else if (dice < 8 && dual) {
         lightsaber = dual;
     } else {
         lightsaber = dice2 <= 1.01 ? 'white'
@@ -169,18 +175,40 @@ const newJediSaber = (dual) => {
             : dice2 <= 20 ? 'yellow'
             : 'purple';
     }
+    if (!dual && dice4 <= 1.5) {
+        lightsaber = `${lightsaber} staff`;
+    } else if ((dual && dual.includes('shoto')) || (dual && dice3 <= 3) || dice3 <= 1.01) {
+        lightsaber = `${dual && dice < 15 ? dual : lightsaber} shoto`;  
+    }
+    if (dual && dual.includes('staff')) return '';
     return lightsaber;
 }
 
 const newSithSaber = (dual) => {
     let dice = (Math.random() * 20) + 1;
+    let dice2 = (Math.random() * 20) + 1;
+    let dice3 = (Math.random() * 20) + 1;
+    let dice4 = (Math.random() * 20) + 1;
     let lightsaber = dice <= 1.01 ? "synthblue"
         : dice <= 1.1 ? newJediSaber()
         : dice <= 1.4 ? "synth"
         : "red"
-    if (dual && (dual === 'synth' || dual === 'synthblue' || lightsaber === 'synth' || lightsaber === 'synthblue')) lightsaber = dual;
+
+    if (!dual && dice4 <= 3) {
+        lightsaber = `${lightsaber} staff`;
+    } else {
+        if (dual && (dual === 'synth' || dual === 'synthblue' || lightsaber === 'synth' || lightsaber === 'synthblue')) lightsaber = dual;
+        if ((dual && dual.includes('shoto')) || (dual && dice2 <= 2) || dice2 <= 1.01) lightsaber = `${lightsaber} shoto`;
+        if ((dual && !lightsaber.includes('shoto') && dice3 <= 1.5) || dice3 <= 1.005) lightsaber = `${lightsaber} dagger`;
+    }
+    if (dual && dual.includes('staff')) return '';
     return lightsaber;
 }
+
+// const newStaffSaber = (color) => {
+//     // TODO: THIS IS SUCH A HACKY SOLUTION, PLEASE FIX
+//     return `${color} staff"></div><div class = "lightsaber ${color} staff2`
+// }
 
 const newChiss = () => {
     let dice = (Math.random() * 20) + 1;
@@ -301,7 +329,7 @@ const newWookiee2 = () => {
     
     let wookiee = wookiees2[Math.floor(Math.random() * wookiees2.length)];
     output.name = wookiee.name;
-    output.nick = wookiee.nicks.length && dice > 16 ? wookiee.nicks[Math.floor(Math.random() * wookiee.nicks.length)] : undefined;
+    output.nick = wookiee.nicks.length && dice <= 10 ? wookiee.nicks[Math.floor(Math.random() * wookiee.nicks.length)] : undefined;
     output.class = 'wookiee'
     console.log('newWookiee2')
     return output;
@@ -372,10 +400,12 @@ const newName = (callback) => {
             <div class="familyRank">
                 <b>${output.familyRank ? output.familyRank : ''}</b> ${output.rulingFamily ? output.rulingFamily : ''}
             </div>
-            <div class="lightsaber ${output.lightsaber}"></div>
-            <div class="lightsaber ${output.lightsaber2}"></div>
-            <div class="lightsaber ${output.lightsaber3}"></div>
-            <div class="lightsaber ${output.lightsaber4}"></div>
+            ${(output.lightsaber && output.lightsaber.includes('staff')) ? `<div class="lightsaber ${output.lightsaber}"></div><div class="lightsaber ${output.lightsaber}2"></div>`
+                : (output.lightsaber && output.lightsaber.includes('cross')) ? `<div class="lightsaber ${output.lightsaber}"></div>`
+                : `<div class="lightsaber ${output.lightsaber}"></div>
+                <div class="lightsaber ${output.lightsaber2}"></div>
+                <div class="lightsaber ${output.lightsaber3}"></div>
+                <div class="lightsaber ${output.lightsaber4}"></div>`}
             <div class="canonicity">
                 <sup>${output.canonicity ? `*(${newCanonicityNote(output.canonicity)})` : ''}</sup>
             </div>
@@ -390,6 +420,12 @@ const newName = (callback) => {
 const clearPage = () => {
     document.getElementById('output').innerHTML = ``;
 }
+
+console.log(`darths: ${darths.length}`);
+console.log(`jedi: uncountable`);
+console.log(`rodians: ${(rodianFirst.length * rodianLast.length) + rodianPrebaked.length}`);
+console.log(`wookiees: ${wookiees2.length}`);
+console.log(`chiss: ${(chissFam.length * chissGiv.length * chissSoc.length) + (chissGiv.length * chissSoc.length)}`);
 
 document.getElementById('newSith').addEventListener('click', () => newName(newSith));
 document.getElementById('newJedi').addEventListener('click', () => newName(newJedi));

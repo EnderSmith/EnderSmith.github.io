@@ -455,11 +455,6 @@ const darths = [
         derivation: 'Lecherous and wretch or retch'
     },
     {
-        name: 'Dicator',
-        canonicity: 0,
-        derivation: 'Indicator'
-    },
-    {
         name: 'Hibitor',
         canonicity: 0,
         derivation: 'Inhibitor'
@@ -1956,7 +1951,7 @@ const darths = [
     },
     {
         name: 'Tenebrous',
-        canonicity: 0,
+        canonicity: 3,
         derivation: 'Tenebrous'
     },
     {
@@ -3219,6 +3214,146 @@ const darths = [
         name: 'Tankerous',
         canonicity: 0,
         derivation: 'Contankerous'
+    },
+    {
+        name: 'Prudish',
+        canonicity: 0,
+        derivation: 'Prudish'
+    },
+    {
+        name: 'Vyre',
+        canonicity: 0,
+        derivation: 'Virus'
+    },
+    {
+        name: 'Golgoth',
+        canonicity: 0,
+        derivation: 'Golgotha, from aramaic: Gulgulta; Exegolic'
+    },
+    {
+        name: 'Tallic',
+        canonicity: 0,
+        derivation: 'Metallic'
+    },
+    {
+        name: 'Aegis',
+        canonicity: 0,
+        derivation: 'Aegis'
+    },
+    {
+        name: 'Acklay',
+        canonicity: 0,
+        derivation: 'Acklay'
+    },
+    {
+        name: 'Acrid',
+        canonicity: 0,
+        derivation: 'Acrid'
+    },
+    {
+        name: 'Fearlous',
+        canonicity: 0,
+        derivation: 'Fearless'
+    },
+    {
+        name: 'Kherrlous',
+        canonicity: 0,
+        derivation: 'Careless'
+    },
+    {
+        name: 'Endlous',
+        canonicity: 0,
+        derivation: 'Endless'
+    },
+    {
+        name: 'Frigidous',
+        canonicity: 0,
+        derivation: 'Frigid'
+    },
+    {
+        name: 'Turgious',
+        canonicity: 0,
+        derivation: 'Turgid'
+    },
+    {
+        name: 'Scorn',
+        canonicity: 0,
+        derivation: 'Scorn'
+    },
+    {
+        name: 'Stidious',
+        canonicity: 0,
+        derivation: 'Fastidious'
+    },
+    {
+        name: 'Lygian',
+        canonicity: 0,
+        derivation: 'Religion'
+    },
+    {
+        name: 'Traage',
+        canonicity: 0,
+        derivation: 'Tragedy, rage'
+    },
+    {
+        name: 'Scorn',
+        canonicity: 0,
+        derivation: 'Scorn'
+    },
+    {
+        name: 'Berrat',
+        canonicity: 0,
+        derivation: 'Berate'
+    },
+    {
+        name: 'Oasis',
+        canonicity: 0,
+        derivation: 'Oasis'
+    },
+    {
+        name: 'Frayen',
+        canonicity: 0,
+        derivation: 'Fray'
+    },
+    {
+        name: 'Colden',
+        canonicity: 0,
+        derivation: 'Cold'
+    },
+    // {
+    //     name: 'Reezen',
+    //     canonicity: 0,
+    //     derivation: 'sounds cool'
+    // },
+    {
+        name: 'Cavorn',
+        canonicity: 0,
+        derivation: 'Cavern'
+    },
+    {
+        name: 'Thespia',
+        canonicity: 0,
+        derivation: 'Thespian'
+    },
+    {
+        name: 'Ardor',
+        canonicity: 0,
+        derivation: 'Ardor'
+    },
+    {
+        name: 'Jader',
+        canonicity: 0,
+        derivation: 'Jade'
+    },
+    {
+        name: 'Bolden',
+        canonicity: 0,
+        derivation: 'Embolden'
+    },
+    {
+        name: 'Tremor',
+        canonicity: 0,
+        derivation: 'Tremor'
     },
     // 'Nucula',
     // 'Nameless',

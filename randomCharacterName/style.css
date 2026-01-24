@@ -103,3 +103,28 @@ body {
     border: 3px solid var(--amethyst2);
     box-shadow: 0 0 15px var(--amethyst2);
 }
+.lightsaber.shoto {
+    width: 60%;
+    /* margin-left: auto;
+    margin-right: 24%; */
+}
+.lightsaber.dagger {
+    width: 30%;
+    /* margin-left: auto;
+    margin-right: 24%; */
+}
+
+.lightsaber.staff {
+    display: inline-block;
+    width: 38%;
+    margin-right: 1%;
+    margin-left: auto;
+
+}
+.lightsaber.staff2 {
+    display: inline-block;
+    line-height: 0;
+    width: 38%;
+    margin-left: 1%;
+    margin-right: auto;
+}
