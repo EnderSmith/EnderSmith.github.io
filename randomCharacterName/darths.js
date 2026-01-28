@@ -795,7 +795,7 @@ const darths = [
         derivation: 'Modus Operandi'
     },
     {
-        name: 'Vilerous',
+        name: 'Vilrous',
         canonicity: 0,
         derivation: 'Devilry'
     },
@@ -1572,7 +1572,7 @@ const darths = [
     {
         name: 'Vanet',
         canonicity: 0,
-        derivation: 'Vanity'
+        derivation: 'Vane'
     },
     {
         name: 'Evious',
@@ -2120,7 +2120,7 @@ const darths = [
         derivation: '???'
     },
     {
-        name: 'Xistent',
+        name: 'Xistench',
         canonicity: 0,
         derivation: 'Existential'
     },
@@ -3072,7 +3072,7 @@ const darths = [
     {
         name: 'Vanitrix',
         canonicity: 0,
-        derivation: 'Vanity'
+        derivation: 'Vane'
     },
     {
         name: 'Vericos',
@@ -3243,7 +3243,7 @@ const darths = [
     {
         name: 'Acklay',
         canonicity: 0,
-        derivation: 'Acklay'
+        derivation: 'Acklay (in-universe mantis-like creature of Felucia)'
     },
     {
         name: 'Acrid',
@@ -3354,6 +3354,421 @@ const darths = [
         name: 'Tremor',
         canonicity: 0,
         derivation: 'Tremor'
+    },
+    {
+        name: 'Ashen',
+        canonicity: 0,
+        derivation: 'Ashen'
+    },
+    {
+        name: 'Bruzen',
+        canonicity: 0,
+        derivation: 'Bruise'
+    },
+    {
+        name: 'Chthonix',
+        canonicity: 0,
+        derivation: 'Chthonic'
+    },
+    {
+        name: 'Drakine',
+        canonicity: 0,
+        derivation: 'Drake (ie Dragon)'
+    },
+    {
+        name: 'Exil',
+        canonicity: 0,
+        derivation: 'Exile'
+    },
+    // {
+    //     name: 'Frauden',
+    //     canonicity: 0,
+    //     derivation: 'Fraud'
+    // },
+    {
+        name: 'Gzor',
+        canonicity: 0,
+        derivation: 'sounds cool'
+    },
+    {
+        name: 'Heretek',
+        canonicity: 0,
+        derivation: 'Heretic'
+    },
+    {
+        name: 'Izarak',
+        canonicity: 0,
+        derivation: 'sounds cool'
+    },
+    {
+        name: 'Jekaar',
+        canonicity: 0,
+        derivation: 'sounds cool'
+    },
+    {
+        name: 'Krider',
+        canonicity: 0,
+        derivation: 'sounds cool'
+    },
+    {
+        name: 'Lirium',
+        canonicity: 0,
+        derivation: 'Delirium'
+    },
+    {
+        name: 'Maime',
+        canonicity: 0,
+        derivation: 'Maime'
+    },
+    {
+        name: 'Nethrous',
+        canonicity: 0,
+        derivation: 'Nether'
+    },
+    {
+        name: 'Orloth',
+        canonicity: 0,
+        derivation: 'Count Orlok'
+    },
+    {
+        name: 'Patrious',
+        canonicity: 0,
+        derivation: 'Patriot'
+    },
+    {
+        name: 'Quiditous',
+        canonicity: 0,
+        derivation: 'Quidit'
+    },
+    {
+        name: 'Quietus',
+        canonicity: 0,
+        derivation: 'Quietus'
+    },
+    {
+        name: 'Ructious',
+        canonicity: 0,
+        derivation: 'Ructious'
+    },
+    {
+        name: 'Rott',
+        canonicity: 0,
+        derivation: 'Rot'
+    },
+    {
+        name: 'Spite',
+        canonicity: 0,
+        derivation: 'Spite'
+    },
+    {
+        name: 'Saurian',
+        canonicity: 0,
+        derivation: 'Saurian'
+    },
+    {
+        name: 'Torcheous',
+        canonicity: 0,
+        derivation: 'Torch, torture'
+    },
+    {
+        name: 'Ultrious',
+        canonicity: 0,
+        derivation: 'Ultra'
+    },
+    {
+        name: 'Vulturous',
+        canonicity: 0,
+        derivation: 'Vulturous'
+    },
+    {
+        name: 'Wyyrlok',
+        canonicity: 2,
+        derivation: 'Warlock, wyrd'
+    },
+    {
+        name: 'Xared',
+        canonicity: 0,
+        derivation: 'sounds cool'
+    },
+    {
+        name: 'Yataghan',
+        canonicity: 0,
+        derivation: 'Yataghan'
+    },
+    {
+        name: 'Yyre',
+        canonicity: 0,
+        derivation: 'Ire'
+    },
+    {
+        name: 'Zurn',
+        canonicity: 0,
+        derivation: 'sounds cool'
+    },
+    {
+        name: 'Zeal',
+        canonicity: 0,
+        derivation: 'Zeal'
+    },
+    {
+        name: 'Blitzig',
+        canonicity: 0,
+        derivation: 'de: Blitz, lightning'
+    },
+    {
+        name: 'Xyston',
+        canonicity: 0,
+        derivation: 'Xyston'
+    },
+    {
+        name: 'Nonymous',
+        canonicity: 0,
+        derivation: 'Anonymous'
+    },
+    {
+        name: 'Scurrilous',
+        canonicity: 0,
+        derivation: 'Scurrilous'
+    },
+    {
+        name: 'Tempest',
+        canonicity: 0,
+        derivation: 'Tempest'
+    },
+    {
+        name: 'Capitous',
+        canonicity: 0,
+        derivation: 'Capital or decapitate'
+    },
+    {
+        name: 'Zefare',
+        canonicity: 0,
+        derivation: 'Laissez-faire'
+    },
+    {
+        name: 'Vorache',
+        canonicity: 0,
+        derivation: 'Voracious'
+    },
+    {
+        name: 'Shakol',
+        canonicity: 0,
+        derivation: 'Shackle; Exogolic'
+    },
+    {
+        name: 'Gyve',
+        canonicity: 0,
+        derivation: 'Gyve'
+    },
+    {
+        name: 'Rictus',
+        canonicity: 0,
+        derivation: 'Rictus'
+    },
+    {
+        name: 'Balkor',
+        canonicity: 0,
+        derivation: 'Balk'
+    },
+    {
+        name: 'Stymious',
+        canonicity: 0,
+        derivation: 'Stymie'
+    },
+    {
+        name: 'Sabotous',
+        canonicity: 0,
+        derivation: 'Sabotage'
+    },
+    {
+        name: 'Muzzol',
+        canonicity: 0,
+        derivation: 'Muzzle'
+    },
+    {
+        name: 'Leashen',
+        canonicity: 0,
+        derivation: 'Leash'
+    },
+    {
+        name: 'Glaur',
+        canonicity: 0,
+        derivation: 'Glower'
+    },
+    {
+        name: 'Desecrous',
+        canonicity: 0,
+        derivation: 'Desecrate'
+    },
+    {
+        name: 'Sepulkrious',
+        canonicity: 0,
+        derivation: 'Sepulchre'
+    },
+    {
+        name: 'Gelidous',
+        canonicity: 0,
+        derivation: 'Gelid'
+    },
+    {
+        name: 'Algidous',
+        canonicity: 0,
+        derivation: 'Algid'
+    },
+    {
+        name: 'Solous',
+        canonicity: 0,
+        derivation: 'Soulless'
+    },
+    {
+        name: 'Pitilous',
+        canonicity: 0,
+        derivation: 'Pitiless'
+    },
+    {
+        name: 'Cryos',
+        canonicity: 0,
+        derivation: 'Cryogenic'
+    },
+    {
+        name: 'Sultrous',
+        canonicity: 0,
+        derivation: 'Sultry'
+    },
+    {
+        name: 'Torridous',
+        canonicity: 0,
+        derivation: 'Torrid'
+    },
+    {
+        name: 'Mordant',
+        canonicity: 0,
+        derivation: 'Mordant'
+    },
+    {
+        name: 'Caustik',
+        canonicity: 0,
+        derivation: 'Caustic'
+    },
+    {
+        name: 'Monious',
+        canonicity: 0,
+        derivation: 'Acrimonious'
+    },
+    {
+        name: 'Cerbik',
+        canonicity: 0,
+        derivation: 'Acerbic'
+    },
+    {
+        name: 'Corrose',
+        canonicity: 0,
+        derivation: 'Corrosive'
+    },
+    {
+        name: 'Desolet',
+        canonicity: 0,
+        derivation: 'Desolate'
+    },
+    {
+        name: 'Elegiak',
+        canonicity: 0,
+        derivation: 'Elegiac'
+    },
+    {
+        name: 'Dire',
+        canonicity: 0,
+        derivation: 'Dire'
+    },
+    {
+        name: 'Glumn',
+        canonicity: 0,
+        derivation: 'Gloom'
+    },
+    {
+        name: 'Dreich',
+        canonicity: 0,
+        derivation: 'Dreich'
+    },
+    {
+        name: 'Sauro',
+        canonicity: 0,
+        derivation: 'Saurid & Sorrow'
+    },
+    {
+        name: 'Saken',
+        canonicity: 0,
+        derivation: 'Forsaken'
+    },
+    {
+        name: 'Pessimous',
+        canonicity: 0,
+        derivation: 'Pessimist'
+    },
+    {
+        name: 'Chirlous',
+        canonicity: 0,
+        derivation: 'Cheerless'
+    },
+    {
+        name: 'Dririous',
+        canonicity: 0,
+        derivation: 'Dreary'
+    },
+    {
+        name: 'Squall',
+        canonicity: 0,
+        derivation: 'Squall or squalor'
+    },
+    {
+        name: 'Bominous',
+        canonicity: 0,
+        derivation: 'Abominable'
+    },
+    {
+        name: 'Fiend',
+        canonicity: 0,
+        derivation: 'Fiend'
+    },
+    {
+        name: 'Sensuous',
+        canonicity: 0,
+        derivation: 'Sensuous'
+    },
+    {
+        name: 'Xurious',
+        canonicity: 0,
+        derivation: 'Luxurious'
+    },
+    {
+        name: 'Vain',
+        canonicity: 0,
+        derivation: 'Vain'
+    },
+    {
+        name: 'Kurst',
+        canonicity: 0,
+        derivation: 'Cursed'
+    },
+    {
+        name: 'Cinder',
+        canonicity: 0,
+        derivation: 'Cinder'
+    },
+    {
+        name: 'Sunken',
+        canonicity: 0,
+        derivation: 'Sunken'
+    },
+    {
+        name: 'Worgan',
+        canonicity: 0,
+        derivation: 'sounds cool'
+    },
+    {
+        name: 'Silf',
+        canonicity: 0,
+        derivation: `Sylph, or Sith I'd Like to Fuck`
     },
     // 'Nucula',
     // 'Nameless',

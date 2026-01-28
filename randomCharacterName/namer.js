@@ -362,17 +362,14 @@ const newSullustan = () => {
         let fname = sullSymFNames[Math.floor(Math.random() * sullSymFNames.length)];
         let lname = sullSymLNames[Math.floor(Math.random() * sullSymLNames.length)];
         output.name = `${fname.name} ${lname.name}`;
-        // output.name = `${sullSymFNames[Math.floor(Math.random() * sullSymFNames.length)]} ${sullSymLNames[Math.floor(Math.random() * sullSymLNames.length)]}`;
     } else if (dice <= 18) {
         let fname = sullMathFNames[Math.floor(Math.random() * sullMathFNames.length)];
         let lname = sullMathLNames[Math.floor(Math.random() * sullMathLNames.length)];
         output.name = `${fname.name} ${lname.name}`;
-        // output.name = `${sullMathFNames[Math.floor(Math.random() * sullMathFNames.length)]} ${sullMathLNames[Math.floor(Math.random() * sullMathLNames.length)]}`;
     } else if (dice <= 21) {
         let fname = sullPuncFNames[Math.floor(Math.random() * sullPuncFNames.length)];
         let lname = sullPuncLNames[Math.floor(Math.random() * sullPuncLNames.length)];
         output.name = `${fname.name} ${lname.name}`;
-        // output.name = `${sullMathFNames[Math.floor(Math.random() * sullMathFNames.length)]} ${sullMathLNames[Math.floor(Math.random() * sullMathLNames.length)]}`;
     }
     output.class = 'sullustan';
     console.log('newSullustan');
@@ -442,6 +439,16 @@ document.addEventListener('keydown', (event) => {
     if (event.key === 'R' || event.key === 'r') newName(newRodian);
     if (event.key === 'W' || event.key === 'w') newName(newWookiee2);
     if (event.key === '9') newName(newSullustan);
+    if (event.key === '!') { 
+        let dice = (Math.random() * 20) + 1;
+        newName(
+            dice <= 14 ? newJedi
+            : dice <= 18 ? newSith
+            : dice <= 19 ? newRodian
+            : dice <= 20 ? newWookiee2
+            : newChiss
+        );
+    };
     if (event.key === 'Escape') clearPage();
     return;
 });
