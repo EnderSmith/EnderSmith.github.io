@@ -3376,7 +3376,7 @@ const darths = [
         derivation: 'Drake (ie Dragon)'
     },
     {
-        name: 'Exil',
+        name: 'Exyle',
         canonicity: 0,
         derivation: 'Exile'
     },
