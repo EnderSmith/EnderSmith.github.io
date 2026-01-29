@@ -3820,6 +3820,26 @@ const darths = [
         canonicity: 0,
         derivation: 'Superior'
     },
+    {
+        name: 'Adder',
+        canonicity: 0,
+        derivation: 'Adder'
+    },
+    {
+        name: 'Dwilder',
+        canonicity: 0,
+        derivation: 'ang: Dwild, error, heresy'
+    },
+    {
+        name: 'Sunder',
+        canonicity: 0,
+        derivation: 'Sunder'
+    },
+    {
+        name: 'Galder',
+        canonicity: 0,
+        derivation: 'ang: Galder, an incantation or enchantment'
+    },
     // 'Nucula',
     // 'Nameless',
     // 'Trembol',
