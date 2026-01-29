@@ -1197,7 +1197,7 @@ const darths = [
     {
         name: 'Hagueis',
         canonicity: 0,
-        derivation: 'sounds cool'
+        derivation: 'grk: Hagios, holy'
     },
     {
         name: 'Ramage',
@@ -1388,11 +1388,6 @@ const darths = [
         name: 'Foxus',
         canonicity: 0,
         derivation: 'Fox'
-    },
-    {
-        name: 'Noxus',
-        canonicity: 0,
-        derivation: 'Noxious'
     },
     {
         name: 'Voxious',
@@ -3769,6 +3764,61 @@ const darths = [
         name: 'Silf',
         canonicity: 0,
         derivation: `Sylph, or Sith I'd Like to Fuck`
+    },
+    {
+        name: 'Morial',
+        canonicity: 0,
+        derivation: 'Memorial'
+    },
+    {
+        name: 'Hierous',
+        canonicity: 0,
+        derivation: 'Hierarchy'
+    },
+    {
+        name: 'Midabol',
+        canonicity: 0,
+        derivation: 'Formidable, Exegolic'
+    },
+    {
+        name: 'Tentious',
+        canonicity: 0,
+        derivation: 'Contentious'
+    },
+    {
+        name: 'Loathian',
+        canonicity: 0,
+        derivation: 'Loathing'
+    },
+    {
+        name: 'Badious',
+        canonicity: 0,
+        derivation: 'Bad'
+    },
+    {
+        name: 'Ocrious',
+        canonicity: 0,
+        derivation: 'Mediocrity'
+    },
+    {
+        name: 'Amnabol',
+        canonicity: 0,
+        derivation: 'Damnable, Exegolic'
+    },
+    {
+        name: 'Eusilous',
+        canonicity: 0,
+        derivation: 'Useless'
+    },
+    {
+        name: 'Feriour',
+        canonicity: 0,
+        derivation: 'Inferior'
+    },
+    {
+        name: 'Periour',
+        canonicity: 0,
+        derivation: 'Superior'
     },
     // 'Nucula',
     // 'Nameless',

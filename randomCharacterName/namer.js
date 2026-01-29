@@ -20,7 +20,8 @@ const newSith = () => {
     if (!output.lightsaber.includes('staff')) {
         output.lightsaber2 = dice2 <= 3 ? newSithSaber(output.lightsaber) : undefined;
         output.lightsaber3 = dice2 <= 1.1 ? newSithSaber(output.lightsaber) : undefined;
-        output.lightsaber4 = output.lightsaber3 ? newSithSaber(output.lightsaber) : undefined;
+        output.lightsaber4 = output.lightsaber3 && !output.lightsaber3.includes('dagger') ? newSithSaber(output.lightsaber) : undefined;
+        output.lightsaber4 = output.lightsaber3 && output.lightsaber3.includes('dagger') ? output.lightsaber3 : output.lightsaber4;
     }
     output.class = 'sith';
     output.aka = dice3 <= 4 && output.darth ? newJedi().name : undefined;
