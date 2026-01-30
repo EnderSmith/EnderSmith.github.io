@@ -3840,6 +3840,61 @@ const darths = [
         canonicity: 0,
         derivation: 'ang: Galder, an incantation or enchantment'
     },
+    {
+        name: 'Thestrous',
+        canonicity: 0,
+        derivation: 'ang: Thester, darkness'
+    },
+    {
+        name: 'Yever',
+        canonicity: 0,
+        derivation: 'ang: Yever, greedy, covetous'
+    },
+    {
+        name: 'Covetous',
+        canonicity: 0,
+        derivation: 'Covetous'
+    },
+    {
+        name: 'Bile',
+        canonicity: 0,
+        derivation: 'Bile'
+    },
+    {
+        name: 'Javelous',
+        canonicity: 0,
+        derivation: 'Javelin'
+    },
+    {
+        name: 'Draster',
+        canonicity: 0,
+        derivation: 'ang: Drast, dregs'
+    },
+    {
+        name: 'Vexer',
+        canonicity: 0,
+        derivation: 'Vex'
+    },
+    {
+        name: 'Dreezer',
+        canonicity: 0,
+        derivation: 'ang: Dreezer, to fall or perish'
+    },
+    {
+        name: 'Drighten',
+        canonicity: 0,
+        derivation: 'ang: Drighten, a ruler or god'
+    },
+    {
+        name: 'Eken',
+        canonicity: 0,
+        derivation: 'ang: Eken, to increase or augment'
+    },
+    {
+        name: 'Terebol',
+        canonicity: 0,
+        derivation: 'Terrible, Exegolic'
+    },
     // 'Nucula',
     // 'Nameless',
     // 'Trembol',
