@@ -447,7 +447,7 @@ const darths = [
     {
         name: 'Digo',
         canonicity: 0,
-        derivation: '???'
+        derivation: 'Indigo'
     },
     {
         name: 'Letch',
@@ -772,7 +772,7 @@ const darths = [
     {
         name: 'Niabol',
         canonicity: 0,
-        derivation: 'Exegolic'
+        derivation: 'Undeniable; Exegolic'
     },
     {
         name: 'Corous',
@@ -785,7 +785,7 @@ const darths = [
         derivation: 'Deceiver'
     },
     {
-        name: 'Vious',
+        name: 'Evious',
         canonicity: 0,
         derivation: 'Devious'
     },
@@ -2115,7 +2115,7 @@ const darths = [
         derivation: '???'
     },
     {
-        name: 'Xistench',
+        name: 'Xisten',
         canonicity: 0,
         derivation: 'Existential'
     },
@@ -3894,6 +3894,41 @@ const darths = [
         name: 'Terebol',
         canonicity: 0,
         derivation: 'Terrible, Exegolic'
+    },
+    {
+        name: 'Nelegant',
+        canonicity: 0,
+        derivation: 'Inelegant'
+    },
+    {
+        name: 'Nevitous',
+        canonicity: 0,
+        derivation: 'Inevitable'
+    },
+    // {
+    //     name: 'Nevitabol',
+    //     canonicity: 0,
+    //     derivation: 'Inevitable, Exegolic'
+    // },
+    {
+        name: 'Nerrant',
+        canonicity: 0,
+        derivation: 'Inerrant'
+    },
+    {
+        name: 'Nexorous',
+        canonicity: 0,
+        derivation: 'Inexorable'
+    },
+    {
+        name: 'Xorabol',
+        canonicity: 0,
+        derivation: 'Inexorable, Exegolic'
+    },
+    {
+        name: 'Nebrious',
+        canonicity: 0,
+        derivation: 'Inebrious'
     },
     // 'Nucula',
     // 'Nameless',
