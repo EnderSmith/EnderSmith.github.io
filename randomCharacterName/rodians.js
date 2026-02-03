@@ -92,6 +92,7 @@ const rodianFirst = [
     'Jo',
     'Jon',
     'Jor',
+    'Ka',
     'Kablee',
     'Kavi',
     'Kee',
@@ -233,4 +234,5 @@ const rodianLast = [
     'x',
     'yo',
     'zo',
+    'z',
 ];

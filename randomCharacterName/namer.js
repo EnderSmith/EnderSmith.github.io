@@ -1,11 +1,21 @@
 "use strict";
 
+const newDice = (sides, continuous) => {
+    let dice = (Math.random() * sides) + 1;
+    if (!continuous) {
+        dice = Math.floor(dice)
+    }
+    return dice;
+}
+
+const rando = (array) => array[Math.floor(Math.random() * array.length)];
+
 const newSith = () => {
-    let dice0 = (Math.random() * 20) + 1;
-    let dice = (Math.random() * 20) + 1;
-    let dice2 = (Math.random() * 20) + 1;
-    let dice3 = (Math.random() * 20) + 1;
-    let darth = darths[Math.floor(Math.random() * darths.length)]
+    let dice0 = newDice(20, true);
+    let dice = newDice(20, true);
+    let dice2 = newDice(20, true);
+    let dice3 = newDice(20, true);
+    let darth = rando(darths);
     let output = {};
     output.canonicity = darth.canonicity;
     if (dice0 > 1) {
@@ -13,7 +23,7 @@ const newSith = () => {
     }  
     output.name = `${darth.name}`;
     if (dice >= 17) {
-        output.epithet = darthEpithets[Math.floor(Math.random() * darthEpithets.length)];
+        output.epithet = rando(darthEpithets);
     }
 
     output.lightsaber = newSithSaber();
@@ -29,88 +39,86 @@ const newSith = () => {
 }
 
 const newObiWan = () => {
-    let dice = (Math.random() * 20) + 1;
-    let dice2 = (Math.random() * 20) + 1;
-    let dice3 = (Math.random() * 20) + 1;
-    let output = dice >= 8 ? `${obis[Math.floor(Math.random() * obis.length)]}`
-        : `${dis[Math.floor(Math.random() * dis.length)]}`;
+    let dice = newDice(20, true);
+    let dice2 = newDice(20, true);
+    let dice3 = newDice(20, true);
+    let output = dice >= 8 ? `${rando(obis)}`
+        : `${rando(dis)}`;
     output = output[0] === 'I' && output[2] != 'p' && output[2] != 'z' ? output.slice(1).charAt(0).toUpperCase() + output.slice(2) : output; //unsure
     if (dice2 >= 14) {
-        output += dice3 >= 8 ? `${wans[Math.floor(Math.random() * wans.length)].toLowerCase()}`
-            : `${dis[Math.floor(Math.random() * dis.length)].toLowerCase()}`;
+        output += dice3 >= 8 ? `${rando(wans).toLowerCase()}`
+            : `${rando(dis).toLowerCase()}`;
     } else {            
-        output += dice3 >= 8 ? `-${wans[Math.floor(Math.random() * wans.length)]}`
-            : `-${dis[Math.floor(Math.random() * dis.length)]}`;
+        output += dice3 >= 8 ? `-${rando(wans)}`
+            : `-${rando(dis)}`;
     }
     return output;
 }
 const newKenobiJinn = () => {
-    let dice = (Math.random() * 20) + 1;
-    let output = `${wans[Math.floor(Math.random() * wans.length)]}`;
-    output += dice >= 16 ? `${obis[Math.floor(Math.random() * obis.length)].toLowerCase()}`
-        : dice >= 14 ? `${dis[Math.floor(Math.random() * dis.length)].toLowerCase()}`
+    let dice = newDice(20, true);
+    let output = `${rando(wans)}`;
+    output += dice >= 16 ? `${rando(obis).toLowerCase()}`
+        : dice >= 14 ? `${rando(dis).toLowerCase()}`
         : ``;
     return output;
 }
 const newAnakin = () => {
-    let dice = (Math.random() * 20) + 1;
-    let output = `${obis[Math.floor(Math.random() * obis.length)]}`;
+    let dice = newDice(20, true);
+    let output = `${rando(obis)}`;
     output = output[0] === 'I' && output[2] != 'p' && output[2] != 'z' ? output.slice(1).charAt(0).toUpperCase() + output.slice(2) : output; //unsure
-    output += dice >= 4 ? `${dis[Math.floor(Math.random() * dis.length)].toLowerCase()}`
-        : `${wans[Math.floor(Math.random() * wans.length)].toLowerCase()}`;
+    output += dice >= 4 ? `${rando(dis).toLowerCase()}`
+        : `${rando(wans).toLowerCase()}`;
     return output;
 }
 const newDijon = () => {
-    let output = `${dis[Math.floor(Math.random() * dis.length)]}${wans[Math.floor(Math.random() * wans.length)].toLowerCase()}`;
+    let output = `${rando(dis)}${rando(wans).toLowerCase()}`;
     return output;
 }
 const newKiAdiMundi = () => {
     let output = ``;
-    output += `${dis[Math.floor(Math.random() * dis.length)]}`;
-    output += `-${obis[Math.floor(Math.random() * obis.length)]}`;
-    output += `-${wans[Math.floor(Math.random() * wans.length)]}${dus[Math.floor(Math.random() * dus.length)].toLowerCase()}`;
+    output += `${rando(dis)}-${rando(obis)}-${rando(wans)}${rando(dus).toLowerCase()}`;
     return output;
 }
 const newMace = () => {
-    let dice = (Math.random() * 20) + 1;
+    let dice = newDice(20, true);
     let output = ``;
     if (dice >= 17) {
-        output += `${obis[Math.floor(Math.random() * obis.length)]}`;
+        output += `${rando(obis)}`;
         output = output[0] === 'I' && output[2] != 'p' && output[2] != 'z' ? output.slice(1).charAt(0).toUpperCase() + output.slice(2) : output; //unsure
-        output += `${maces[Math.floor(Math.random() * maces.length)].toLowerCase()}`;
+        output += `${rando(maces).toLowerCase()}`;
     } else {
-        output += `${maces[Math.floor(Math.random() * maces.length)]}`;
+        output += `${rando(maces)}`;
     }
     return output;
 }
 const newWindu = () => {
-    let output = `${wans[Math.floor(Math.random() * wans.length)]}${dus[Math.floor(Math.random() * dus.length)].toLowerCase()}`;
+    let output = `${rando(wans)}${rando(dus).toLowerCase()}`;
     return output;
 }
 const newGeneric = () => {
-    let dice1 = (Math.random() * 20) + 1;
-    let dice2 = (Math.random() * 20) + 1;
+    let dice1 = newDice(20, true);
+    let dice2 = newDice(20, true);
     let output = '';
     if (dice1 >= 8) {
-        output += `${jediFNs[Math.floor(Math.random() * jediFNs.length)]}`;
+        output += `${rando(jediFNs)}`;
     } else if (dice1 >= 14) {
         output += newMace();
     } else {
         output += newKenobiJinn();
     }
     if (dice2 >= 20) {
-        output += ` ${skywalkers[Math.floor(Math.random() * skywalkers.length)]}`;
+        output += ` ${rando(skywalkers)}`;
     } else if (dice2 >= 6) {
-        output += ` ${jediLNs[Math.floor(Math.random() * jediLNs.length)]}`
+        output += ` ${rando(jediLNs)}`
     } else if (dice2 >= 5) {
-        output += ` ${whitesuns[Math.floor(Math.random() * whitesuns.length)]}`
+        output += ` ${rando(whitesuns)}`
     } else if (dice2 >= 3) {
         output += ` ${newKenobiJinn()}`;
     }
     return output;
 }
 const newMaster = (name) => {
-    let dice = (Math.random() * 20) +1;
+    let dice = newDice(20, true);
     let output = dice >= 16 ? `Master ${name}`
         : dice < 1.2 ? `Grandmaster ${name}`
         : name;
@@ -118,9 +126,9 @@ const newMaster = (name) => {
 }
 
 const newJedi = () => {
-    let dice = (Math.random() * 20) + 1;
-    let dice2 = (Math.random() * 20) + 1;
-    let dice3 = (Math.random() * 20) + 1;
+    let dice = newDice(20, true);
+    let dice2 = newDice(20, true);
+    let dice3 = newDice(20, true);
     let output = {};
     output.name = '';
     if (dice >= 14) { // OBI-WAN / QUI-GON
@@ -160,10 +168,10 @@ const newJedi = () => {
 }
 
 const newJediSaber = (dual) => {
-    let dice = (Math.random() * 20) + 1;
-    let dice2 = (Math.random() * 20) + 1;
-    let dice3 = (Math.random() * 20) + 1;
-    let dice4 = (Math.random() * 20) + 1;
+    let dice = newDice(20, true);
+    let dice2 = newDice(20, true);
+    let dice3 = newDice(20, true);
+    let dice4 = newDice(20, true);
     let lightsaber = undefined;
     if (dual && dual.includes('white')) {
         lightsaber = dual;
@@ -186,10 +194,10 @@ const newJediSaber = (dual) => {
 }
 
 const newSithSaber = (dual) => {
-    let dice = (Math.random() * 20) + 1;
-    let dice2 = (Math.random() * 20) + 1;
-    let dice3 = (Math.random() * 20) + 1;
-    let dice4 = (Math.random() * 20) + 1;
+    let dice = newDice(20, true);
+    let dice2 = newDice(20, true);
+    let dice3 = newDice(20, true);
+    let dice4 = newDice(20, true);
     let lightsaber = dice <= 1.01 ? "synthblue"
         : dice <= 1.1 ? newJediSaber()
         : dice <= 1.4 ? "synth"
@@ -212,15 +220,15 @@ const newSithSaber = (dual) => {
 // }
 
 const newChiss = () => {
-    let dice = (Math.random() * 20) + 1;
-    let dice2 = (Math.random() * 20) + 1;
+    let dice = newDice(20, true);
+    let dice2 = newDice(20, true);
     let output = {};
     let fam = undefined;
     if (dice >= 5) {
-        fam = chissFam[Math.floor(Math.random() * chissFam.length)];
+        fam = rando(chissFam);
     }
-    let giv = chissGiv[Math.floor(Math.random() * chissGiv.length)];
-    let soc = chissSoc[Math.floor(Math.random() * chissSoc.length)];
+    let giv = rando(chissGiv);
+    let soc = rando(chissSoc);
     let odo = dice2 < 1.1 ? 'odo' : '';
     if (fam) {
         output.name = `${fam[1]}${giv.toLowerCase()}${soc[1]}`;
@@ -270,15 +278,15 @@ const newCanonicityNote = (canonicity) => {
 }
 
 const newRodian = () => {
-    let dice = (Math.random() * 20) + 1;
+    let dice = newDice(20, true);
     let output = {};
     output.class = 'rodian';
     if (dice <= 5) { 
-        output.name = `${rodianPrebaked[Math.floor(Math.random() * rodianPrebaked.length)]}`;
+        output.name = `${rando(rodianPrebaked)}`;
         return output;
     }
-    let fname = `${rodianFirst[Math.floor(Math.random() * rodianFirst.length)]}${rodianLast[Math.floor(Math.random() * rodianLast.length)]}`;
-    let lname = `${rodianFirst[Math.floor(Math.random() * rodianFirst.length)]}${rodianLast[Math.floor(Math.random() * rodianLast.length)]}`;
+    let fname = `${rando(rodianFirst)}${rando(rodianLast)}`;
+    let lname = `${rando(rodianFirst)}${rando(rodianLast)}`;
     output.name = fname;
     if (dice <= 8) {
         output.name = `${fname} ${lname}`;
@@ -290,12 +298,12 @@ const newRodian = () => {
 }
 
 const newWookiee = () => {
-    let dice = (Math.random() * 20) + 1;
-    // let dice2 = (Math.random() * 20) + 1;
+    let dice = newDice(20, true);
+    // let dice2 = newDice(20, true);
     let output = {};
     
-    let prefix = wookieePre[Math.floor(Math.random() * wookieePre.length)];
-    let suffix = wookieeSuf[Math.floor(Math.random() * wookieeSuf.length)];
+    let prefix = rando(wookieePre);
+    let suffix = rando(wookieeSuf);
     // let lastPrefix = wookieePre[Math.floor(Math.random() * wookieePre.length)];
     // let lastSuffix = wookieeSuf[Math.floor(Math.random() * wookieeSuf.length)];
     // let prefixFlaggedEndings = [
@@ -324,13 +332,13 @@ const newWookiee = () => {
 }
 
 const newWookiee2 = () => {
-    let dice = (Math.random() * 20) + 1;
-    // let dice2 = (Math.random() * 20) + 1;
+    let dice = newDice(20, true);
+    // let dice2 = newDice(20, true);
     let output = {};
     
-    let wookiee = wookiees2[Math.floor(Math.random() * wookiees2.length)];
+    let wookiee = rando(wookiees2);
     output.name = wookiee.name;
-    output.nick = wookiee.nicks.length && dice <= 10 ? wookiee.nicks[Math.floor(Math.random() * wookiee.nicks.length)] : undefined;
+    output.nick = wookiee.nicks.length && dice <= 10 ? rando(wookiee.nicks) : undefined;
     output.class = 'wookiee'
     console.log('newWookiee2')
     return output;
@@ -349,27 +357,27 @@ const newWookiee2 = () => {
 // }
 
 const newSullustan = () => {
-    let dice = (Math.random() * 20) + 1;
+    let dice = newDice(20, true);
     let output = {};
     if (dice <= 10) {
         // output.name = `${sullNumFNames[Math.floor(Math.random() * sullNumFNames.length)]} ${sullNumLNames[Math.floor(Math.random() * sullNumLNames.length)]}`;
-        let fname = sullNumFNames[Math.floor(Math.random() * sullNumFNames.length)];
-        let lname = sullNumLNames[Math.floor(Math.random() * sullNumLNames.length)];
+        let fname = rando(sullNumFNames);
+        let lname = rando(sullNumLNames);
         output.name = `${fname.name} ${lname.name}`;
         // if (fname.canonicity || lname.canonicity) {
         //     output.canonicity = 
         // }
     } else if (dice <= 15) {
-        let fname = sullSymFNames[Math.floor(Math.random() * sullSymFNames.length)];
-        let lname = sullSymLNames[Math.floor(Math.random() * sullSymLNames.length)];
+        let fname = rando(sullSymFNames);
+        let lname = rando(sullSymLNames);
         output.name = `${fname.name} ${lname.name}`;
     } else if (dice <= 18) {
-        let fname = sullMathFNames[Math.floor(Math.random() * sullMathFNames.length)];
-        let lname = sullMathLNames[Math.floor(Math.random() * sullMathLNames.length)];
+        let fname = rando(sullMathFNames);
+        let lname = rando(sullMathLNames);
         output.name = `${fname.name} ${lname.name}`;
     } else if (dice <= 21) {
-        let fname = sullPuncFNames[Math.floor(Math.random() * sullPuncFNames.length)];
-        let lname = sullPuncLNames[Math.floor(Math.random() * sullPuncLNames.length)];
+        let fname = rando(sullPuncFNames);
+        let lname = rando(sullPuncLNames);
         output.name = `${fname.name} ${lname.name}`;
     }
     output.class = 'sullustan';
@@ -441,7 +449,7 @@ document.addEventListener('keydown', (event) => {
     if (event.key === 'W' || event.key === 'w') newName(newWookiee2);
     if (event.key === '9') newName(newSullustan);
     if (event.key === '!') { 
-        let dice = (Math.random() * 20) + 1;
+        let dice = newDice(20, true);
         newName(
             dice <= 14 ? newJedi
             : dice <= 18 ? newSith
