@@ -17,7 +17,7 @@ const darths = [
     {
         name: 'Cognus',
         canonicity: 2,
-        derivation: 'Cognition'
+        derivation: 'Incognito'
     },
     {
         name: 'Trudor',
@@ -27,7 +27,7 @@ const darths = [
     {
         name: 'Fernus',
         canonicity: 0,
-        derivation: 'Furnace'
+        derivation: 'Furnace or Infernal'
     },
     {
         name: 'Vestis',
@@ -85,7 +85,7 @@ const darths = [
         derivation: 'Irate'
     },
     {
-        name: 'Scivious',
+        name: 'Skevious',
         canonicity: 0,
         derivation: 'Mischeivious or skeevy'
     },
@@ -122,10 +122,15 @@ const darths = [
     {
         name: 'Kaber',
         canonicity: 0,
-        derivation: 'Caber, sound'
+        derivation: 'Caber, sounds cool'
     },
     {
         name: 'Amadius',
+        canonicity: 0,
+        derivation: 'Amadeus Mozart (composer)'
+    },
+    {
+        name: 'Madeous',
         canonicity: 0,
         derivation: 'Amadeus Mozart (composer)'
     },
@@ -142,7 +147,7 @@ const darths = [
     {
         name: 'Ghulus',
         canonicity: 0,
-        derivation: ''
+        derivation: 'Ghoul'
     },
     {
         name: 'Bachus',
@@ -150,7 +155,17 @@ const darths = [
         derivation: 'Bach (composer) or Baccus (Roman god of wine and intoxication)'
     },
     {
+        name: 'Jaius',
+        canonicity: 0,
+        derivation: 'J.S. Bach (composer)'
+    },
+    {
         name: 'Lydian',
+        canonicity: 0,
+        derivation: 'Lydian (musical scale/mode)'
+    },
+    {
+        name: 'Lydious',
         canonicity: 0,
         derivation: 'Lydian (musical scale/mode)'
     },
@@ -172,7 +187,7 @@ const darths = [
     {
         name: 'Ixolyd',
         canonicity: 0,
-        derivation: 'Mixolydian (musical scale/mode), influenced by Ixigol/Exegol'
+        derivation: 'Mixolydian (musical scale/mode), Exegolic'
     },
     {
         name: 'Octaton',
@@ -195,9 +210,24 @@ const darths = [
         derivation: 'Demonic or Harmonic (musical scale)'
     },
     {
+        name: 'Harmox',
+        canonicity: 0,
+        derivation: 'Harmonic (musical scale)'
+    },
+    {
         name: 'Melodius',
         canonicity: 0,
         derivation: 'Melodious'
+    },
+    {
+        name: 'Lodious',
+        canonicity: 0,
+        derivation: 'Melodious'
+    },
+    {
+        name: 'Melox',
+        canonicity: 0,
+        derivation: 'Melody'
     },
     {
         name: 'Stravin',
@@ -220,6 +250,11 @@ const darths = [
         derivation: 'Sibelius (composer)'
     },
     {
+        name: 'Sibilous',
+        canonicity: 0,
+        derivation: 'Sibilant'
+    },
+    {
         name: 'Zemlin',
         canonicity: 0,
         derivation: 'Zemlinski (composer)'
@@ -236,6 +271,11 @@ const darths = [
     },
     {
         name: 'Rheif',
+        canonicity: 0,
+        derivation: 'Ralph Vaughan Williams'
+    },
+    {
+        name: 'Reivon',
         canonicity: 0,
         derivation: 'Ralph Vaughan Williams'
     },
@@ -258,6 +298,11 @@ const darths = [
         name: 'Felis',
         canonicity: 0,
         derivation: 'Scientific genus of cats'
+    },
+    {
+        name: 'Felious',
+        canonicity: 0,
+        derivation: 'Felis, Scientific genus of cats'
     },
     {
         name: 'Chaus',
@@ -285,9 +330,14 @@ const darths = [
         derivation: 'Attrocious'
     },
     {
+        name: 'Trocitous',
+        canonicity: 0,
+        derivation: 'Attrocity'
+    },
+    {
         name: 'Pravitous',
         canonicity: 0,
-        derivation: 'Depraved'
+        derivation: 'Depravity'
     },
     {
         name: 'Flagitous',
@@ -329,11 +379,11 @@ const darths = [
         canonicity: 2,
         derivation: 'Guile'
     },
-    {
-        name: 'Enormous',
-        canonicity: 0,
-        derivation: 'Enormous'
-    },
+    // {
+    //     name: 'Enormous',
+    //     canonicity: 0,
+    //     derivation: 'Enormous'
+    // },
     {
         name: 'Bolical',
         canonicity: 0,
@@ -364,10 +414,15 @@ const darths = [
         canonicity: 0,
         derivation: 'sounds cool, hell and death'
     },
+    // {
+    //     name: 'Crimous',
+    //     canonicity: 0,
+    //     derivation: 'Crime'
+    // },
     {
-        name: 'Crimous',
+        name: 'Criminous',
         canonicity: 0,
-        derivation: 'Crime'
+        derivation: 'Incriminate'
     },
     {
         name: 'Viathan',
@@ -432,7 +487,7 @@ const darths = [
     {
         name: 'Tazimous',
         canonicity: 0,
-        derivation: '???'
+        derivation: 'Phantasmal'
     },
     {
         name: 'Vaporous',
@@ -464,16 +519,16 @@ const darths = [
         canonicity: 0,
         derivation: 'Innocent'
     },
-    {
-        name: 'Crement',
-        canonicity: 0,
-        derivation: 'Increment'
-    },
-    {
-        name: 'Tersect',
-        canonicity: 0,
-        derivation: 'Intersect'
-    },
+    // {
+    //     name: 'Krement',
+    //     canonicity: 0,
+    //     derivation: 'Increment'
+    // },
+    // {
+    //     name: 'Tersect',
+    //     canonicity: 0,
+    //     derivation: 'Intersect'
+    // },
     {
         name: 'Jurious',
         canonicity: 0,
@@ -500,6 +555,11 @@ const darths = [
         derivation: 'Indulgent'
     },
     {
+        name: 'Dulger',
+        canonicity: 0,
+        derivation: 'Indulger'
+    },
+    {
         name: 'Fector',
         canonicity: 0,
         derivation: 'Infector'
@@ -509,11 +569,11 @@ const darths = [
         canonicity: 0,
         derivation: 'Insular'
     },
-    {
-        name: 'Terim',
-        canonicity: 0,
-        derivation: 'Interim'
-    },
+    // {
+    //     name: 'Terim',
+    //     canonicity: 0,
+    //     derivation: 'Interim'
+    // },
     {
         name: 'Zade',
         canonicity: 0,
@@ -587,7 +647,7 @@ const darths = [
     {
         name: 'Spire',
         canonicity: 0,
-        derivation: 'Spire'
+        derivation: 'Inspire or Spire'
     },
     {
         name: 'Rive',
@@ -800,6 +860,11 @@ const darths = [
         derivation: 'Devilry'
     },
     {
+        name: 'Devol',
+        canonicity: 0,
+        derivation: 'Devil'
+    },
+    {
         name: 'Zire',
         canonicity: 0,
         derivation: 'Desire'
@@ -885,6 +950,11 @@ const darths = [
         derivation: 'sounds cool'
     },
     {
+        name: 'Triviol',
+        canonicity: 0,
+        derivation: 'Trivial, Exegolic'
+    },
+    {
         name: 'Mur',
         canonicity: 0,
         derivation: 'Murder'
@@ -905,6 +975,11 @@ const darths = [
         derivation: 'Faith'
     },
     {
+        name: 'Feithlous',
+        canonicity: 0,
+        derivation: 'Faithless'
+    },
+    {
         name: 'Nazer',
         canonicity: 0,
         derivation: 'sounds cool'
@@ -913,6 +988,11 @@ const darths = [
         name: 'Deco',
         canonicity: 0,
         derivation: 'Art deco'
+    },
+    {
+        name: 'Veau',
+        canonicity: 0,
+        derivation: 'Art Nouveau'
     },
     {
         name: 'Faminus',
@@ -927,7 +1007,7 @@ const darths = [
     {
         name: 'Brood',
         canonicity: 0,
-        derivation: 'Brood, sounds cool'
+        derivation: 'Brood'
     },
     {
         name: 'Tyrious',
@@ -953,6 +1033,11 @@ const darths = [
         name: 'Velocis',
         canonicity: 0,
         derivation: 'Velocity or velocirpator (dinosaur)'
+    },
+    {
+        name: 'Raptir',
+        canonicity: 0,
+        derivation: 'Velocirpator (dinosaur)'
     },
     {
         name: 'Zenos',
@@ -1002,7 +1087,7 @@ const darths = [
     {
         name: 'Draconyx',
         canonicity: 0,
-        derivation: 'Draconian and onyx'
+        derivation: 'Draconic and onyx'
     },
     {
         name: 'Skarious',
@@ -1058,6 +1143,11 @@ const darths = [
         name: 'Juliek',
         canonicity: 0,
         derivation: 'Juliet'
+    },
+    {
+        name: 'Romeous',
+        canonicity: 0,
+        derivation: 'Romeo'
     },
     {
         name: 'Phobos',
@@ -1145,11 +1235,6 @@ const darths = [
         derivation: 'sounds cool'
     },
     {
-        name: 'Voker',
-        canonicity: 0,
-        derivation: 'Invoker'
-    },
-    {
         name: 'Exorak',
         canonicity: 0,
         derivation: 'sounds cool, Exegolic'
@@ -1230,9 +1315,9 @@ const darths = [
         derivation: 'ancient Sith (considered for Darth Caedus)'
     },
     {
-        name: 'Theteis',
+        name: 'Thetix',
         canonicity: 0,
-        derivation: 'Aesthete'
+        derivation: 'Aesthetics'
     },
     {
         name: 'Nithopsis',
@@ -1400,7 +1485,7 @@ const darths = [
         derivation: 'Chlostrophobia'
     },
     {
-        name: 'Gob',
+        name: 'Golb',
         canonicity: 0,
         derivation: 'sounds cool'
     },
@@ -1567,12 +1652,17 @@ const darths = [
     {
         name: 'Vanet',
         canonicity: 0,
-        derivation: 'Vane'
+        derivation: 'Vanity'
+    },
+    {
+        name: 'Vane',
+        canonicity: 0,
+        derivation: 'Vanity'
     },
     {
         name: 'Evious',
         canonicity: 0,
-        derivation: 'Devious'
+        derivation: 'Devious or evil'
     },
     {
         name: 'Makina',
@@ -1847,7 +1937,7 @@ const darths = [
     {
         name: 'Xiete',
         canonicity: 0,
-        derivation: '???'
+        derivation: 'Anxiety'
     },
     {
         name: 'Panik',
@@ -1858,6 +1948,16 @@ const darths = [
         name: 'Cern',
         canonicity: 0,
         derivation: 'sounds cool'
+    },
+    {
+        name: 'Caer',
+        canonicity: 0,
+        derivation: 'welsh: Caer, fortress'
+    },
+    {
+        name: 'Cairn',
+        canonicity: 0,
+        derivation: 'Cairn, fortress'
     },
     {
         name: 'Qualm',
@@ -2100,6 +2200,11 @@ const darths = [
         derivation: '???'
     },
     {
+        name: 'Somnious',
+        canonicity: 0,
+        derivation: 'Insomnia'
+    },
+    {
         name: 'Norrid',
         canonicity: 0,
         derivation: 'sounds cool'
@@ -2110,7 +2215,7 @@ const darths = [
         derivation: 'Lurid'
     },
     {
-        name: 'Othlyss',
+        name: 'Othylus',
         canonicity: 0,
         derivation: '???'
     },
@@ -2145,6 +2250,11 @@ const darths = [
         derivation: 'Ragnarok (Norse mythology)'
     },
     {
+        name: 'Narok',
+        canonicity: 0,
+        derivation: 'Ragnarok (Norse mythology)'
+    },
+    {
         name: 'Clypsus',
         canonicity: 0,
         derivation: 'Apocalypse or Eclypse'
@@ -2161,11 +2271,6 @@ const darths = [
     },
     {
         name: 'Taver',
-        canonicity: 0,
-        derivation: 'sounds cool'
-    },
-    {
-        name: 'Ravik',
         canonicity: 0,
         derivation: 'sounds cool'
     },
@@ -2250,6 +2355,11 @@ const darths = [
         derivation: 'Adamant'
     },
     {
+        name: 'Mancis',
+        canonicity: 0,
+        derivation: 'Adamant, sounds cool'
+    },
+    {
         name: 'Aurodious',
         canonicity: 0,
         derivation: 'Aurodium (in-universe type of high quality gold)'
@@ -2308,6 +2418,11 @@ const darths = [
         name: 'Hazaar',
         canonicity: 0,
         derivation: 'Hazard, bizarre'
+    },
+    {
+        name: 'Lizaar',
+        canonicity: 0,
+        derivation: 'Lizard, bizarre'
     },
     {
         name: 'Hostilus',
@@ -2382,7 +2497,12 @@ const darths = [
     {
         name: 'Stereosk',
         canonicity: 0,
-        derivation: 'Stereo'
+        derivation: 'Stereoscopic'
+    },
+    {
+        name: 'Monoff',
+        canonicity: 0,
+        derivation: 'Monophonic'
     },
     {
         name: 'Terrous',
@@ -2550,6 +2670,11 @@ const darths = [
         derivation: 'sounds cool?'
     },
     {
+        name: 'Riok',
+        canonicity: 0,
+        derivation: 'sounds cool, riot'
+    },
+    {
         name: 'Slaink',
         canonicity: 0,
         derivation: 'Slain and slink, sounds cool'
@@ -2603,6 +2728,11 @@ const darths = [
         name: 'Desic',
         canonicity: 0,
         derivation: 'Geodesic'
+    },
+    {
+        name: 'Metrous',
+        canonicity: 0,
+        derivation: 'Metro'
     },
     {
         name: 'Amortek',
@@ -2729,11 +2859,11 @@ const darths = [
         canonicity: 0,
         derivation: 'Fantasia'
     },
-    {
-        name: 'Fryden',
-        canonicity: 0,
-        derivation: 'sounds cool'
-    },
+    // {
+    //     name: 'Fryden',
+    //     canonicity: 0,
+    //     derivation: 'sounds cool'
+    // },
     {
         name: 'Famish',
         canonicity: 0,
@@ -2817,7 +2947,7 @@ const darths = [
     {
         name: 'Jarlik',
         canonicity: 0,
-        derivation: 'sounds cool'
+        derivation: 'sounds cool, garlic'
     },
     {
         name: 'Jecter',
@@ -3005,6 +3135,11 @@ const darths = [
         derivation: 'Spurious'
     },
     {
+        name: 'Spinneret',
+        canonicity: 0,
+        derivation: 'Spinneret'
+    },
+    {
         name: 'Solituur',
         canonicity: 0,
         derivation: 'Solitude'
@@ -3067,7 +3202,7 @@ const darths = [
     {
         name: 'Vanitrix',
         canonicity: 0,
-        derivation: 'Vane'
+        derivation: 'Vanity'
     },
     {
         name: 'Vericos',
@@ -3164,7 +3299,6 @@ const darths = [
         canonicity: 0,
         derivation: 'Jerk, sounds cool'
     },
-    
     {
         name: 'Sion',
         canonicity: 2,
@@ -3246,7 +3380,7 @@ const darths = [
         derivation: 'Acrid'
     },
     {
-        name: 'Fearlous',
+        name: 'Fyrlous',
         canonicity: 0,
         derivation: 'Fearless'
     },
@@ -3289,11 +3423,6 @@ const darths = [
         name: 'Traage',
         canonicity: 0,
         derivation: 'Tragedy, rage'
-    },
-    {
-        name: 'Scorn',
-        canonicity: 0,
-        derivation: 'Scorn'
     },
     {
         name: 'Berrat',
@@ -3430,11 +3559,11 @@ const darths = [
         canonicity: 0,
         derivation: 'Patriot'
     },
-    {
-        name: 'Quiditous',
-        canonicity: 0,
-        derivation: 'Quidit'
-    },
+    // {
+    //     name: 'Quiditous',
+    //     canonicity: 0,
+    //     derivation: 'Quidit'
+    // },
     {
         name: 'Quietus',
         canonicity: 0,
@@ -3531,6 +3660,11 @@ const darths = [
         derivation: 'Tempest'
     },
     {
+        name: 'Pestuous',
+        canonicity: 0,
+        derivation: 'Tempestuous'
+    },
+    {
         name: 'Capitous',
         canonicity: 0,
         derivation: 'Capital or decapitate'
@@ -3601,7 +3735,7 @@ const darths = [
         derivation: 'Sepulchre'
     },
     {
-        name: 'Gelidous',
+        name: 'Ghelidous',
         canonicity: 0,
         derivation: 'Gelid'
     },
@@ -3929,6 +4063,31 @@ const darths = [
         name: 'Nebrious',
         canonicity: 0,
         derivation: 'Inebrious'
+    },
+    {
+        name: 'Xhaustibol',
+        canonicity: 0,
+        derivation: 'Inexhaustible'
+    },
+    {
+        name: 'Fatuous',
+        canonicity: 0,
+        derivation: 'Infatuate'
+    },
+    {
+        name: 'Heritor',
+        canonicity: 0,
+        derivation: 'Inheritor'
+    },
+    {
+        name: 'Salubrious',
+        canonicity: 0,
+        derivation: 'Insalubrious'
+    },
+    {
+        name: 'Nurious',
+        canonicity: 0,
+        derivation: 'Inure'
     },
     // 'Nucula',
     // 'Nameless',
