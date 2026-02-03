@@ -1425,7 +1425,7 @@ const darths = [
         derivation: 'Ilex Aquifolium (poisonous plant)'
     },
     {
-        name: 'Mandrak',
+        name: 'Manadrak',
         canonicity: 0,
         derivation: 'Mandrake (poisonous plant)'
     },
@@ -1595,9 +1595,9 @@ const darths = [
         derivation: 'sounds cool'
     },
     {
-        name: 'Cherous',
+        name: 'Wretcherous',
         canonicity: 0,
-        derivation: 'Lecherous'
+        derivation: 'Treacherous and Wretch'
     },
     {
         name: 'Iki',

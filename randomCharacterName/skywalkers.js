@@ -750,6 +750,8 @@ const skywalkers = [
     'Hopeteller',
     'Treecaller',
     'Voidcrosser',
+    'Darkspanner',
+    'Sunrider',
 ];
 
 const whitesuns = [
